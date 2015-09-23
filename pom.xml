@@ -31,7 +31,7 @@
     
     <repositories>
         <repository>
-            <id>agdturner</id>
+            <id>generic</id>
             <name>GitHub agdturner generic Repository</name>
             <!--
             <url>https://github.com/agdturner/generic/agdturner-generic-3.0.0</url>
