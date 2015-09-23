@@ -50,6 +50,7 @@ package uk.ac.leeds.ccg.andyt.web.houseprices;
  * slow then having more threads won't help as the number of requests is rate
  * limited.
  */
+import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -273,31 +274,31 @@ public class ZooplaHousepriceScraper {
     }
 
     private void init_NAA() {
-        _NAA = PostcodeChecker.getTreeSet_String_Naa();
+        _NAA = Generic_UKPostcode_Handler.getTreeSet_String_Naa();
     }
 
     private void init_AtoZ_not_QVX() {
-        _AtoZ_not_QVX = PostcodeChecker.getTreeSet_String_atoz_not_qvx();
+        _AtoZ_not_QVX = Generic_UKPostcode_Handler.getTreeSet_String_atoz_not_qvx();
     }
 
     private void init_AtoZ_not_IJZ() {
-        _AtoZ_not_IJZ = PostcodeChecker.getTreeSet_String_atoz_not_ijz();
+        _AtoZ_not_IJZ = Generic_UKPostcode_Handler.getTreeSet_String_atoz_not_ijz();
     }
 
     private void init_ABCDEFGHJKSTUW() {
-        _ABCDEFGHJKSTUW = PostcodeChecker.getTreeSet_String_abcdefghjkstuw();
+        _ABCDEFGHJKSTUW = Generic_UKPostcode_Handler.getTreeSet_String_abcdefghjkstuw();
     }
 
     private void init_ABEHMNPRVWXY() {
-        _ABEHMNPRVWXY = PostcodeChecker.getTreeSet_String_abehmnprvwxy();
+        _ABEHMNPRVWXY = Generic_UKPostcode_Handler.getTreeSet_String_abehmnprvwxy();
     }
     
     private void init_AtoZ_not_CIKMOV() {
-        _AtoZ_not_CIKMOV = PostcodeChecker.getTreeSet_String_atoz_not_cikmov();
+        _AtoZ_not_CIKMOV = Generic_UKPostcode_Handler.getTreeSet_String_atoz_not_cikmov();
     }
 
     private void init_0to9() {
-        _0to9 = PostcodeChecker.getTreeSet_String_0to9();
+        _0to9 = Generic_UKPostcode_Handler.getTreeSet_String_0to9();
     }
 
     private TreeSet<String> get_0to9() {
