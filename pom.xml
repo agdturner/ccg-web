@@ -40,7 +40,12 @@
             https://github.com/agdturner/generic/tree/master/agdturner-generic-3.0.0/java
             -->
             <url>https://github.com/agdturner/generic</url>
-         
+        </repository>
+        <repository>
+            <id>Local</id>
+            <name>Local Maven2 Repository</name>
+            <url>file://scratch01/.m2/</url>
+            <layout>default</layout>
         </repository>
     </repositories>
     
