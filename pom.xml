@@ -3,26 +3,24 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>uk.ac.leeds.ccg.andyt</groupId>
     <artifactId>agdt-web</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
         <generic.version>1.0-SNAPSHOT</generic.version>
     </properties>
-
+    
     <dependencies>
-        <!--
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.10</version>
+            <!--<version>3.8.1</version>-->
             <scope>test</scope>
         </dependency>
-        -->
         <dependency>
-            <!--
-            <groupId>uk.ac.leeds.ccg.andyt.generic</groupId>
-            -->
             <groupId>uk.ac.leeds.ccg.andyt</groupId>
             <artifactId>generic</artifactId>
             <version>${generic.version}</version>
@@ -33,12 +31,6 @@
         <repository>
             <id>generic</id>
             <name>GitHub agdturner generic Repository</name>
-            <!--
-            <url>https://github.com/agdturner/generic/agdturner-generic-3.0.0</url>
-            <url>https://github.com/agdturner/generic</url>
-            <url>https://github.com/agdturner</url>
-            https://github.com/agdturner/generic/tree/master/agdturner-generic-3.0.0/java
-            -->
             <url>https://github.com/agdturner/generic</url>
         </repository>
     </repositories>
@@ -76,14 +68,13 @@
             <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
         </pluginRepository>
     </pluginRepositories>
-    
     <!--
     <distributionManagement>
         <repository>
             <uniqueVersion>false</uniqueVersion>
             <id>Local</id>
             <name>Local Maven2 Repository</name>
-            <url>file://scratch01/.m2/</url>
+            <url>file:///scratch01/.m2/repository</url>
             <layout>default</layout>
         </repository>
     </distributionManagement>
