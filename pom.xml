@@ -25,6 +25,11 @@
             <artifactId>generic</artifactId>
             <version>${generic.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.8.3</version>
+        </dependency>
     </dependencies>
     
     <repositories>
@@ -33,6 +38,17 @@
             <name>GitHub agdturner generic Repository</name>
             <url>https://github.com/agdturner/generic</url>
         </repository>
+        <repository>
+            <id>maven2-repository.dev.java.net</id>
+            <name>Java.net repository</name>
+            <url>http://download.java.net/maven/2</url>
+        </repository>
+        <!--
+        <repository>
+            <id>IroniaCorp</id>
+            <url>http://www.ironiacorp.com/repo/maven2</url>
+        </repository>
+        -->
     </repositories>
     
     <build>
