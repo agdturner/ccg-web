@@ -39,7 +39,7 @@ import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
 /**
  * To be extended by Run methods.
  */
-public abstract class AbstractRun implements Runnable {
+public abstract class Web_AbstractRun implements Runnable {
 
     /**
      * For storing which type of class this is (for convenience). Known types
@@ -47,7 +47,7 @@ public abstract class AbstractRun implements Runnable {
      */
     private String type;
     protected boolean restart;
-    protected ZooplaHousepriceScraper tZooplaHousepriceScraper;
+    protected Web_ZooplaHousepriceScraper tZooplaHousepriceScraper;
     // For convenience
     protected String url;
     /**
@@ -83,22 +83,22 @@ public abstract class AbstractRun implements Runnable {
      * For initialising type.
      */
     protected void initType() {
-        if (this instanceof Run_aann_naa) {
+        if (this instanceof Web_Run_aann_naa) {
             type = "AANN";
         }
-        if (this instanceof Run_aana_naa) {
+        if (this instanceof Web_Run_aana_naa) {
             type = "AANA";
         }
-        if (this instanceof Run_ann_naa) {
+        if (this instanceof Web_Run_ann_naa) {
             type = "ANN";
         }
-        if (this instanceof Run_ana_naa) {
+        if (this instanceof Web_Run_ana_naa) {
             type = "ANA";
         }
-        if (this instanceof Run_aan_naa) {
+        if (this instanceof Web_Run_aan_naa) {
             type = "AAN";
         }
-        if (this instanceof Run_an_naa) {
+        if (this instanceof Web_Run_an_naa) {
             type = "AN";
         }
     }
@@ -111,7 +111,7 @@ public abstract class AbstractRun implements Runnable {
      * will be stored.
      */
     protected void init(
-            ZooplaHousepriceScraper tZooplaHousepriceScraper,
+            Web_ZooplaHousepriceScraper tZooplaHousepriceScraper,
             boolean restart) {
         initType();
         this.tZooplaHousepriceScraper = tZooplaHousepriceScraper;
@@ -134,7 +134,7 @@ public abstract class AbstractRun implements Runnable {
 //                    requests = sharedLogFile.length();
 //                    requestsRate = (double) requests / (double) timeDiffSecs;
 //                } catch (InterruptedException ex) {
-//                    Logger.getLogger(AbstractRun.class.getName()).log(Level.SEVERE, null, ex);
+//                    Logger.getLogger(Web_AbstractRun.class.getName()).log(Level.SEVERE, null, ex);
 //                }
 //            }
 //        }
@@ -165,7 +165,7 @@ public abstract class AbstractRun implements Runnable {
             logPR = Generic_StaticIO.getPrintWriter(logFile, restart);
         } catch (IOException ex) {
             System.err.println(ex.toString());
-            Logger.getLogger(AbstractRun.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Web_AbstractRun.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -235,7 +235,7 @@ public abstract class AbstractRun implements Runnable {
                  */
             }
         } catch (IOException ex) {
-            Logger.getLogger(AbstractRun.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Web_AbstractRun.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }

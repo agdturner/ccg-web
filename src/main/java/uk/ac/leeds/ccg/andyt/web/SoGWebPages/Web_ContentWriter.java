@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.util.Calendar;
 import uk.ac.leeds.ccg.andyt.web.WebContentHandler;
 
-public abstract class WebContentWriter extends WebContentHandler {
+public abstract class Web_ContentWriter extends WebContentHandler {
 
     /**
      * Creates a new instance of RegressionPlots
      */
-    public WebContentWriter() {
+    public Web_ContentWriter() {
     }
 
     public void writeHTML(

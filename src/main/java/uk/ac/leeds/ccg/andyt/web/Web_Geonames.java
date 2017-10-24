@@ -1,5 +1,5 @@
 /*
- * Geonames.java
+ * Web_Geonames.java
  *
  * Created on 14 July 2008, 10:45
  *
@@ -20,10 +20,10 @@ package uk.ac.leeds.ccg.andyt.web;
  *
  * @author geoagdt
  */
-public class Geonames {
+public class Web_Geonames {
     
     /** Creates a new instance of Geonames */
-    public Geonames() {
+    public Web_Geonames() {
     }
     
 //    public static void main(String[] args) {

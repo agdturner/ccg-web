@@ -29,15 +29,15 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 /**
  * Class for formatting postcodes of the an_naa format.
  */
-public class Run_ann_naa extends AbstractRun {
+public class Web_Run_ann_naa extends Web_AbstractRun {
 
     /**
-     * @param tZooplaHousepriceScraper The ZooplaHousepriceScraper
+     * @param tZooplaHousepriceScraper The Web_ZooplaHousepriceScraper
      * @param restart This is expected to be true if restarting a partially
      * completed run and false otherwise.
      */
-    public Run_ann_naa(
-            ZooplaHousepriceScraper tZooplaHousepriceScraper,
+    public Web_Run_ann_naa(
+            Web_ZooplaHousepriceScraper tZooplaHousepriceScraper,
             boolean restart) {
         init(tZooplaHousepriceScraper, restart);
     }
@@ -116,7 +116,7 @@ public class Run_ann_naa extends AbstractRun {
                                         }
                                     }
                                 } else {
-                                    ZooplaHousepriceScraper.updateLog(
+                                    Web_ZooplaHousepriceScraper.updateLog(
                                             logPR,
                                             sharedLogPR,
                                             completeFirstPartPostcode);
@@ -176,7 +176,7 @@ public class Run_ann_naa extends AbstractRun {
                         }
                     }
                 } else {
-                    ZooplaHousepriceScraper.updateLog(
+                    Web_ZooplaHousepriceScraper.updateLog(
                             logPR,
                             sharedLogPR,
                             completeFirstPartPostcode);

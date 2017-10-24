@@ -2,17 +2,17 @@ package uk.ac.leeds.ccg.andyt.web.SoGWebPages.home.src.andyt.java.projects.MoSeS
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import uk.ac.leeds.ccg.andyt.web.SoGWebPages.WebContentWriter;
+import uk.ac.leeds.ccg.andyt.web.SoGWebPages.Web_ContentWriter;
 
-public class MoSeS extends WebContentWriter {
+public class Web_MoSeS extends Web_ContentWriter {
     
     String _ReleaseVersion;
     
     /** Creates a new instance of MoSeS */
-    public MoSeS() {}
+    public Web_MoSeS() {}
     
     public static void main( String[] args ) {
-        MoSeS _MoSeS = new MoSeS();
+        Web_MoSeS _MoSeS = new Web_MoSeS();
         _MoSeS.run();
     }
     

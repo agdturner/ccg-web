@@ -9,10 +9,10 @@ import java.io.StreamTokenizer;
 import java.util.Calendar;
 import uk.ac.leeds.ccg.andyt.web.WebContentHandler;
 
-public abstract class WebContentReader extends WebContentHandler {
+public abstract class Web_ContentReader extends WebContentHandler {
     
     /** Creates a new instance of WebContentReader */
-    public WebContentReader() {
+    public Web_ContentReader() {
     }
     
     public void readHTML (

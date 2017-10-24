@@ -28,34 +28,33 @@ package uk.ac.leeds.ccg.andyt.web;
  * and open the template in the editor.
  */
 
-import uk.ac.leeds.ccg.andyt.web.houseprices.ZooplaHousepriceScraper;
 import java.io.BufferedReader;
-import java.io.CharArrayReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.Permission;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class Scraper_1 {
+public class Web_Scraper {
     
     /** Creates a new instance of Scaper */
-    public Scraper_1() {
+    public Web_Scraper() {
     }
     
     /** Main method
      * @param args
      * @throws java.lang.Exception */
     public static void main( String[] args ) throws Exception {
-        ZooplaHousepriceScraper aScraper_1 = new ZooplaHousepriceScraper();
-        aScraper_1.run( args );
+        Web_Scraper aScraper = new Web_Scraper();
+        aScraper.run( args );
     }
     
     public void run( String[] args ) throws Exception {
@@ -63,17 +62,32 @@ public class Scraper_1 {
         //getHousepriceDataForGary();
         if ( args.length == 0 ) {
             args = new String[2];
-            args[0] = "C:/Work/data/HousePrices/UK/Houseprices.csv";
-            //
-            //args[0] = "C:/Work/data/HousePrices/UK/MyPropertySpy.csv";
+            //args[0] = "Houseprices.csv";
+            
+            args[0] = "C:/Work/organisations/UoL/SoG/Students/Gary Wainman/Houseprices_Hull_terminated_postcodes.csv";
             //args[1] = "Hull_postcodes.csv";
-            args[1] = "C:/Work/data/HousePrices/UK/postcodes.csv";
+            args[1] = "C:/Work/organisations/UoL/SoG/Students/Gary Wainman/Hull_terminated_postcodes.csv";
         }
-        //http://www.mypropertyspy.co.uk/house-prices/ls7+2eu/1
-        getHousepriceDataForUK( args );
+        //getHousepriceDataForEngland( args );
+        //getHousepriceDataForRene( args );
+        //getHousepriceDataForStuart( args );
+        //getHousepriceDataForGary( args );
+        //getHousepriceDataTest("LS7","2EU");
+        getHousepriceDataTest("ls7","2eu");
     }
-    
-    
+
+    public void getHousepriceDataTest(
+            String firstPartOfPostcode,
+            String secondPartOfPostcode){
+    String aURLString = "http://www.houseprices.co.uk/e.php?q=" + firstPartOfPostcode + "+" + secondPartOfPostcode;
+    HashSet tHouseprices = getHTML( aURLString, firstPartOfPostcode, secondPartOfPostcode );
+    Iterator aIterator = tHouseprices.iterator();
+            while ( aIterator.hasNext() ) {
+               System.out.println( ( String ) aIterator.next() );
+            }
+
+    }
+
     /**
      * Format 	Example Postcode
      *  AN NAA      M1 1AA
@@ -110,73 +124,50 @@ public class Scraper_1 {
      * @param args
      * @throws java.lang.Exception
      */
-    public void getHousepriceDataForUK( String[] args ) throws Exception {
+    public void getHousepriceDataForEngland( String[] args ) throws Exception {
         //Calendar _Calendar = Calendar.getInstance();
-        
-        
-        
-        
-        
         long _TimeInMillis = Calendar.getInstance().getTimeInMillis();
-        
-        /*
-        // NP8 1SW
-        String a0 = "np8";
-        String a1 = "1sw";
-        String aURLString = new String( "http://www.mypropertyspy.co.uk/house-prices/np8+1sw/" );
-        File outFile = new File( "C:/Work/data/HousePrices/UK_Postcodes_" + _TimeInMillis + "_HousepriceTest.csv" );
-        outFile.createNewFile();
-        PrintWriter outPrintWriter = new PrintWriter( outFile );
-        File logFile = new File( "C:/Work/data/HousePrices/UK_Postcodes_" + _TimeInMillis + "_Houseprices_AN.log" );
-        logFile.createNewFile();
-        PrintWriter logPrintWriter = new PrintWriter( logFile );
-        int _int0 = writeHouseprices( outPrintWriter, logPrintWriter, aURLString, a0, a1 );
-       outPrintWriter.close();
-        logPrintWriter.close();
-    
-*/
-        
         // Set up output files and writers
         // AN_NAA
-        File outFile_AN = new File( "C:/Work/data/HousePrices/UK_Postcodes_" + _TimeInMillis + "_Houseprices_AN.csv" );
+        File outFile_AN = new File( "C:/temp/England_Postcodes_" + _TimeInMillis + "_Houseprices_AN.csv" );
         outFile_AN.createNewFile();
         PrintWriter outPrintWriter_AN = new PrintWriter( outFile_AN );
-        File logFile_AN = new File( "C:/Work/data/HousePrices/UK_Postcodes_" + _TimeInMillis + "_Houseprices_AN.log" );
+        File logFile_AN = new File( "C:/temp/England_Postcodes_" + _TimeInMillis + "_Houseprices_AN.log" );
         logFile_AN.createNewFile();
         PrintWriter logPrintWriter_AN = new PrintWriter( logFile_AN );
         // ANN_NAA
-        File outFile_ANN = new File( "C:/Work/data/HousePrices/UK_Postcodes_" + _TimeInMillis + "_Houseprices_ANN.csv" );
+        File outFile_ANN = new File( "C:/temp/England_Postcodes_" + _TimeInMillis + "_Houseprices_ANN.csv" );
         outFile_ANN.createNewFile();
         PrintWriter outPrintWriter_ANN = new PrintWriter( outFile_ANN );
-        File logFile_ANN = new File( "C:/Work/data/HousePrices/UK_Postcodes_" + _TimeInMillis + "_Houseprices_ANN.log" );
+        File logFile_ANN = new File( "C:/temp/England_Postcodes_" + _TimeInMillis + "_Houseprices_ANN.log" );
         logFile_ANN.createNewFile();
         PrintWriter logPrintWriter_ANN = new PrintWriter( logFile_ANN );
         // AAN_NAA
-        File outFile_AAN = new File( "C:/Work/data/HousePrices/UK_Postcodes_" + _TimeInMillis + "_Houseprices__AAN.csv" );
+        File outFile_AAN = new File( "C:/temp/England_Postcodes_" + _TimeInMillis + "_Houseprices__AAN.csv" );
         outFile_AAN.createNewFile();
         PrintWriter outPrintWriter_AAN = new PrintWriter( outFile_AAN );
-        File logFile_AAN = new File( "C:/Work/data/HousePrices/UK_Postcodes_" + _TimeInMillis + "_Houseprices__AAN.log" );
+        File logFile_AAN = new File( "C:/temp/England_Postcodes_" + _TimeInMillis + "_Houseprices__AAN.log" );
         logFile_AAN.createNewFile();
         PrintWriter logPrintWriter_AAN = new PrintWriter( logFile_AAN );
         // AANN_NAA
-        File outFile_AANN = new File( "C:/Work/data/HousePrices/UK_Postcodes_" + _TimeInMillis + "_Houseprices__AANN.csv" );
+        File outFile_AANN = new File( "C:/temp/England_Postcodes_" + _TimeInMillis + "_Houseprices__AANN.csv" );
         outFile_AANN.createNewFile();
         PrintWriter outPrintWriter_AANN = new PrintWriter( outFile_AANN );
-        File logFile_AANN = new File( "C:/Work/data/HousePrices/UK_Postcodes_" + _TimeInMillis + "_Houseprices__AANN.log" );
+        File logFile_AANN = new File( "C:/temp/England_Postcodes_" + _TimeInMillis + "_Houseprices__AANN.log" );
         logFile_AANN.createNewFile();
         PrintWriter logPrintWriter_AANN = new PrintWriter( logFile_AANN );
         // ANA_NAA
-        File outFile_ANA = new File( "C:/Work/data/HousePrices/UK_Postcodes_" + _TimeInMillis + "_Houseprices__ANA.csv" );
+        File outFile_ANA = new File( "C:/temp/England_Postcodes_" + _TimeInMillis + "_Houseprices__ANA.csv" );
         outFile_ANA.createNewFile();
         PrintWriter outPrintWriter_ANA = new PrintWriter( outFile_ANA );
-        File logFile_ANA = new File( "C:/Work/data/HousePrices/UK_Postcodes_" + _TimeInMillis + "_Houseprices__ANA.log" );
+        File logFile_ANA = new File( "C:/temp/England_Postcodes_" + _TimeInMillis + "_Houseprices__ANA.log" );
         logFile_ANA.createNewFile();
         PrintWriter logPrintWriter_ANA = new PrintWriter( logFile_ANA );
         // AANA_NAA
-        File outFile_AANA = new File( "C:/Work/data/HousePrices/UK_Postcodes_" + _TimeInMillis + "_Houseprices__AANA.csv" );
+        File outFile_AANA = new File( "C:/temp/England_Postcodes_" + _TimeInMillis + "_Houseprices__AANA.csv" );
         outFile_AANA.createNewFile();
         PrintWriter outPrintWriter_AANA = new PrintWriter( outFile_AANA );
-        File logFile_AANA = new File( "C:/Work/data/HousePrices/UK_Postcodes_" + _TimeInMillis + "_Houseprices__AANA.log" );
+        File logFile_AANA = new File( "C:/temp/England_Postcodes_" + _TimeInMillis + "_Houseprices__AANA.log" );
         logFile_AANA.createNewFile();
         PrintWriter logPrintWriter_AANA = new PrintWriter( logFile_AANA );
         
@@ -264,25 +255,7 @@ public class Scraper_1 {
                 while ( _NAA_Iterator.hasNext() ) {
                     _NAAString = ( String ) _NAA_Iterator.next();
                     aURLString = "http://www.houseprices.co.uk/e.php?q=" + a0 + Integer.toString( n0 ) + "+" + _NAAString;
-
-                    aURLString = "http://www.houseprices.co.uk/e.php?q=LS7+2EU";
-                    writeHouseprices(
-                            outPrintWriter_AN,
-                            logPrintWriter_AN,
-                            aURLString,
-                            "LS7",
-                            "2EU" );
-
-                    //May have multiple pages of results. Results are given 10 at a time
-                    //aURLString = new String( "http://www.mypropertyspy.co.uk/house-prices/" + a0 + Integer.toString( n0 ) + "+" + _NAAString + "/");
-                    // Get number of pages of results
-                    
-//                    writeHouseprices(
-//                            outPrintWriter_AN,
-//                            logPrintWriter_AN,
-//                            aURLString,
-//                            a0 + Integer.toString( n0 ),
-//                            _NAAString );
+                    _int0 = writeHouseprices( outPrintWriter_AN, logPrintWriter_AN, aURLString, a0 + Integer.toString( n0 ), _NAAString );
                     _NumberOfHousepriceRecords += _int0;
                     if ( _int0 > 0 ) {
                         _NumberOfPostcodesWithHousepriceRecords ++;
@@ -336,7 +309,6 @@ public class Scraper_1 {
         //  AAN NAA     CR2 6XH
         logPrintWriter_AAN.println( "Format AAN NAA" );
         System.out.println( "Format AAN NAA" );
-        
         _AtoZ_not_QVX_Iterator0 = _AtoZ_not_QVX.iterator();
         while( _AtoZ_not_QVX_Iterator0.hasNext() ) {
             a0 = ( String ) _AtoZ_not_QVX_Iterator0.next();
@@ -478,11 +450,7 @@ public class Scraper_1 {
         logPrintWriter_AANA.close();
     }
     
-    public void writeHouseprices( 
-            PrintWriter _PrintWriter,
-            String _URLString,
-            String _String1,
-            String _String2 ) {
+    public void writeHouseprices( PrintWriter _PrintWriter, String _URLString, String _String1, String _String2 ) {
         HashSet tHouseprices = getHTML( _URLString, _String1, _String2 );
         Iterator aIterator = tHouseprices.iterator();
         while ( aIterator.hasNext() ) {
@@ -499,16 +467,8 @@ public class Scraper_1 {
      * @param _URLString
      * @return number of recrods
      */
-    public int writeHouseprices(
-            PrintWriter _PrintWriter,
-            PrintWriter _LogPrintWriter,
-            String _URLString,
-            String _String1,
-            String _String2 ) {
-        HashSet tHouseprices = getHTML( 
-                _URLString,
-                _String1,
-                _String2 );
+    public int writeHouseprices( PrintWriter _PrintWriter, PrintWriter _LogPrintWriter, String _URLString, String _String1, String _String2 ) {
+        HashSet tHouseprices = getHTML( _URLString, _String1, _String2 );
         if ( tHouseprices.isEmpty() ) {
             _LogPrintWriter.println( _String1 + " " + _String2 + " " + " 0 Records" );
             _LogPrintWriter.flush();
@@ -699,106 +659,40 @@ public class Scraper_1 {
         BufferedReader aBufferedReader;
         String line;
         String tFormattedOutput;
-        String s_AONs;
-        String s_Street;
-        String s_Locality;
-        String s_PropertyType;
-        String s_Duration;
-        String s_DatePurchased;
-        String s_Price;
-        String[] items;
-        int page = 0;
-        int count = 0;
-        boolean complete = false;
         try {
-            while ( ! complete ) {
-                //page ++;
-                //aURLString += new String( "" + page );
-                aURL = new URL( aURLString );
-                aHttpURLConnection = ( HttpURLConnection ) aURL.openConnection();
-                aHttpURLConnection.setRequestMethod( "GET" );
-                aBufferedReader = new BufferedReader(
-                        new InputStreamReader( aHttpURLConnection.getInputStream() ) );
-                while ( ( line = aBufferedReader.readLine() ) != null ) {
-                    if ( line.contains(tFirstPartOfPostcode + " " + tSecondPartOfPostcode)){
-                        
-                    }
-//                    //if ( line.contains( "Postcode" ) ) {
-//                        count ++;
-//                        // This is the postcode so goto the next
-//                        // Get s_HouseNumberOrName
-//                        while ( ( line = aBufferedReader.readLine() ) != null ) {
-//                            if ( line.contains( "AONs" ) ) {
-//                                items = line.split( ">" );
-//                                s_AONs = items[1].split("<")[0];
-//
-//                                // Get s_Street
-//                                while ( ( line = aBufferedReader.readLine() ) != null ) {
-//                                    if ( line.contains( "Street" ) ) {
-//                                        items = line.split( ">" );
-//                                        s_Street = items[1].split("<")[0];
-//
-//                                        // Get s_Locality
-//                                        while ( ( line = aBufferedReader.readLine() ) != null ) {
-//                                            if ( line.contains( "Locality" ) ) {
-//                                                items = line.split( ">" );
-//                                                s_Locality = items[1].split("<")[0];
-//
-//                                                // Get s_PropertyType
-//                                                while ( ( line = aBufferedReader.readLine() ) != null ) {
-//                                                    if ( line.contains( "Propertytype" ) ) {
-//                                                        items = line.split( ">" );
-//                                                        s_PropertyType = items[1].split("<")[0];
-//
-//                                                        // Get s_Duration
-//                                                        while ( ( line = aBufferedReader.readLine() ) != null ) {
-//                                                            if ( line.contains( "Duration" ) ) {
-//                                                                items = line.split( ">" );
-//                                                                s_Duration = items[1].split("<")[0];
-//
-//                                                                // Get s_DatePurchased
-//                                                                while ( ( line = aBufferedReader.readLine() ) != null ) {
-//                                                                    if ( line.contains( "DatePurchased" ) ) {
-//                                                                        items = line.split( ">" );
-//                                                                        s_DatePurchased = items[1].split("<")[0];
-//
-//                                                                        // Get s_Price
-//                                                                        while ( ( line = aBufferedReader.readLine() ) != null ) {
-//                                                                            if ( line.contains( "Price" ) ) {
-//                                                                                items = line.split( ">" );
-//                                                                                s_Price = items[1].split("<")[0];
-//                                                                                tFormattedOutput =
-//                                                                                        tFirstPartOfPostcode + " "
-//                                                                                        + tSecondPartOfPostcode + ","
-//                                                                                        + s_AONs + ","
-//                                                                                        + s_Street + ","
-//                                                                                        + s_Locality + ","
-//                                                                                        + s_PropertyType + ","
-//                                                                                        + s_Duration + ","
-//                                                                                        + s_DatePurchased + ","
-//                                                                                        + s_Price;
-//                                                                                result.add( tFormattedOutput );
-//                                                                            }
-//                                                                        }
-//                                                                    }
-//                                                                }
-//                                                            }
-//                                                        }
-//                                                    }
-//                                                }
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
+            aURL = new URL( aURLString );
+            aHttpURLConnection = ( HttpURLConnection ) aURL.openConnection();
+            // GET is by default anyhow
+            aHttpURLConnection.setRequestMethod( "GET" );
+//            Permission a_Permission = aHttpURLConnection.getPermission();
+//            aHttpURLConnection.connect();
+//            aHttpURLConnection
+//            InputStream a_InputStream = aHttpURLConnection.getInputStream();
+//            InputStream err_InputStream = aHttpURLConnection.getErrorStream();
+//            aBufferedReader = new BufferedReader( new InputStreamReader( err_InputStream ) );
+//            while ( ( line = aBufferedReader.readLine() ) != null ) {
+//            System.out.println(line);
+//            }
+            //Failure here is probably the result of a no robots.txt policy
+            aBufferedReader = new BufferedReader( new InputStreamReader( aHttpURLConnection.getInputStream() ) );
+            while ( ( line = aBufferedReader.readLine() ) != null ) {
+                if ( line.startsWith( "<tr><th " ) ) {
+                    String[] items = line.split( "</td>" );
+                    //System.out.println("items.length " + items.length );
+                    tFormattedOutput =
+                            tFirstPartOfPostcode + " "
+                            + tSecondPartOfPostcode + ","
+                            + items[0].substring( items[0].length() - 10 ) + ","
+                            + items[1].split("&pound;")[1].replace(",","") + ","
+                            + items[2].split(">")[1] + ","
+                            + items[3].substring( items[3].length() - 1 ) + ","
+                            + items[4].split(">")[1] + ",\""
+                            + items[6].substring( 4 ) + "\"";
+                    //System.out.println( tFormattedOutput );
+                    result.add( tFormattedOutput );
                 }
-                if ( count <= 9 ) {
-                    complete = true;
-                }
-            aBufferedReader.close();
             }
+            aBufferedReader.close();
         } catch ( Exception aException ) {
             aException.printStackTrace();
         }

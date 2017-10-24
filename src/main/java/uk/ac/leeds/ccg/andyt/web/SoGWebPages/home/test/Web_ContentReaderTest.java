@@ -11,16 +11,16 @@ package uk.ac.leeds.ccg.andyt.web.SoGWebPages.home.test;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import uk.ac.leeds.ccg.andyt.web.SoGWebPages.WebContentReader;
-import uk.ac.leeds.ccg.andyt.web.SoGWebPages.WebContentWriter;
+import uk.ac.leeds.ccg.andyt.web.SoGWebPages.Web_ContentReader;
+import uk.ac.leeds.ccg.andyt.web.SoGWebPages.Web_ContentWriter;
 
-public class TestWebContentReader extends WebContentReader {
+public class Web_ContentReaderTest extends Web_ContentReader {
     
     /** Creates a new instance of TestWebContentReader */
-    public TestWebContentReader() {}
+    public Web_ContentReaderTest() {}
     
     public static void main( String[] args ) throws IOException {
-        TestWebContentReader aTestWebContentReader = new TestWebContentReader();
+        Web_ContentReaderTest aTestWebContentReader = new Web_ContentReaderTest();
         aTestWebContentReader.run();
     }
     

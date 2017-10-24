@@ -19,11 +19,11 @@ import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
  *
  * @author geoagdt
  */
-public class HousepriceLoader {
+public class Web_HousepriceLoader {
     
-    public TreeMap<Long,HousePriceRecord> housepriceRecords;
+    public TreeMap<Long,Web_HousePriceRecord> housepriceRecords;
     
-    public HousepriceLoader(){ }
+    public Web_HousepriceLoader(){ }
     
     public void scrape(String firstpartPostcode) {
         String[] args = new String[3];
@@ -31,7 +31,7 @@ public class HousepriceLoader {
         args[1] = ""; //"r";
         args[2] = Generic_StaticString.getUpperCase(firstpartPostcode);
         //args[3] = "7";
-        new ZooplaHousepriceScraper().run(args);
+        new Web_ZooplaHousepriceScraper().run(args);
     }
 
     public void scrape(
@@ -43,12 +43,12 @@ public class HousepriceLoader {
         args[2] = Generic_StaticString.getUpperCase(firstpartPostcode);
         args[3] = Generic_StaticString.getUpperCase(secondpartPostcode);
         //args[3] = "7";
-        new ZooplaHousepriceScraper().run(args);
+        new Web_ZooplaHousepriceScraper().run(args);
     }
 
     public void load(String postcode) {
         long ID = 0L;
-        housepriceRecords = new TreeMap<Long,HousePriceRecord>();
+        housepriceRecords = new TreeMap<Long,Web_HousePriceRecord>();
         File file = new File("/scratch01/Work/Projects/NewEnclosures/_Houseprices_sw9.csv");
         BufferedReader br = Generic_StaticIO.getBufferedReader(file);
         StreamTokenizer st = new StreamTokenizer(br);
@@ -65,7 +65,7 @@ public class HousepriceLoader {
                 switch (token) {
                     case StreamTokenizer.TT_EOL:
                         if (line != null) {
-                            HousePriceRecord rec = new HousePriceRecord(ID);
+                            Web_HousePriceRecord rec = new Web_HousePriceRecord(ID);
                             System.out.println(line);
                             rec.processLine(line);
                             housepriceRecords.put(ID, rec);
@@ -80,7 +80,7 @@ public class HousepriceLoader {
                 token = st.nextToken();
             }
         } catch (IOException ex) {
-            Logger.getLogger(HousepriceLoader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Web_HousepriceLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
         

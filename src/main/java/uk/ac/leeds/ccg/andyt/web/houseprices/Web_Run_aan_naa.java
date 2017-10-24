@@ -31,7 +31,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
 /**
  * Class for formatting postcodes of the an_naa format.
  */
-public class Run_aan_naa extends AbstractRun {
+public class Web_Run_aan_naa extends Web_AbstractRun {
 
     /**
      * A reference to tZooplaHousepriceScraper.getAtoZ_not_IJZ() for
@@ -40,12 +40,12 @@ public class Run_aan_naa extends AbstractRun {
     private TreeSet<String> _AtoZ_not_IJZ;
 
     /**
-     * @param tZooplaHousepriceScraper The ZooplaHousepriceScraper
+     * @param tZooplaHousepriceScraper The Web_ZooplaHousepriceScraper
      * @param restart This is expected to be true if restarting a partially
      * completed run and false otherwise.
      */
-    public Run_aan_naa(
-            ZooplaHousepriceScraper tZooplaHousepriceScraper,
+    public Web_Run_aan_naa(
+            Web_ZooplaHousepriceScraper tZooplaHousepriceScraper,
             boolean restart) {
         init(tZooplaHousepriceScraper, restart);
         this._AtoZ_not_IJZ = Generic_UKPostcode_Handler.get_AtoZ_not_IJZ();
@@ -127,7 +127,7 @@ public class Run_aan_naa extends AbstractRun {
                                             }
                                         }
                                     } else {
-                                        ZooplaHousepriceScraper.updateLog(
+                                        Web_ZooplaHousepriceScraper.updateLog(
                                                 logPR,
                                                 sharedLogPR,
                                                 completeFirstPartPostcode);
@@ -181,7 +181,7 @@ public class Run_aan_naa extends AbstractRun {
                     }
                 }
             } else {
-                ZooplaHousepriceScraper.updateLog(
+                Web_ZooplaHousepriceScraper.updateLog(
                         logPR,
                         sharedLogPR,
                         firstpartPostcode);
@@ -220,7 +220,7 @@ public class Run_aan_naa extends AbstractRun {
                                 }
                             }
                         } else {
-                            ZooplaHousepriceScraper.updateLog(
+                            Web_ZooplaHousepriceScraper.updateLog(
                                     logPR,
                                     sharedLogPR,
                                     completeFirstPartPostcode);
@@ -266,7 +266,7 @@ public class Run_aan_naa extends AbstractRun {
                                     }
                                 }
                             } else {
-                                ZooplaHousepriceScraper.updateLog(
+                                Web_ZooplaHousepriceScraper.updateLog(
                                         logPR,
                                         sharedLogPR,
                                         completeFirstPartPostcode);

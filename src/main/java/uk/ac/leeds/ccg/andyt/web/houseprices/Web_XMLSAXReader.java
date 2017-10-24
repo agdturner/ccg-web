@@ -11,7 +11,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author geoagdt Adapted from:
  * http://www.mkyong.com/java/how-to-read-xml-file-in-java-sax-parser/
  */
-public class XMLSAXReader {
+public class Web_XMLSAXReader {
 
     public static void main(String args[]) {
 
