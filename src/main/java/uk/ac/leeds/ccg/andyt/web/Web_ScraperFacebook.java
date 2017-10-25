@@ -18,16 +18,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-public class ScrapeFacebook {
+public class Web_ScraperFacebook {
 
-    public ScrapeFacebook() {
+    public Web_ScraperFacebook() {
     }
 
     /** Main method
      * @param args
      * @throws java.lang.Exception */
     public static void main(String[] args) throws Exception {
-        new ScrapeFacebook().run(args);
+        new Web_ScraperFacebook().run(args);
     }
 
     public void run(String[] args) throws Exception {

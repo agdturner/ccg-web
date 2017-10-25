@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.web.houseprices.ZooplaHousepriceScraper;
+import uk.ac.leeds.ccg.andyt.web.houseprices.Web_ZooplaHousepriceScraper;
 
 /**
  *
@@ -40,7 +40,7 @@ public class WebScraper {
                     wait(timeToWaitInMilliseconds);
                     connectionRate = getConnectionRate();
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(ZooplaHousepriceScraper.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Web_ZooplaHousepriceScraper.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -65,7 +65,7 @@ public class WebScraper {
      * @return the sharedLogFile
      */
     public static File getSharedLogFile() {
-        return ZooplaHousepriceScraper.sharedLogFile;
+        return Web_ZooplaHousepriceScraper.sharedLogFile;
     }
     
     /**

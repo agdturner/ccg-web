@@ -2,19 +2,19 @@ package uk.ac.leeds.ccg.andyt.web.SoGWebPages;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import uk.ac.leeds.ccg.andyt.web.SoGWebPages.WebContentWriter;
+import uk.ac.leeds.ccg.andyt.web.SoGWebPages.Web_ContentWriter;
 
-public class WebContentWriterImplementation_1 extends WebContentWriter {
+public class Web_ContentWriterImplementation_1 extends Web_ContentWriter {
     
     String _ReleaseVersion;
     
     /**
      * Creates a new instance of WebContentWriterImplementation_1
      */
-    public WebContentWriterImplementation_1() {}
+    public Web_ContentWriterImplementation_1() {}
     
     public static void main( String[] args ) {
-        WebContentWriterImplementation_1 _MoSeS = new WebContentWriterImplementation_1();
+        Web_ContentWriterImplementation_1 _MoSeS = new Web_ContentWriterImplementation_1();
         _MoSeS.run();
     }
     

@@ -10,7 +10,7 @@ import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
  *
  * @author geoagdt
  */
-public class HousePriceRecord {
+public class Web_HousePriceRecord {
 
     /**
      * id (for indexing - this should be unique for each record)
@@ -69,7 +69,7 @@ public class HousePriceRecord {
      * http://www.zoopla.co.uk/property/flat-8/goodwood-mansions/stockwell-park-walk/london/sw9-0xy/23214986,
      * Flat,Leasehold,2 Beds,1 Baths,1 Receps
      */
-    public HousePriceRecord(long ID) {
+    public Web_HousePriceRecord(long ID) {
         this.ID = ID;
     }
     

@@ -31,7 +31,7 @@ import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
 /**
  * Class for formatting postcodes of the ana_naa format.
  */
-public class Run_ana_naa extends AbstractRun {
+public class Web_Run_ana_naa extends Web_AbstractRun {
 
     /**
      * A reference to tZooplaHousepriceScraper.getABCDEFGHJKSTUW() for
@@ -40,12 +40,12 @@ public class Run_ana_naa extends AbstractRun {
     private TreeSet<String> _ABCDEFGHJKSTUW;
 
     /**
-     * @param tZooplaHousepriceScraper The ZooplaHousepriceScraper
+     * @param tZooplaHousepriceScraper The Web_ZooplaHousepriceScraper
      * @param restart This is expected to be true if restarting a partially
      * completed run and false otherwise.
      */
-    public Run_ana_naa(
-            ZooplaHousepriceScraper tZooplaHousepriceScraper,
+    public Web_Run_ana_naa(
+            Web_ZooplaHousepriceScraper tZooplaHousepriceScraper,
             boolean restart) {
         init(tZooplaHousepriceScraper, restart);
         this._ABCDEFGHJKSTUW = Generic_UKPostcode_Handler.get_ABCDEFGHJKSTUW();
@@ -128,7 +128,7 @@ public class Run_ana_naa extends AbstractRun {
                                             }
                                         }
                                     } else {
-                                        ZooplaHousepriceScraper.updateLog(
+                                        Web_ZooplaHousepriceScraper.updateLog(
                                                 logPR,
                                                 sharedLogPR,
                                                 completeFirstPartPostcode);
@@ -192,7 +192,7 @@ public class Run_ana_naa extends AbstractRun {
                             }
                         }
                     } else {
-                        ZooplaHousepriceScraper.updateLog(
+                        Web_ZooplaHousepriceScraper.updateLog(
                                 logPR,
                                 sharedLogPR,
                                 completeFirstPartPostcode);

@@ -2,17 +2,17 @@ package uk.ac.leeds.ccg.andyt.web.SoGWebPages.home.src.andyt.java.projects.genes
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import uk.ac.leeds.ccg.andyt.web.SoGWebPages.WebContentWriter;
+import uk.ac.leeds.ccg.andyt.web.SoGWebPages.Web_ContentWriter;
 
-public class GENESIS extends WebContentWriter {
+public class Web_GENESIS extends Web_ContentWriter {
     
     String _ReleaseVersion;
     
     /** Creates a new instance of GENESIS */
-    public GENESIS() {}
+    public Web_GENESIS() {}
     
     public static void main( String[] args ) {
-        GENESIS _GENESIS = new GENESIS();
+        Web_GENESIS _GENESIS = new Web_GENESIS();
         _GENESIS.run();
     }
     

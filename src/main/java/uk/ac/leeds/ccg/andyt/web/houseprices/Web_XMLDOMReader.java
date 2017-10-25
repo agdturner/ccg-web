@@ -14,21 +14,21 @@ import uk.ac.leeds.ccg.andyt.generic.io.Generic_XMLDOMReader;
 /**
  *
  */
-public class XMLDOMReader extends Generic_XMLDOMReader {
+public class Web_XMLDOMReader extends Generic_XMLDOMReader {
 
     public TreeSet<String> outcodePostcodes;
 
-    public XMLDOMReader() {
+    public Web_XMLDOMReader() {
     }
 
-    public XMLDOMReader(
+    public Web_XMLDOMReader(
             File file) {
         init(file, "url");
         parseNodeList();
     }
     
     public static void main(String args[]) {
-        XMLDOMReader aXMLDOMReader = new XMLDOMReader();
+        Web_XMLDOMReader aXMLDOMReader = new Web_XMLDOMReader();
         File file = new File("/scratch02/zoopla/outcodes.xml");
         String nodeName = "url";
         aXMLDOMReader.init(file, nodeName);

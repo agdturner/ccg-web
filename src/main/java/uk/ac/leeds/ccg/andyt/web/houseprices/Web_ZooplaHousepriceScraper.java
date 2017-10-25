@@ -73,7 +73,7 @@ import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Execution;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
 import uk.ac.leeds.ccg.andyt.web.WebScraper;
 
-public class ZooplaHousepriceScraper extends WebScraper {
+public class Web_ZooplaHousepriceScraper extends WebScraper {
 
     private String url0;
     private String url1;
@@ -125,7 +125,7 @@ public class ZooplaHousepriceScraper extends WebScraper {
     /**
      * Creates a new instance of ZooplaHousepriceScraper
      */
-    public ZooplaHousepriceScraper() {
+    public Web_ZooplaHousepriceScraper() {
     }
 
     /**
@@ -176,7 +176,7 @@ public class ZooplaHousepriceScraper extends WebScraper {
 //        args[0] = "/nfs/see-fs-02_users/geoagdt/scratch02/zoopla/";
 //        args[1] = "";
 //        args[2] = "SW9";
-        new ZooplaHousepriceScraper().run(args);
+        new Web_ZooplaHousepriceScraper().run(args);
     }
 
 
@@ -234,7 +234,7 @@ public class ZooplaHousepriceScraper extends WebScraper {
     }
 
     private void init_Outcodes(File file) {
-        XMLDOMReader aXMLDOMReader = new XMLDOMReader(file);
+        Web_XMLDOMReader aXMLDOMReader = new Web_XMLDOMReader(file);
         outcodes = aXMLDOMReader.outcodePostcodes;
         outcodes.add("sw9");
     }
@@ -577,7 +577,7 @@ public class ZooplaHousepriceScraper extends WebScraper {
 
     private HashSet<Future> format_AN_NAA(boolean restart) throws IOException {
         HashSet<Future> result = new HashSet<Future>();
-        Run_an_naa a_Run_an_naa = new Run_an_naa(
+        Web_Run_an_naa a_Run_an_naa = new Web_Run_an_naa(
                 this, restart);
         result.add(getExecutorService().submit(a_Run_an_naa));
         return result;
@@ -592,7 +592,7 @@ public class ZooplaHousepriceScraper extends WebScraper {
         HashSet<Future> result = new HashSet<Future>();
         while (_AtoZ_not_QVX_Iterator0.hasNext()) {
             String a0 = (String) _AtoZ_not_QVX_Iterator0.next();
-            Run_ana_naa a_Run_ana_naa = new Run_ana_naa(
+            Web_Run_ana_naa a_Run_ana_naa = new Web_Run_ana_naa(
                     this, restart);
             result.add(getExecutorService().submit(a_Run_ana_naa));
         }
@@ -613,7 +613,7 @@ public class ZooplaHousepriceScraper extends WebScraper {
                 String a1 = _AtoZ_not_IJZ_Iterator.next();
                 firstpartPostcode = a0 + a1;
                 System.out.println("format_AANA " + firstpartPostcode + "NA");
-                Run_aana_naa a_Run_aana_naa = new Run_aana_naa(
+                Web_Run_aana_naa a_Run_aana_naa = new Web_Run_aana_naa(
                         this,
                         restart);
                 result.add(getExecutorService().submit(a_Run_aana_naa));
@@ -643,7 +643,7 @@ public class ZooplaHousepriceScraper extends WebScraper {
                 firstpartPostcode = a0 + a1;
                 System.out.println("format_AANN " + firstpartPostcode + "NN");
 
-                Run_aann_naa a_Run_aann_naa = new Run_aann_naa(
+                Web_Run_aann_naa a_Run_aann_naa = new Web_Run_aann_naa(
                         this, restart);
                 result.add(getExecutorService().submit(a_Run_aann_naa));
             }
@@ -670,7 +670,7 @@ public class ZooplaHousepriceScraper extends WebScraper {
                 HashSet<Future> result = new HashSet<Future>();
                 int firstpartpostcodelength = firstpartpostcode.length();
                 if (firstpartpostcodelength > 0 && firstpartpostcodelength < 4) {
-                    Run_aan_naa a_Run_aan_naa = new Run_aan_naa(
+                    Web_Run_aan_naa a_Run_aan_naa = new Web_Run_aan_naa(
                             this,
                             restart);
                     result.add(getExecutorService().submit(a_Run_aan_naa));
@@ -690,7 +690,7 @@ public class ZooplaHousepriceScraper extends WebScraper {
         HashSet<Future> result = new HashSet<Future>();
         while (_AtoZ_not_QVX_Iterator0.hasNext()) {
             firstpartPostcode = (String) _AtoZ_not_QVX_Iterator0.next();
-            Run_aan_naa a_Run_aan_naa = new Run_aan_naa(
+            Web_Run_aan_naa a_Run_aan_naa = new Web_Run_aan_naa(
                     this,
                     restart);
             result.add(getExecutorService().submit(a_Run_aan_naa));
@@ -707,7 +707,7 @@ public class ZooplaHousepriceScraper extends WebScraper {
         HashSet<Future> result = new HashSet<Future>();
         while (_AtoZ_not_QVX_Iterator0.hasNext()) {
             String a0 = (String) _AtoZ_not_QVX_Iterator0.next();
-            Run_ann_naa a_Run_ann_naa = new Run_ann_naa(
+            Web_Run_ann_naa a_Run_ann_naa = new Web_Run_ann_naa(
                     this, restart);
             result.add(getExecutorService().submit(a_Run_ann_naa));
         }
@@ -1051,7 +1051,7 @@ public class ZooplaHousepriceScraper extends WebScraper {
                     throw new Exception(message);
                 } catch (Exception ex) {
                     ex.printStackTrace(System.err);
-                    Logger.getLogger(ZooplaHousepriceScraper.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Web_ZooplaHousepriceScraper.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -1070,7 +1070,7 @@ public class ZooplaHousepriceScraper extends WebScraper {
                     propertyID,
                     url0 + splitURL0[1]);
         } catch (IOException ex) {
-            Logger.getLogger(ZooplaHousepriceScraper.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Web_ZooplaHousepriceScraper.class.getName()).log(Level.SEVERE, null, ex);
         }
         return result;
     }
