@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
-import uk.ac.leeds.ccg.andyt.web.WebContentHandler;
+import uk.ac.leeds.ccg.andyt.web.Web_ContentHandler;
 
-public abstract class Web_ContentWriter extends WebContentHandler {
+public abstract class Web_ContentWriter extends Web_ContentHandler {
 
     /**
      * Creates a new instance of RegressionPlots

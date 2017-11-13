@@ -1,5 +1,5 @@
 /*
- * WebContentHandlerInterface.java
+ * Web_ContentHandlerInterface.java
  *
  * Created on 19 March 2007, 16:53
  *
@@ -15,7 +15,7 @@ import java.net.URL;
  *
  * @author geoagdt
  */
-public interface WebContentHandlerInterface {
+public interface Web_ContentHandlerInterface {
     
     public Object update( URL webPage );
     

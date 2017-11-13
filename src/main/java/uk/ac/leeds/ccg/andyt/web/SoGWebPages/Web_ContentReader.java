@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StreamTokenizer;
 import java.util.Calendar;
-import uk.ac.leeds.ccg.andyt.web.WebContentHandler;
+import uk.ac.leeds.ccg.andyt.web.Web_ContentHandler;
 
-public abstract class Web_ContentReader extends WebContentHandler {
+public abstract class Web_ContentReader extends Web_ContentHandler {
     
     /** Creates a new instance of WebContentReader */
     public Web_ContentReader() {

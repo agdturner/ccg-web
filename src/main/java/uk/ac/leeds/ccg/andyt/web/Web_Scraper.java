@@ -16,17 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
  */
-
 package uk.ac.leeds.ccg.andyt.web;
-
-/*
- * Scaper.java
- *
- * Created on 26 February 2007, 15:58
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -45,7 +35,6 @@ import java.util.Iterator;
 
 public class Web_Scraper {
     
-    /** Creates a new instance of Scaper */
     public Web_Scraper() {
     }
     
