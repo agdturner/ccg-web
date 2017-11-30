@@ -43,7 +43,7 @@ public class Harriet {
         ArrayList<String> lines;
         //lines = Generic_StaticIO.readIntoArrayList_String(inputFile, 0);
         lines = Generic_ReadCSV.read(inputFile, outputDataDir, 7);
-        
+
         Iterator<String> ite;
         ite = lines.iterator();
         String line;
@@ -52,25 +52,38 @@ public class Harriet {
         while (ite.hasNext()) {
             line = ite.next();
             //System.out.println(line);
-            
+
             String[] split;
             split = line.split("\",");
-            
-            for (int i = 0; i < split.length; i ++) {
+
+            for (int i = 0; i < split.length; i++) {
                 if (i == 1) {
-                    
+                    String[] split2;
+                    split2 = split[i].split(" ");
+                    String url;
+                    url = split2[split2.length - 1];
+                    if (url.startsWith("https://t.co/")) {
+                        System.out.print(url);
+
+                        ArrayList<String> html;
+                        html = getHTML(url);
+                        System.out.print(parseHTML(html));
+
+                    } else {
+                        System.out.print(url);
+                    }
                 } else {
                     System.out.print(split[i] + "\",");
                 }
             }
             System.out.println();
-            
+
 //            if (line.contains("http")) {
 //              System.out.println(line);
 //            }
         }
     }
-    
+
     public ArrayList<String> getHTML(
             String sURL) {
         ArrayList<String> result = new ArrayList<>();
@@ -99,5 +112,14 @@ public class Harriet {
         //System.exit(1);
 
         return result;
+    }
+
+    String parseHTML(ArrayList<String> html) {
+        Iterator<String> ite;
+        ite = html.iterator();
+        while (ite.hasNext()) {
+            System.out.println(ite.next());
+        }
+        return "";
     }
 }
