@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2017 geoagdt.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package uk.ac.leeds.ccg.andyt.web.twitter.process;
 
@@ -77,7 +87,7 @@ public class Harriet {
             line = ite.next();
             fullTextAvailable = false;
             pw.print(line);
-            //System.out.print(line);
+            System.out.print(line);
 
             String[] split;
             split = line.split("\",");
@@ -86,6 +96,7 @@ public class Harriet {
 
                 String[] split2;
                 split2 = split[1].split(" ");
+                System.out.println("" + split[1]);
                 if (split2.length > 1) {
                     String url;
                     url = split2[split2.length - 1];
@@ -95,11 +106,11 @@ public class Harriet {
                         f = new File(inputDataDir,
                                 url.replace("https://t.co/", "") + ".html");
 
-                        //Uncomment the following to get the data.
+//                        //Uncomment the following to get the data.
 //                        ArrayList<String> html;
 //                        html = getHTML(url, f);
 //                        if (html.size() > 0) {
-                        if (f.exists()) {
+                        if (f.length() > 0) {
 
                             try {
 //                                Document doc = Jsoup.connect(url).get();
@@ -108,11 +119,14 @@ public class Harriet {
 
                                 String title = doc.title();
 
-                                boolean foundTweetText = false;
+                                boolean foundTweetText;
                                 ttweetText = "";
 
-                                boolean foundSpan = false;
-                                boolean endOfTweetText = false;
+                                boolean foundSpan;
+                                boolean endOfTweetText;
+                                foundTweetText = false;
+                                foundSpan = false;
+                                endOfTweetText = false;
 
 //                                Element tweetText = doc.select("js-tweet-text-container").first(); // 
 ////                                Element tweetText = doc.select("title").first();
@@ -134,6 +148,7 @@ public class Harriet {
                                         Node n;
                                         while (iteN.hasNext()) {
                                             n = iteN.next();
+                                            System.out.println(n.toString());
                                             if (!endOfTweetText) {
                                                 Attributes attributes;
                                                 attributes = n.attributes();
@@ -144,9 +159,69 @@ public class Harriet {
                                                     attribute = ite3.next();
                                                     if (!endOfTweetText) {
                                                         if (!foundTweetText) {
+//                                                            if (attribute.getValue().equals("js-tweet-text-container")) {
+//                                                                                System.out.println("found tweet text");
+//                                                            }
                                                             if (attribute.getKey().equalsIgnoreCase("class")) {
                                                                 //System.out.println("attribute key " + attribute.getKey());
                                                                 //System.out.println("attribute value " + attribute.getValue());
+
+                                                                if (attribute.getValue().equals("js-tweet-text-container")) {
+                                                                    System.out.println("found tweet text");
+                                                                    foundTweetText = true;
+                                                                    foundSpan = true;
+                                                                    int childNodeSize;
+                                                                    childNodeSize = n.childNodeSize();
+                                                                    for (int i2 = 0; i2 < childNodeSize; i2++) {
+                                                                        Node n2 = n.childNode(i2);
+                                                                        System.out.println("node name " + n2.nodeName());
+                                                                        if (n2.nodeName().equalsIgnoreCase("p")) {
+                                                                            int childNodeSize2;
+                                                                            childNodeSize2 = n2.childNodeSize();
+                                                                            for (int i3 = 0; i3 < childNodeSize2; i3++) {
+                                                                                Node n3 = n2.childNode(i3);
+                                                                                System.out.println("node name " + n3.nodeName());
+                                                                                Attributes aattributes;
+                                                                                aattributes = n3.attributes();
+                                                                                Iterator<Attribute> itea;
+                                                                                itea = aattributes.iterator();
+                                                                                Attribute aattribute;
+                                                                                while (itea.hasNext()) {
+                                                                                    aattribute = itea.next();
+                                                                                    if (aattribute.getKey().equalsIgnoreCase("#text")) {
+                                                                                        if (aattribute.getValue().startsWith("<p")) {
+                                                                                            System.out.println("end of Tweet text");
+                                                                                            endOfTweetText = true;
+                                                                                        } else {
+                                                                                            ttweetText += aattribute.getValue();
+//                                                                        System.out.println("attribute key " + attribute.getKey());
+//                                                                        System.out.println("attribute value " + attribute.getValue());
+//                                                                        System.out.println("node name " + n.nodeName());
+                                                                                        }
+                                                                                    } else {
+                                                                                        if (aattribute.getKey().equalsIgnoreCase("href")) {
+                                                                                            if (aattribute.getValue().startsWith("/hashtag/")) {
+                                                                                                String st;
+                                                                                                st = aattribute.getValue().replace("/hashtag/", "#");
+                                                                                                ttweetText += st.replaceAll("\\?src=hash", "");
+                                                                                            } else if (aattribute.getValue().startsWith("/")) {
+                                                                                                ttweetText += aattribute.getValue().replace("/", "@");
+                                                                                            } else {
+//                                                                                                System.out.println("aattribute.getKey() " + aattribute.getKey());
+//                                                                                                System.out.println("aattribute.getValue() " + aattribute.getValue());
+                                                                                            }
+                                                                                        } else {
+//                                                                                            System.out.println("aattribute.getKey() " + aattribute.getKey());
+//                                                                                            System.out.println("aattribute.getValue() " + aattribute.getValue());
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    endOfTweetText = true;
+                                                                }
+
                                                                 if (attribute.getValue().equalsIgnoreCase("html-attribute-value")) {
 //                                                                    System.out.println("attribute value " + attribute.getValue());
 //                                                                    System.out.println("node name " + n.nodeName());
@@ -212,16 +287,20 @@ public class Harriet {
                                     }
                                 }
                                 fullTextAvailable = true;
+//                                foundTweetText = false;
+//                                foundSpan = false;
+//                                endOfTweetText = false;
                                 //System.out.print(parseHTML(f));
                             } catch (IOException ex) {
                                 Logger.getLogger(Harriet.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         } else {
-                            ttweetText = "Tweet no longer available to get full text!";
+                            //ttweetText = "Tweet no longer available to get full text!";
+                            ttweetText = "";
                         }
                     } else {
                         fullTextAvailable = true;
-                        ttweetText = split[1];
+                        ttweetText = split[1].substring(1);
 //                            System.out.print(url);
                     }
                 } else {
