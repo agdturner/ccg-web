@@ -106,10 +106,15 @@ public class Harriet {
                         f = new File(inputDataDir,
                                 url.replace("https://t.co/", "") + ".html");
 
+//                        f = new File(inputDataDir,
+//                                "fGhQU4B3bd.html");
+
 //                        //Uncomment the following to get the data.
 //                        ArrayList<String> html;
 //                        html = getHTML(url, f);
 //                        if (html.size() > 0) {
+
+
                         if (f.length() > 0) {
 
                             try {
@@ -207,12 +212,18 @@ public class Harriet {
                                                                                             } else if (aattribute.getValue().startsWith("/")) {
                                                                                                 ttweetText += aattribute.getValue().replace("/", "@");
                                                                                             } else {
-//                                                                                                System.out.println("aattribute.getKey() " + aattribute.getKey());
-//                                                                                                System.out.println("aattribute.getValue() " + aattribute.getValue());
+                                                                                                System.out.println("aattribute.getKey() " + aattribute.getKey());
+                                                                                                System.out.println("aattribute.getValue() " + aattribute.getValue());
                                                                                             }
                                                                                         } else {
-//                                                                                            System.out.println("aattribute.getKey() " + aattribute.getKey());
-//                                                                                            System.out.println("aattribute.getValue() " + aattribute.getValue());
+//                                                                                            if (aattribute.getValue().startsWith("Emoji")) {
+//                                                                                                ttweetText += "Emoji{";
+//                                                                                            }
+                                                                                            if(aattribute.getKey().equals("title")) {
+                                                                                                ttweetText += "[Emoji{" + aattribute.getValue() + "}]";
+                                                                                            }
+                                                                                            System.out.println("aattribute.getKey() " + aattribute.getKey());
+                                                                                            System.out.println("aattribute.getValue() " + aattribute.getValue());
                                                                                         }
                                                                                     }
                                                                                 }
