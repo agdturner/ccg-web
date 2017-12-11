@@ -61,12 +61,12 @@ public class GuardianGetPage {
 
         String filename;
         filename = "LexisNexis - The Guardian - Refugees AND BrexitHeadlinesForArticlesContaining_Syria.csv";
-        run (dataDir, filename);
+        run(dataDir, filename);
         filename = "LexisNexis - The Guardian - RefugeesHeadlinesForArticlesContaining_Syria.csv";
-        run (dataDir, filename);
-        
+        run(dataDir, filename);
+
     }
-    
+
     void run(File dataDir, String filename) {
         File inputDir;
         inputDir = new File(dataDir, "input");
@@ -141,7 +141,6 @@ public class GuardianGetPage {
         title = title.replaceAll("--", "-");
 
         //System.out.println(title);
-
 //        //String date = "2016-04-09";
 //        String[] dateParts = date.split("/");
 //        String date2 = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
@@ -155,14 +154,15 @@ public class GuardianGetPage {
 //        f = new File(outputDataDir, "GuardianGetPage.html");
         ArrayList<String> html;
         html = getHTML(url, f);
-        String[] split = html.get(0).split("\"newspaperPageNumber\":");
-        if (split.length > 0) {
-        String[] split2 = split[1].split("\"");
-        //System.out.println("Page " + split2[1]);
-        return "Page " + split2[1];
-        } else {
-            return "";
+        if (html.size() > 0) {
+            String[] split = html.get(0).split("\"newspaperPageNumber\":");
+            if (split.length > 1) {
+                String[] split2 = split[1].split("\"");
+                //System.out.println("Page " + split2[1]);
+                return "Page " + split2[1];
+            }
         }
+        return "";
     }
 
     public ArrayList<String> getHTML(
