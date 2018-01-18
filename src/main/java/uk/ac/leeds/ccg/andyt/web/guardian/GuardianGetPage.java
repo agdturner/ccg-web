@@ -15,7 +15,6 @@
  */
 package uk.ac.leeds.ccg.andyt.web.guardian;
 
-import uk.ac.leeds.ccg.andyt.web.twitter.process.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
