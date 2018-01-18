@@ -30,16 +30,6 @@
             <artifactId>jsoup</artifactId>
             <version>1.8.3</version>
         </dependency>
-        <dependency>
-           <groupId>org.twitter4j</groupId>
-           <artifactId>twitter4j-core</artifactId>
-           <version>[4.0,)</version>
-       </dependency>
-        <dependency>
-           <groupId>org.twitter4j</groupId>
-           <artifactId>twitter4j-stream</artifactId>
-           <version>[4.0,)</version>
-       </dependency>        
     </dependencies>
     
     <repositories>
@@ -59,17 +49,6 @@
             <url>http://www.ironiacorp.com/repo/maven2</url>
         </repository>
         -->
-        <repository>
-         <id>twitter4j.org</id>
-         <name>twitter4j.org Repository</name>
-         <url>http://twitter4j.org/maven2</url>
-         <releases>
-            <enabled>true</enabled>
-         </releases>
-         <snapshots>
-            <enabled>true</enabled>
-         </snapshots>
-      </repository>
     </repositories>
     
     <build>
