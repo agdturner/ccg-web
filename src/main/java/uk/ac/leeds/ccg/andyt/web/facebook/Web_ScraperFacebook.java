@@ -39,8 +39,9 @@ public class Web_ScraperFacebook {
     }
 
     public void getFacebookContacts(String url) {
-        File dir = new File(System.getProperty("user.dir"));
-        dir = Generic_StaticIO.createNewFile(dir);
+        File dir;
+        dir = new File(System.getProperty("user.dir"), "data");
+        dir.mkdirs();
         File outputFile = new File(dir, "Test.html");
         outputFile.getParentFile().mkdirs();
         try {

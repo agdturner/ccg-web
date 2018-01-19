@@ -37,8 +37,8 @@ public class Web_ScraperAirbnb {
 
     public void run(String[] args) {
         url = "https://www.airbnb.co.uk/s/Barcelona--Spain";
-        dir = new File(System.getProperty("user.dir"));
-        dir = Generic_StaticIO.createNewFile(dir);
+        dir = new File(System.getProperty("user.dir"), "data");
+        dir.mkdirs();
         File logFile = new File(dir, "Test.log");
         try {
             logFile.createNewFile();
