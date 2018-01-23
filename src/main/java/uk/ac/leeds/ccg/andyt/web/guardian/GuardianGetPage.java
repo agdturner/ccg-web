@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 geoagdt.
+ * Copyright 2017 Andy Turner, University of Leeds.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
 
 /**
  *
- * @author geoagdt
+ * @author Andy Turner
  */
 public class GuardianGetPage {
 
