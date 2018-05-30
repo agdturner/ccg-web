@@ -25,8 +25,8 @@ import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
 public class Web_Run_an_naa extends Web_AbstractRun {
 
     /**
-     * A reference to tZooplaHousepriceScraper.getAtoZ_not_QVX() for
-     * convenience.
+     * A reference to ZooplaHousepriceScraper.getAtoZ_not_QVX() for
+ convenience.
      */
     private TreeSet<String> _AtoZ_not_QVX;
 
@@ -87,7 +87,7 @@ public class Web_Run_an_naa extends Web_AbstractRun {
                                     String completeFirstPartPostcode = a0 + Integer.toString(n0);
                                     String aURLString0 = url + completeFirstPartPostcode;
                                     checkRequestRate();
-                                    if (tZooplaHousepriceScraper.isReturningOutcode(completeFirstPartPostcode, aURLString0)) {
+                                    if (ZooplaHousepriceScraper.isReturningOutcode(completeFirstPartPostcode, aURLString0)) {
                                         _NAA_Iterator = _NAA.iterator();
                                         while (_NAA_Iterator.hasNext()) {
                                             _NAAString = (String) _NAA_Iterator.next();
@@ -97,7 +97,7 @@ public class Web_Run_an_naa extends Web_AbstractRun {
                                                 }
                                             } else {
                                                 String aURLString = aURLString0 + "-" + _NAAString;
-                                                _int0 = tZooplaHousepriceScraper.writeHouseprices(
+                                                _int0 = ZooplaHousepriceScraper.writeHouseprices(
                                                         outPR,
                                                         logPR,
                                                         sharedLogPR,
@@ -153,12 +153,12 @@ public class Web_Run_an_naa extends Web_AbstractRun {
                 String completeFirstPartPostcode = a0 + Integer.toString(n0);
                 String aURLString0 = url + completeFirstPartPostcode;
                 checkRequestRate();
-                if (tZooplaHousepriceScraper.isReturningOutcode(completeFirstPartPostcode, aURLString0)) {
+                if (ZooplaHousepriceScraper.isReturningOutcode(completeFirstPartPostcode, aURLString0)) {
                     _NAA_Iterator = _NAA.iterator();
                     while (_NAA_Iterator.hasNext()) {
                         _NAAString = (String) _NAA_Iterator.next();
                         String aURLString = aURLString0 + "-" + _NAAString;
-                        _int0 = tZooplaHousepriceScraper.writeHouseprices(
+                        _int0 = ZooplaHousepriceScraper.writeHouseprices(
                                 outPR,
                                 logPR,
                                 sharedLogPR,

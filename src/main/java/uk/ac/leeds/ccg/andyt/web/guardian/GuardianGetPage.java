@@ -54,16 +54,12 @@ public class GuardianGetPage {
 
     public void run() {
         File dataDir;
-        dataDir = new File(
-                System.getProperty("user.dir"),
-                "data/");
-
+        dataDir = new File(System.getProperty("user.dir"), "data/");
         String filename;
         filename = "LexisNexis - The Guardian - Refugees AND BrexitHeadlinesForArticlesContaining_Syria.csv";
         run(dataDir, filename);
         filename = "LexisNexis - The Guardian - RefugeesHeadlinesForArticlesContaining_Syria.csv";
         run(dataDir, filename);
-
     }
 
     void run(File dataDir, String filename) {

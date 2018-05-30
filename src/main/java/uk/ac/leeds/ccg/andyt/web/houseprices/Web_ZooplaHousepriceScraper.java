@@ -63,9 +63,9 @@ import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Execution;
 import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
-import uk.ac.leeds.ccg.andyt.web.WebScraper;
+import uk.ac.leeds.ccg.andyt.web.Web_Scraper;
 
-public class Web_ZooplaHousepriceScraper extends WebScraper {
+public class Web_ZooplaHousepriceScraper extends Web_Scraper {
 
     private String url0;
     private String url1;

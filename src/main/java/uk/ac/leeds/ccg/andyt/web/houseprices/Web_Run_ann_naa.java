@@ -81,7 +81,7 @@ public class Web_Run_ann_naa extends Web_AbstractRun {
                                         + Integer.toString(n0) + Integer.toString(n1);
                                 String aURLString0 = url + completeFirstPartPostcode;
                                 checkRequestRate();
-                                if (tZooplaHousepriceScraper.isReturningOutcode(completeFirstPartPostcode, aURLString0)) {
+                                if (ZooplaHousepriceScraper.isReturningOutcode(completeFirstPartPostcode, aURLString0)) {
                                     _NAA_Iterator = _NAA.iterator();
                                     while (_NAA_Iterator.hasNext()) {
                                         _NAAString = (String) _NAA_Iterator.next();
@@ -92,7 +92,7 @@ public class Web_Run_ann_naa extends Web_AbstractRun {
                                         } else {
                                             _NAAString = (String) _NAA_Iterator.next();
                                             String aURLString = aURLString0 + "-" + _NAAString;
-                                            _int0 = tZooplaHousepriceScraper.writeHouseprices(
+                                            _int0 = ZooplaHousepriceScraper.writeHouseprices(
                                                     outPR,
                                                     logPR,
                                                     sharedLogPR,
@@ -148,12 +148,12 @@ public class Web_Run_ann_naa extends Web_AbstractRun {
                         + Integer.toString(n1);
                 String aURLString0 = url + completeFirstPartPostcode;
                 checkRequestRate();
-                if (tZooplaHousepriceScraper.isReturningOutcode(completeFirstPartPostcode, aURLString0)) {
+                if (ZooplaHousepriceScraper.isReturningOutcode(completeFirstPartPostcode, aURLString0)) {
                     _NAA_Iterator = _NAA.iterator();
                     while (_NAA_Iterator.hasNext()) {
                         _NAAString = (String) _NAA_Iterator.next();
                         String aURLString = aURLString0 + "-" + _NAAString;
-                        _int0 = tZooplaHousepriceScraper.writeHouseprices(
+                        _int0 = ZooplaHousepriceScraper.writeHouseprices(
                                 outPR,
                                 logPR,
                                 sharedLogPR,

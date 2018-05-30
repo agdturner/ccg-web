@@ -1,14 +1,8 @@
 package uk.ac.leeds.ccg.andyt.web.airbnb;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,8 +11,9 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.web.Web_Scraper;
 
-public class Web_ScraperAirbnb {
+public class Web_ScraperAirbnb extends Web_Scraper {
 
     public Web_ScraperAirbnb() {
     }
@@ -32,52 +27,85 @@ public class Web_ScraperAirbnb {
         new Web_ScraperAirbnb().run(args);
     }
 
-    String url;
-    File dir;
+    String place;
+    String date;
+    boolean overwrite;
 
     public void run(String[] args) {
-        url = "https://www.airbnb.co.uk/s/Barcelona--Spain";
+        //doUKPostcodeAreas();
+        doGlobalCity();
+    }
+
+    public void doGlobalCity() {
+        overwrite = true;
+        //overwrite = false; // This will only re-get the data if it has not already been got (today).
+        place = "Barcelona--Spain";
+        date = java.time.LocalDate.now().toString();
+        url = "https://www.airbnb.co.uk/s/" + place;
         dir = new File(System.getProperty("user.dir"), "data");
+        dir = new File(dir, "airbnb");
+        dir = new File(dir, place);
+        dir = new File(dir, date);
         dir.mkdirs();
         File logFile = new File(dir, "Test.log");
         try {
             logFile.createNewFile();
         } catch (IOException ex) {
-            Logger.getLogger(Web_ScraperAirbnb.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Web_ScraperAirbnb.class.getName()).log(
+                    Level.SEVERE, null, ex);
         }
         parsePlace(url);
     }
 
-    String getFilename(String url) {
-        String result = url.replaceAll(":", "_");
-        result = result.replaceAll("\\?", "_Q_");
-        result = result.replaceAll("/", "_");
-        return result;
+    public void doUKPostcodeAreas() {
+        //overwrite = true;
+        overwrite = false; // This will only re-get the data if it has not already been got (today).
+        for (int i = 1; i < 30; i++) {
+            place = "Leeds-LS" + i;
+//        place = "Liverpool";
+//        place = "Manchester";
+//        place = "Sunderland";
+            date = java.time.LocalDate.now().toString();
+            url = "https://www.airbnb.co.uk/s/" + place;
+            dir = new File(System.getProperty("user.dir"), "data");
+            dir = new File(dir, "airbnb");
+            dir = new File(dir, place);
+            dir = new File(dir, date);
+            dir.mkdirs();
+            File logFile = new File(dir, "Test.log");
+            try {
+                logFile.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(Web_ScraperAirbnb.class.getName()).log(
+                        Level.SEVERE, null, ex);
+            }
+            parsePlace(url);
+        }
     }
 
-    PrintWriter getPrintWriter(String url) {
-        PrintWriter pw;
-        String filename;
-        File outputFile;
-        filename = getFilename(url);
-        outputFile = new File(dir,
-                filename);
-        outputFile.getParentFile().mkdirs();
-        try {
-            outputFile.createNewFile();
-        } catch (IOException ex) {
-            Logger.getLogger(Web_ScraperAirbnb.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        pw = Generic_StaticIO.getPrintWriter(outputFile, false);
-        return pw;
-    }
 
     public void parsePlace(String url) {
         String homesurl = url + "/homes";
-        PrintWriter outputPW = getPrintWriter(homesurl + ".html");
+        //String homesurl = url + "/homes?refinement_paths%5B%5D=%2Fhomes&place_id=&query=Barcelona%2C%20Spain&allow_override%5B%5D=&s_tag=s2aGabIK";
         ArrayList<String> lines;
-        lines = getHTML(homesurl, outputPW);
-        outputPW.close();
+        PrintWriter outputPW;
+        if (!overwrite) {
+            outputPW = getPrintWriter(homesurl + ".html");
+            lines = getHTML(10, 1, homesurl, outputPW);
+            outputPW.close();
+        } else {
+            String filename;
+            File outputFile;
+            filename = getFilename(url);
+            outputFile = new File(dir, filename);
+            if (outputFile.exists()) {
+                lines = Generic_StaticIO.readIntoArrayList_String(outputFile);
+            } else {
+                outputPW = getPrintWriter(homesurl + ".html");
+                lines = getHTML(10, 1, homesurl, outputPW);
+                outputPW.close();
+            }
+        }
 
         // Get first section of homes listing
         Object[] parseHomes = parseHomes(lines, true);
@@ -88,7 +116,7 @@ public class Web_ScraperAirbnb {
         for (int i = 2; i <= max; i++) {
             homesurl = url + "?section_offset=" + i;
             outputPW = getPrintWriter(homesurl + ".html");
-            lines = getHTML(homesurl, outputPW);
+            lines = getHTML(10, 1, homesurl, outputPW);
             outputPW.close();
             parseHomes = parseHomes(lines, false);
             rooms.addAll((HashSet<String>) parseHomes[0]);
@@ -99,16 +127,30 @@ public class Web_ScraperAirbnb {
         ite = rooms.iterator();
         String roomsURL;
 
+        PrintWriter outputPW2;
+        outputPW2 = getPrintWriter(place + date + "Listings.txt");
+        outputPW2.println("URL,Host_ID,Price_Per_Night");
+
         HashMap<String, TreeMap<Integer, Object[]>> hostListings = new HashMap<>();
         while (ite.hasNext()) {
             roomsURL = ite.next();
             outputPW = getPrintWriter(roomsURL + ".html");
-            lines = getHTML(roomsURL, outputPW);
+            lines = getHTML(100, 1, roomsURL, outputPW);
             outputPW.close();
             Object[] hostRooms;
             hostRooms = parseRooms(roomsURL, lines);
+            String[] details;
+            details = (String[]) hostRooms[1];
+            for (int i = 0; i < details.length; i++) {
+                outputPW2.print(details[i]);
+                if (i < details.length - 1) {
+                    outputPW2.print(",");
+                }
+            }
+            outputPW2.println();
+            outputPW2.flush();
             //HashSet<String> roomListing;
-            String hostID = (String) hostRooms[1];
+            String hostID = (String) details[1];
             //roomListing = (HashSet<String>) hostRooms[0];
             TreeMap<Integer, Object[]> numberRoomlisting;
             if (hostListings.containsKey(hostID)) {
@@ -120,11 +162,13 @@ public class Web_ScraperAirbnb {
                 numberRoomlisting.put(1, hostRooms);
                 hostListings.put(hostID, numberRoomlisting);
             }
-            
+
         }
 
+        outputPW2.close();
+
         // Compile and write result
-        outputPW = getPrintWriter("Barcelona2017-11-11.txt");
+        outputPW = getPrintWriter(place + date + ".txt");
         ite = hostListings.keySet().iterator();
 
         outputPW.println("HostID,TotalHomes,TotalRooms");
@@ -145,44 +189,10 @@ public class Web_ScraperAirbnb {
             outputPW.println(hostID + "," + totalHomes + "," + totalRooms);
         }
         outputPW.close();
-
-        File resultDetail = new File(
-                dir, "result.dat");
+        File resultDetail = new File(dir, "result.dat");
         Generic_StaticIO.writeObject(hostListings, resultDetail);
-
     }
 
-    public ArrayList<String> getHTML(
-            String sURL,
-            PrintWriter outputPW) {
-        ArrayList<String> result = new ArrayList<>();
-        URL url = null;
-        HttpURLConnection httpURLConnection = null;
-        BufferedReader br = null;
-        String line = null;
-        try {
-            url = new URL(sURL);
-        } catch (MalformedURLException e) {
-            e.printStackTrace(System.err);
-            //System.exit(1);
-        }
-        try {
-            httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setRequestMethod("GET");
-            br = new BufferedReader(
-                    new InputStreamReader(httpURLConnection.getInputStream()));
-            while ((line = br.readLine()) != null) {
-                outputPW.write(line);
-                result.add(line);
-            }
-        } catch (IOException | NullPointerException e) {
-            e.printStackTrace(System.err);
-            //System.exit(1);
-        }
-        //System.exit(1);
-
-        return result;
-    }
 
     Object[] parseHomes(ArrayList<String> lines, boolean parseMax) {
         Object[] result = new Object[2];
@@ -239,18 +249,29 @@ public class Web_ScraperAirbnb {
      * @return
      */
     Object[] parseRooms(String roomsURL, ArrayList<String> lines) {
-        Object[] result = new Object[3]; // HostID, number of Rooms 
+        Object[] result = new Object[2];
+        String[] result2 = new String[3]; // URL, hostID, pricePerNight
         HashSet<String> rooms = new HashSet<>();
         result[0] = rooms;
-        result[2] = roomsURL;
+        result[1] = result2;
+        result2[0] = roomsURL;
         Iterator<String> ite = lines.iterator();
         String line;
         String hostID = "";
+        String pricePerNight = "";
         while (ite.hasNext()) {
             line = ite.next();
             String s;
             String s2;
             String s3;
+
+            if (line.contains("_10cqp947")) {
+                line = ite.next();
+                String[] split;
+                split = line.split("<span>");
+                pricePerNight = split[0].split("</span>")[0];
+            }
+
             s = "host_name";
             s2 = "profile_path";
             s3 = "/users/show/";
@@ -260,25 +281,26 @@ public class Web_ScraperAirbnb {
                 hostID = split[1].split("\"")[0];
             }
 //            [{"id":"4818588/double_bed","quantity":1,"type":"double_bed"}],"id":4818588,"room_number":1}],"market":"Barcelona","name":"Luxury@Rambla: bedroom+livingroom 
-                s = "room_number";
-                s2 = "id";
+            s = "room_number";
+            s2 = "id";
 //                s3 = "quantity";
 //                String s4;
 //                s4 = "type";
-                String s5;
-                s5 = "listing_rooms";
-                if (line.contains(s) && line.contains(s2) && line.contains(s5)) {
-                    String detail = line.split("listing_rooms")[1].split(",\"photos\"")[0] + "}]";
-                    String[] beds = detail.split("beds");
-                    for (int i = 0; i < beds.length; i ++){
+            String s5;
+            s5 = "listing_rooms";
+            if (line.contains(s) && line.contains(s2) && line.contains(s5)) {
+                String detail = line.split("listing_rooms")[1].split(",\"photos\"")[0] + "}]";
+                String[] beds = detail.split("beds");
+                for (int i = 0; i < beds.length; i++) {
                     rooms.add(beds[i]);
-                    }
                 }
+            }
         }
         hostID = hostID.split("#")[0];
         System.out.println("hostID " + hostID);
 
-        result[1] = hostID;
+        result2[1] = hostID;
+        result2[2] = pricePerNight;
         return result;
     }
 }

@@ -39,11 +39,11 @@ public abstract class Web_AbstractRun implements Runnable {
      */
     private String type;
     protected boolean restart;
-    protected Web_ZooplaHousepriceScraper tZooplaHousepriceScraper;
+    protected Web_ZooplaHousepriceScraper ZooplaHousepriceScraper;
     // For convenience
     protected String url;
     /**
-     * A reference to tZooplaHousepriceScraper._NAA for convenience
+     * A reference to ZooplaHousepriceScraper._NAA for convenience
      */
     protected TreeSet<String> _NAA;
     // Other fields
@@ -106,7 +106,7 @@ public abstract class Web_AbstractRun implements Runnable {
             Web_ZooplaHousepriceScraper tZooplaHousepriceScraper,
             boolean restart) {
         initType();
-        this.tZooplaHousepriceScraper = tZooplaHousepriceScraper;
+        this.ZooplaHousepriceScraper = tZooplaHousepriceScraper;
         this.firstpartPostcode = tZooplaHousepriceScraper.getFirstpartPostcode();
         this.url = tZooplaHousepriceScraper.getUrl();
         this._NAA = Generic_UKPostcode_Handler.get_NAA();
@@ -137,15 +137,11 @@ public abstract class Web_AbstractRun implements Runnable {
             String filenamepart) {
         try {
             File outDirectory = new File(
-                    tZooplaHousepriceScraper.getDirectory(),
+                    ZooplaHousepriceScraper.getDirectory(),
                     type);
             outDirectory.mkdirs();
-            outFile = new File(
-                    outDirectory,
-                    filenamepart + ".csv");
-            logFile = new File(
-                    outDirectory,
-                    filenamepart + ".log");
+            outFile = new File(outDirectory, filenamepart + ".csv");
+            logFile = new File(outDirectory, filenamepart + ".log");
             //sharedLogPR = Generic_StaticIO.getPrintWriter(sharedLogFile, true);
             if (!logFile.exists()) {
                 logFile.createNewFile();
@@ -176,16 +172,12 @@ public abstract class Web_AbstractRun implements Runnable {
             String filenamepart) {
         String[] result = null;
         try {
-            File outDirectory = new File(
-                    tZooplaHousepriceScraper.getDirectory(),
-                    type);
+            File outDirectory = new File(ZooplaHousepriceScraper.getDirectory(), type);
             if (!outDirectory.exists()) {
                 return null;
             }
             outDirectory.mkdirs();
-            logFile = new File(
-                    outDirectory,
-                    filenamepart + ".log");
+            logFile = new File(outDirectory, filenamepart + ".log");
             if (logFile.length() == 0L) {
                 return null;
             }
@@ -215,8 +207,8 @@ public abstract class Web_AbstractRun implements Runnable {
                 result = new String[2];
                 result[0] = Generic_StaticString.getLowerCase(fields[0]);
                 result[1] = Generic_StaticString.getLowerCase(fields[1]);
-                String firstPartPostcodeType = tZooplaHousepriceScraper.getFirstPartPostcodeType(fields[0]);
-                String secondPartPostcodeType = tZooplaHousepriceScraper.getSecondPartPostcodeType(fields[1]);
+                String firstPartPostcodeType = ZooplaHousepriceScraper.getFirstPartPostcodeType(fields[0]);
+                String secondPartPostcodeType = ZooplaHousepriceScraper.getSecondPartPostcodeType(fields[1]);
                 if (!(firstPartPostcodeType.equalsIgnoreCase(getType())
                         && secondPartPostcodeType.equalsIgnoreCase("naa"))) {
                     return null;

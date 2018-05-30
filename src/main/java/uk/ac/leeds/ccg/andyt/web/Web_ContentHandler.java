@@ -22,7 +22,8 @@ public abstract class Web_ContentHandler {
     }
     
     public String getDTD() {
-        return "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 2.0//EN\" \"http://www.w3.org/MarkUp/DTD/xhtml2.dtd\">";
+        return "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 2.0//EN\" "
+                + "\"http://www.w3.org/MarkUp/DTD/xhtml2.dtd\">";
     }
     
     public String getXMLDeclaration() {
@@ -30,25 +31,28 @@ public abstract class Web_ContentHandler {
     }
     
     public String getXMLStyleSheetDeclaration() {
-        return "<?xml-stylesheet type=\"text/css\" href=\"http://www.w3.org/MarkUp/style/xhtml2.css\"?>";
+        return "<?xml-stylesheet type=\"text/css\" "
+                + "href=\"http://www.w3.org/MarkUp/style/xhtml2.css\"?>";
     }
     
     public String getHTMLStartTag() {
-        return "<html xmlns=\"http://www.w3.org/2002/06/xhtml2/\" xml:lang=\"en\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.w3.org/2002/06/xhtml2/ http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd\">";
+        return "<html xmlns=\"http://www.w3.org/2002/06/xhtml2/\" "
+                + "xml:lang=\"en\" "
+                + "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
+                + "xsi:schemaLocation=\"http://www.w3.org/2002/06/xhtml2/ "
+                + "http://www.w3.org/MarkUp/SCHEMA/xhtml2.xsd\">";
     }
     
     /**
-     * If aString is not equal to bString ignoring case, then this throws an Exception
-     * @param aString
-     * @param bString
+     * If a is not equal to b ignoring case, then this throws an Exception
+     * @param a
+     * @param b
      * @throws java.lang.Exception
      */
-    public void aTestForEquality(
-            String aString,
-            String bString )
+    public void aTestForEquality(            String a,            String b )
             throws Exception {
-        if ( ! aString.equalsIgnoreCase( bString ) ) {
-            throw new Exception( "! " + aString + ".equalsIgnoreCase( " + bString + " )" );
+        if ( ! a.equalsIgnoreCase( b ) ) {
+            throw new Exception( "! " + a + ".equalsIgnoreCase( " + b + " )" );
         }
     }
     
@@ -58,9 +62,7 @@ public abstract class Web_ContentHandler {
      * @param b
      * @throws java.lang.Exception
      */
-    public void aTestForEquality(
-            byte[] a,
-            byte[] b )
+    public void aTestForEquality(            byte[] a,            byte[] b )
             throws Exception {
         if ( a.length == b.length ) {
             for ( int i = 0; i < a.length; i ++ )
