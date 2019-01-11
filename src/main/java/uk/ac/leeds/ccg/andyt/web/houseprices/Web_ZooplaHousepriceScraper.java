@@ -42,7 +42,7 @@ package uk.ac.leeds.ccg.andyt.web.houseprices;
  * slow then having more threads won't help as the number of requests is rate
  * limited.
  */
-import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
+import uk.ac.leeds.ccg.andyt.data.postcode.Generic_UKPostcode_Handler;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -60,9 +60,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Execution;
-import uk.ac.leeds.ccg.andyt.generic.utilities.Generic_Time;
+import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
+import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
+import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.web.Web_Scraper;
 
 public class Web_ZooplaHousepriceScraper extends Web_Scraper {
@@ -235,8 +235,8 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
             String firstPartPostcode,
             String secondPartPostcode,
             TreeMap<String, String> addressAdditionalPropertyDetails) {
-        firstPartPostcode = Generic_StaticString.getLowerCase(firstPartPostcode);
-        secondPartPostcode = Generic_StaticString.getLowerCase(secondPartPostcode);
+        firstPartPostcode = Generic_String.getLowerCase(firstPartPostcode);
+        secondPartPostcode = Generic_String.getLowerCase(secondPartPostcode);
         TreeSet<String> allprices = new TreeSet<String>();
         if (!getFirstPartPostcodeType(firstPartPostcode).isEmpty()) {
             String secondPartPostcodeType = getSecondPartPostcodeType(secondPartPostcode);
@@ -297,7 +297,7 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
             String firstpartPostcode,
             boolean restart)
             throws Exception {
-        this.firstpartPostcode = Generic_StaticString.getLowerCase(firstpartPostcode);
+        this.firstpartPostcode = Generic_String.getLowerCase(firstpartPostcode);
         // Initialisation
         //executorService = Executors.newCachedThreadPool();
         //int nThreads = 1 + (23 * 3) + (23 * 23 * 2); 
@@ -568,7 +568,7 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
     }
 
     private HashSet<Future> format_AN_NAA(boolean restart) throws IOException {
-        HashSet<Future> result = new HashSet<Future>();
+        HashSet<Future> result = new HashSet<>();
         Web_Run_an_naa a_Run_an_naa = new Web_Run_an_naa(
                 this, restart);
         result.add(getExecutorService().submit(a_Run_an_naa));
@@ -708,7 +708,7 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
 
 //    @Deprecated
 //    public String getLowerCase(String upperCase) {
-//        return Generic_StaticString.getLowerCase(upperCase);
+//        return Generic_String.getLowerCase(upperCase);
 //    }
     public void writeHouseprices(
             PrintWriter pw,
@@ -1026,11 +1026,11 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
         String lowerCaseAdd0;
         String lowerCaseAdd1 = null;
         if (splitAddress.length == 2) {
-            lowerCaseAdd0 = Generic_StaticString.getLowerCase(splitAddress[0]).trim();
+            lowerCaseAdd0 = Generic_String.getLowerCase(splitAddress[0]).trim();
             lowerCaseAdd1 = lowerCaseAdd0.replaceAll(" ", "-");
         } else {
             if (splitAddress.length == 3 || splitAddress.length == 4) {
-                lowerCaseAdd0 = Generic_StaticString.getLowerCase(splitAddress[1]).trim();
+                lowerCaseAdd0 = Generic_String.getLowerCase(splitAddress[1]).trim();
                 lowerCaseAdd1 = lowerCaseAdd0.replaceAll(" ", "-");
             } else {
                 try {

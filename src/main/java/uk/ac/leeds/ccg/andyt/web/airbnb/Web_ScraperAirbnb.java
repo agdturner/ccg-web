@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.web.Web_Scraper;
 
 public class Web_ScraperAirbnb extends Web_Scraper {
@@ -99,7 +99,7 @@ public class Web_ScraperAirbnb extends Web_Scraper {
             filename = getFilename(url);
             outputFile = new File(dir, filename);
             if (outputFile.exists()) {
-                lines = Generic_StaticIO.readIntoArrayList_String(outputFile);
+                lines = Generic_IO.readIntoArrayList_String(outputFile);
             } else {
                 outputPW = getPrintWriter(homesurl + ".html");
                 lines = getHTML(10, 1, homesurl, outputPW);
@@ -190,7 +190,7 @@ public class Web_ScraperAirbnb extends Web_Scraper {
         }
         outputPW.close();
         File resultDetail = new File(dir, "result.dat");
-        Generic_StaticIO.writeObject(hostListings, resultDetail);
+        Generic_IO.writeObject(hostListings, resultDetail);
     }
 
 

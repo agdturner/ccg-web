@@ -35,9 +35,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_ReadCSV;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
+import uk.ac.leeds.ccg.andyt.data.format.Generic_ReadCSV;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
 
 /**
  *
@@ -74,7 +74,7 @@ public class GuardianGetPage {
         File fout = new File(outputDataDir, filename);
         File fout2 = new File(dataDir, filename + "del");
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(fout, false);
+        pw = Generic_IO.getPrintWriter(fout, false);
 
         String GuardianAPIKey;
         GuardianAPIKey = getGuardianAPIKey(dataDir);
@@ -166,7 +166,7 @@ public class GuardianGetPage {
         ArrayList<String> result = new ArrayList<>();
         URL url = null;
         PrintWriter pw;
-        pw = Generic_StaticIO.getPrintWriter(fileToStore, false);
+        pw = Generic_IO.getPrintWriter(fileToStore, false);
         HttpURLConnection httpURLConnection = null;
         BufferedReader br = null;
         String line = null;
@@ -201,7 +201,7 @@ public class GuardianGetPage {
         dir = new File(dataDir, "private");
         f = new File(dir, "GuardianAPIKey.txt");
         BufferedReader br;
-        br = Generic_StaticIO.getBufferedReader(f);
+        br = Generic_IO.getBufferedReader(f);
         try {
             result = br.readLine();
             br.close();

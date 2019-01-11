@@ -34,7 +34,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 
 public class Web_ScraperFacebook {
 
@@ -64,14 +64,14 @@ public class Web_ScraperFacebook {
         } catch (IOException ex) {
             Logger.getLogger(Web_ScraperFacebook.class.getName()).log(Level.SEVERE, null, ex);
         }
-        PrintWriter outputPW = Generic_StaticIO.getPrintWriter(outputFile, false);
+        PrintWriter outputPW = Generic_IO.getPrintWriter(outputFile, false);
         File logFile = new File(dir, "Test.log");
         try {
             logFile.createNewFile();
         } catch (IOException ex) {
             Logger.getLogger(Web_ScraperFacebook.class.getName()).log(Level.SEVERE, null, ex);
         }
-        PrintWriter logPrintWriter = Generic_StaticIO.getPrintWriter(logFile, false);
+        PrintWriter logPrintWriter = Generic_IO.getPrintWriter(logFile, false);
         getHTML(url, outputPW);
         outputPW.close();
         logPrintWriter.close();

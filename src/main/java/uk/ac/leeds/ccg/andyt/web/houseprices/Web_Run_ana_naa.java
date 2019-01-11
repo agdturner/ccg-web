@@ -18,7 +18,7 @@ package uk.ac.leeds.ccg.andyt.web.houseprices;
 import java.util.Iterator;
 import java.util.TreeSet;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
+import uk.ac.leeds.ccg.andyt.data.postcode.Generic_UKPostcode_Handler;
 
 /**
  * Class for formatting postcodes of the ana_naa format.

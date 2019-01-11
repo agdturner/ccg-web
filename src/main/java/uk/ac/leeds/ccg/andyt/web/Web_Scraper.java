@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.web.airbnb.Web_ScraperAirbnb;
 import uk.ac.leeds.ccg.andyt.web.houseprices.Web_ZooplaHousepriceScraper;
 
@@ -219,7 +219,7 @@ public class Web_Scraper {
         } catch (IOException ex) {
             Logger.getLogger(Web_Scraper.class.getName()).log(Level.SEVERE, null, ex);
         }
-        pw = Generic_StaticIO.getPrintWriter(outputFile, false);
+        pw = Generic_IO.getPrintWriter(outputFile, false);
         return pw;
     }
     

@@ -15,7 +15,7 @@
  */
 package uk.ac.leeds.ccg.andyt.web.houseprices;
 
-import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
+import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
 
 /**
  *
@@ -133,7 +133,7 @@ public class Web_HousePriceRecord {
     public void initAddress(String s) {
         fullAddress = s;
         
-        String uppercaseFullAddress = Generic_StaticString.getUpperCase(fullAddress);
+        String uppercaseFullAddress = Generic_String.getUpperCase(fullAddress);
         if (uppercaseFullAddress.contains("FOUNTAIN PLACE")) {
             int debug = 1;
         }
@@ -157,19 +157,19 @@ public class Web_HousePriceRecord {
             cityRegion += split[i] + " ";
         }
         cityRegion = cityRegion.trim();
-        String upperCasePostcode = Generic_StaticString.getUpperCase(postcode);
+        String upperCasePostcode = Generic_String.getUpperCase(postcode);
         address = "";
         if (addressComponents[0].startsWith("Flat ")) {
 //            String[] split2 = addressComponents[0].split(" ");
 //            if (split2.length > 1) {
-//                address += Generic_StaticString.getUpperCase(split2[1]);
+//                address += Generic_String.getUpperCase(split2[1]);
 //            }
-//            address += ", " + Generic_StaticString.getUpperCase(addressComponents[1]);
-            address += Generic_StaticString.getUpperCase(addressComponents[0]);
-            address += ", " + Generic_StaticString.getUpperCase(addressComponents[1]);
+//            address += ", " + Generic_String.getUpperCase(addressComponents[1]);
+            address += Generic_String.getUpperCase(addressComponents[0]);
+            address += ", " + Generic_String.getUpperCase(addressComponents[1]);
             address += ", " + upperCasePostcode;
         } else {
-            address += Generic_StaticString.getUpperCase(addressComponents[0]);
+            address += Generic_String.getUpperCase(addressComponents[0]);
             address += ", " + upperCasePostcode;
         }
         address = address.trim();

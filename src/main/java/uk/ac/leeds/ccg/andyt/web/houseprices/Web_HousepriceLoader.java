@@ -23,8 +23,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
 
 /**
  *
@@ -40,7 +40,7 @@ public class Web_HousepriceLoader {
         String[] args = new String[3];
         args[0] = "/nfs/see-fs-02_users/geoagdt/scratch02/zoopla/";
         args[1] = ""; //"r";
-        args[2] = Generic_StaticString.getUpperCase(firstpartPostcode);
+        args[2] = Generic_String.getUpperCase(firstpartPostcode);
         //args[3] = "7";
         new Web_ZooplaHousepriceScraper().run(args);
     }
@@ -51,8 +51,8 @@ public class Web_HousepriceLoader {
         String[] args = new String[4];
         args[0] = "/nfs/see-fs-02_users/geoagdt/scratch02/zoopla/";
         args[1] = ""; //"r";
-        args[2] = Generic_StaticString.getUpperCase(firstpartPostcode);
-        args[3] = Generic_StaticString.getUpperCase(secondpartPostcode);
+        args[2] = Generic_String.getUpperCase(firstpartPostcode);
+        args[3] = Generic_String.getUpperCase(secondpartPostcode);
         //args[3] = "7";
         new Web_ZooplaHousepriceScraper().run(args);
     }
@@ -61,9 +61,9 @@ public class Web_HousepriceLoader {
         long ID = 0L;
         housepriceRecords = new TreeMap<Long,Web_HousePriceRecord>();
         File file = new File("/scratch01/Work/Projects/NewEnclosures/_Houseprices_sw9.csv");
-        BufferedReader br = Generic_StaticIO.getBufferedReader(file);
+        BufferedReader br = Generic_IO.getBufferedReader(file);
         StreamTokenizer st = new StreamTokenizer(br);
-        Generic_StaticIO.setStreamTokenizerSyntax5(st);
+        Generic_IO.setStreamTokenizerSyntax5(st);
         //String s = "'";
         st.wordChars('\'', '\'');
         int token;

@@ -24,9 +24,9 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.data.Generic_UKPostcode_Handler;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_StaticIO;
-import uk.ac.leeds.ccg.andyt.generic.lang.Generic_StaticString;
+import uk.ac.leeds.ccg.andyt.data.postcode.Generic_UKPostcode_Handler;
+import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
 
 /**
  * To be extended by Run methods.
@@ -142,15 +142,15 @@ public abstract class Web_AbstractRun implements Runnable {
             outDirectory.mkdirs();
             outFile = new File(outDirectory, filenamepart + ".csv");
             logFile = new File(outDirectory, filenamepart + ".log");
-            //sharedLogPR = Generic_StaticIO.getPrintWriter(sharedLogFile, true);
+            //sharedLogPR = Generic_IO.getPrintWriter(sharedLogFile, true);
             if (!logFile.exists()) {
                 logFile.createNewFile();
             }
             if (!outFile.exists()) {
                 outFile.createNewFile();
             }
-            outPR = Generic_StaticIO.getPrintWriter(outFile, restart);
-            logPR = Generic_StaticIO.getPrintWriter(logFile, restart);
+            outPR = Generic_IO.getPrintWriter(outFile, restart);
+            logPR = Generic_IO.getPrintWriter(logFile, restart);
         } catch (IOException ex) {
             System.err.println(ex.toString());
             Logger.getLogger(Web_AbstractRun.class.getName()).log(Level.SEVERE, null, ex);
@@ -181,9 +181,9 @@ public abstract class Web_AbstractRun implements Runnable {
             if (logFile.length() == 0L) {
                 return null;
             }
-            BufferedReader br = Generic_StaticIO.getBufferedReader(logFile);
+            BufferedReader br = Generic_IO.getBufferedReader(logFile);
             StreamTokenizer st = new StreamTokenizer(br);
-            Generic_StaticIO.setStreamTokenizerSyntax1(st);
+            Generic_IO.setStreamTokenizerSyntax1(st);
             int token = st.nextToken();
             String line = null;
             while (token != StreamTokenizer.TT_EOF) {
@@ -205,8 +205,8 @@ public abstract class Web_AbstractRun implements Runnable {
                 return result;
             } else {
                 result = new String[2];
-                result[0] = Generic_StaticString.getLowerCase(fields[0]);
-                result[1] = Generic_StaticString.getLowerCase(fields[1]);
+                result[0] = Generic_String.getLowerCase(fields[0]);
+                result[1] = Generic_String.getLowerCase(fields[1]);
                 String firstPartPostcodeType = ZooplaHousepriceScraper.getFirstPartPostcodeType(fields[0]);
                 String secondPartPostcodeType = ZooplaHousepriceScraper.getSecondPartPostcodeType(fields[1]);
                 if (!(firstPartPostcodeType.equalsIgnoreCase(getType())
