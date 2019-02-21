@@ -35,7 +35,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
-import uk.ac.leeds.ccg.andyt.data.format.Generic_ReadCSV;
+import uk.ac.leeds.ccg.andyt.data.format.Data_ReadCSV;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
 
@@ -80,7 +80,7 @@ public class GuardianGetPage {
         GuardianAPIKey = getGuardianAPIKey(dataDir);
 
         ArrayList<String> lines;
-        lines = Generic_ReadCSV.read(fin, outputDataDir, 6);
+        lines = Data_ReadCSV.read(fin, outputDataDir, 6);
 
         String s;
         for (int i = 0; i < lines.size(); i++) {

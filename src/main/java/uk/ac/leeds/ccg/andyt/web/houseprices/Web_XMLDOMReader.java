@@ -20,12 +20,12 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import uk.ac.leeds.ccg.andyt.data.format.Generic_XMLDOMReader;
+import uk.ac.leeds.ccg.andyt.data.format.Data_ReadXML;
 
 /**
  *
  */
-public class Web_XMLDOMReader extends Generic_XMLDOMReader {
+public class Web_XMLDOMReader extends Data_ReadXML {
 
     public TreeSet<String> outcodePostcodes;
 

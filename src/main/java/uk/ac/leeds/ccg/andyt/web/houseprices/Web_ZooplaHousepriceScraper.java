@@ -42,7 +42,7 @@ package uk.ac.leeds.ccg.andyt.web.houseprices;
  * slow then having more threads won't help as the number of requests is rate
  * limited.
  */
-import uk.ac.leeds.ccg.andyt.data.postcode.Generic_UKPostcode_Handler;
+import uk.ac.leeds.ccg.andyt.data.postcode.Data_UKPostcodeHandler;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -253,7 +253,7 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
                 }
             } else {
                 if (secondPartPostcodeType.equalsIgnoreCase("NA")) {
-                    Iterator<String> ite = Generic_UKPostcode_Handler.get_AtoZ_not_CIKMOV().iterator();
+                    Iterator<String> ite = Data_UKPostcodeHandler.get_AtoZ_not_CIKMOV().iterator();
                     while (ite.hasNext()) {
                         String a = ite.next();
                         url = url1 + firstPartPostcode;
@@ -267,10 +267,10 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
                     }
                 } else {
                     if (secondPartPostcodeType.equalsIgnoreCase("N")) {
-                        Iterator<String> ite = Generic_UKPostcode_Handler.get_AtoZ_not_CIKMOV().iterator();
+                        Iterator<String> ite = Data_UKPostcodeHandler.get_AtoZ_not_CIKMOV().iterator();
                         while (ite.hasNext()) {
                             String a0 = ite.next();
-                            Iterator<String> ite2 = Generic_UKPostcode_Handler.get_AtoZ_not_CIKMOV().iterator();
+                            Iterator<String> ite2 = Data_UKPostcodeHandler.get_AtoZ_not_CIKMOV().iterator();
                             while (ite2.hasNext()) {
                                 String a1 = ite2.next();
                                 url = url1 + firstPartPostcode;
@@ -346,23 +346,23 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
                 String _0 = secondPartPostcode.substring(0, 1);
                 String _1 = secondPartPostcode.substring(1, 2);
                 String _2 = secondPartPostcode.substring(2, 3);
-                if (Generic_UKPostcode_Handler.get_0to9().contains(_0)
-                        && Generic_UKPostcode_Handler.get_AtoZ_not_CIKMOV().contains(_1)
-                        && Generic_UKPostcode_Handler.get_AtoZ_not_CIKMOV().contains(_2)) {
+                if (Data_UKPostcodeHandler.get_0to9().contains(_0)
+                        && Data_UKPostcodeHandler.get_AtoZ_not_CIKMOV().contains(_1)
+                        && Data_UKPostcodeHandler.get_AtoZ_not_CIKMOV().contains(_2)) {
                     return "NAA";
                 }
             } else {
                 if (secondPartPostcode.length() == 2) {
                     String _0 = secondPartPostcode.substring(0, 1);
                     String _1 = secondPartPostcode.substring(1, 2);
-                    if (Generic_UKPostcode_Handler.get_0to9().contains(_0)
-                            && Generic_UKPostcode_Handler.get_AtoZ_not_CIKMOV().contains(_1)) {
+                    if (Data_UKPostcodeHandler.get_0to9().contains(_0)
+                            && Data_UKPostcodeHandler.get_AtoZ_not_CIKMOV().contains(_1)) {
                         return "NA";
                     }
                 } else {
                     if (secondPartPostcode.length() == 1) {
                         String _0 = secondPartPostcode.substring(0, 1);
-                        if (Generic_UKPostcode_Handler.get_0to9().contains(_0)) {
+                        if (Data_UKPostcodeHandler.get_0to9().contains(_0)) {
                             return "N";
                         }
                     }
@@ -394,16 +394,16 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
             String _1 = firstPartPostcode.substring(1, 2);
             String _2 = firstPartPostcode.substring(2, 3);
             String _3 = firstPartPostcode.substring(3, 4);
-            if (Generic_UKPostcode_Handler.get_AtoZ_not_QVX().contains(_0)
-                    && Generic_UKPostcode_Handler.get_AtoZ_not_IJZ().contains(_1)
-                    && Generic_UKPostcode_Handler.get_0to9().contains(_2)
-                    && Generic_UKPostcode_Handler.get_0to9().contains(_3)) {
+            if (Data_UKPostcodeHandler.get_AtoZ_not_QVX().contains(_0)
+                    && Data_UKPostcodeHandler.get_AtoZ_not_IJZ().contains(_1)
+                    && Data_UKPostcodeHandler.get_0to9().contains(_2)
+                    && Data_UKPostcodeHandler.get_0to9().contains(_3)) {
                 return "AANN";
             } else {
-                if (Generic_UKPostcode_Handler.get_AtoZ_not_QVX().contains(_0)
-                        && Generic_UKPostcode_Handler.get_AtoZ_not_IJZ().contains(_1)
-                        && Generic_UKPostcode_Handler.get_0to9().contains(_2)
-                        && Generic_UKPostcode_Handler.get_ABEHMNPRVWXY().contains(_3)) {
+                if (Data_UKPostcodeHandler.get_AtoZ_not_QVX().contains(_0)
+                        && Data_UKPostcodeHandler.get_AtoZ_not_IJZ().contains(_1)
+                        && Data_UKPostcodeHandler.get_0to9().contains(_2)
+                        && Data_UKPostcodeHandler.get_ABEHMNPRVWXY().contains(_3)) {
                     return "ANNA";
                 } else {
                     System.err.println(unresolvedMessage);
@@ -415,12 +415,12 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
             String _0 = firstPartPostcode.substring(0, 1);
             String _1 = firstPartPostcode.substring(1, 2);
             String _2 = firstPartPostcode.substring(2, 3);
-            if (Generic_UKPostcode_Handler.get_AtoZ_not_QVX().contains(_0)) {
-                if (Generic_UKPostcode_Handler.get_0to9().contains(_1)) {
-                    if (Generic_UKPostcode_Handler.get_0to9().contains(_2)) {
+            if (Data_UKPostcodeHandler.get_AtoZ_not_QVX().contains(_0)) {
+                if (Data_UKPostcodeHandler.get_0to9().contains(_1)) {
+                    if (Data_UKPostcodeHandler.get_0to9().contains(_2)) {
                         return "ANN";
                     } else {
-                        if (Generic_UKPostcode_Handler.get_ABCDEFGHJKSTUW().contains(_2)) {
+                        if (Data_UKPostcodeHandler.get_ABCDEFGHJKSTUW().contains(_2)) {
                             return "ANA";
                         } else {
                             System.err.println(unresolvedMessage);
@@ -428,11 +428,11 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
                         }
                     }
                 } else {
-                    if (Generic_UKPostcode_Handler.get_AtoZ_not_IJZ().contains(_1)) {
-                        if (Generic_UKPostcode_Handler.get_0to9().contains(_2)) {
+                    if (Data_UKPostcodeHandler.get_AtoZ_not_IJZ().contains(_1)) {
+                        if (Data_UKPostcodeHandler.get_0to9().contains(_2)) {
                             return "AAN";
                         } else {
-                            if (Generic_UKPostcode_Handler.get_ABCDEFGHJKSTUW().contains(_2)) {
+                            if (Data_UKPostcodeHandler.get_ABCDEFGHJKSTUW().contains(_2)) {
                                 return "ANA";
                             } else {
                                 System.err.println(unresolvedMessage);
@@ -449,8 +449,8 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
         if (firstPartPostcode.length() == 2) {
             String _0 = firstPartPostcode.substring(0, 1);
             String _1 = firstPartPostcode.substring(1, 2);
-            if (Generic_UKPostcode_Handler.get_AtoZ_not_QVX().contains(_0)) {
-                if (Generic_UKPostcode_Handler.get_0to9().contains(_1)) {
+            if (Data_UKPostcodeHandler.get_AtoZ_not_QVX().contains(_0)) {
+                if (Data_UKPostcodeHandler.get_0to9().contains(_1)) {
                     return "AN";
                 }
             }
@@ -580,7 +580,7 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
      */
     private HashSet<Future> format_ANA_NAA(boolean restart)
             throws IOException {
-        Iterator<String> _AtoZ_not_QVX_Iterator0 = Generic_UKPostcode_Handler.get_AtoZ_not_QVX().iterator();
+        Iterator<String> _AtoZ_not_QVX_Iterator0 = Data_UKPostcodeHandler.get_AtoZ_not_QVX().iterator();
         HashSet<Future> result = new HashSet<Future>();
         while (_AtoZ_not_QVX_Iterator0.hasNext()) {
             String a0 = (String) _AtoZ_not_QVX_Iterator0.next();
@@ -596,11 +596,11 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
      */
     private HashSet<Future> format_AANA_NAA(boolean restart)
             throws IOException {
-        Iterator<String> _AtoZ_not_QVX_Iterator0 = Generic_UKPostcode_Handler.get_AtoZ_not_QVX().iterator();
+        Iterator<String> _AtoZ_not_QVX_Iterator0 = Data_UKPostcodeHandler.get_AtoZ_not_QVX().iterator();
         HashSet<Future> result = new HashSet<Future>();
         while (_AtoZ_not_QVX_Iterator0.hasNext()) {
             String a0 = (String) _AtoZ_not_QVX_Iterator0.next();
-            Iterator<String> _AtoZ_not_IJZ_Iterator = Generic_UKPostcode_Handler.get_AtoZ_not_IJZ().iterator();
+            Iterator<String> _AtoZ_not_IJZ_Iterator = Data_UKPostcodeHandler.get_AtoZ_not_IJZ().iterator();
             while (_AtoZ_not_IJZ_Iterator.hasNext()) {
                 String a1 = _AtoZ_not_IJZ_Iterator.next();
                 firstpartPostcode = a0 + a1;
@@ -620,7 +620,7 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
     private HashSet<Future> format_AANN_NAA(boolean restart)
             throws IOException {
         HashSet<Future> result = new HashSet<Future>();
-        Iterator<String> _AtoZ_not_QVX_Iterator0 = Generic_UKPostcode_Handler.get_AtoZ_not_QVX().iterator();
+        Iterator<String> _AtoZ_not_QVX_Iterator0 = Data_UKPostcodeHandler.get_AtoZ_not_QVX().iterator();
         while (_AtoZ_not_QVX_Iterator0.hasNext()) {
             String a0 = (String) _AtoZ_not_QVX_Iterator0.next();
 
@@ -629,7 +629,7 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
 
 //                String a0 = "C";
 
-            Iterator<String> _AtoZ_not_IJZ_Iterator = Generic_UKPostcode_Handler.get_AtoZ_not_IJZ().iterator();
+            Iterator<String> _AtoZ_not_IJZ_Iterator = Data_UKPostcodeHandler.get_AtoZ_not_IJZ().iterator();
             while (_AtoZ_not_IJZ_Iterator.hasNext()) {
                 String a1 = _AtoZ_not_IJZ_Iterator.next();
                 firstpartPostcode = a0 + a1;
@@ -678,7 +678,7 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
      */
     private HashSet<Future> format_AAN_NAA(boolean restart)
             throws IOException {
-        Iterator<String> _AtoZ_not_QVX_Iterator0 = Generic_UKPostcode_Handler.get_AtoZ_not_QVX().iterator();
+        Iterator<String> _AtoZ_not_QVX_Iterator0 = Data_UKPostcodeHandler.get_AtoZ_not_QVX().iterator();
         HashSet<Future> result = new HashSet<Future>();
         while (_AtoZ_not_QVX_Iterator0.hasNext()) {
             firstpartPostcode = (String) _AtoZ_not_QVX_Iterator0.next();
@@ -695,7 +695,7 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
      */
     private HashSet<Future> format_ANN_NAA(boolean restart)
             throws IOException {
-        Iterator<String> _AtoZ_not_QVX_Iterator0 = Generic_UKPostcode_Handler.get_AtoZ_not_QVX().iterator();
+        Iterator<String> _AtoZ_not_QVX_Iterator0 = Data_UKPostcodeHandler.get_AtoZ_not_QVX().iterator();
         HashSet<Future> result = new HashSet<Future>();
         while (_AtoZ_not_QVX_Iterator0.hasNext()) {
             String a0 = (String) _AtoZ_not_QVX_Iterator0.next();

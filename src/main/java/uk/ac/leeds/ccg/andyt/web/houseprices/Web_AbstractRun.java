@@ -24,7 +24,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.data.postcode.Generic_UKPostcode_Handler;
+import uk.ac.leeds.ccg.andyt.data.postcode.Data_UKPostcodeHandler;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
 
@@ -109,7 +109,7 @@ public abstract class Web_AbstractRun implements Runnable {
         this.ZooplaHousepriceScraper = tZooplaHousepriceScraper;
         this.firstpartPostcode = tZooplaHousepriceScraper.getFirstpartPostcode();
         this.url = tZooplaHousepriceScraper.getUrl();
-        this._NAA = Generic_UKPostcode_Handler.get_NAA();
+        this._NAA = Data_UKPostcodeHandler.get_NAA();
         this.restart = restart;
         this.addressAdditionalPropertyDetails = new TreeMap<String, String>();
     }

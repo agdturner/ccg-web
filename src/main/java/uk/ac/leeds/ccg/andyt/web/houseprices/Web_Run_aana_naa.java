@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import uk.ac.leeds.ccg.andyt.data.postcode.Generic_UKPostcode_Handler;
+import uk.ac.leeds.ccg.andyt.data.postcode.Data_UKPostcodeHandler;
 
 /**
  * Class for formatting postcodes of the aana_naa format.
@@ -40,7 +40,7 @@ public class Web_Run_aana_naa extends Web_AbstractRun {
             Web_ZooplaHousepriceScraper tZooplaHousepriceScraper,
             boolean restart) {
         init(tZooplaHousepriceScraper, restart);
-        _ABEHMNPRVWXY = Generic_UKPostcode_Handler.get_ABEHMNPRVWXY();
+        _ABEHMNPRVWXY = Data_UKPostcodeHandler.get_ABEHMNPRVWXY();
     }
 
     @Override

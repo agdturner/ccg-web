@@ -18,7 +18,7 @@ package uk.ac.leeds.ccg.andyt.web.houseprices;
 import java.util.Iterator;
 import java.util.TreeSet;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import uk.ac.leeds.ccg.andyt.data.postcode.Generic_UKPostcode_Handler;
+import uk.ac.leeds.ccg.andyt.data.postcode.Data_UKPostcodeHandler;
 
 /**
  * Class for formatting postcodes of the ana_naa format.
@@ -40,7 +40,7 @@ public class Web_Run_ana_naa extends Web_AbstractRun {
             Web_ZooplaHousepriceScraper tZooplaHousepriceScraper,
             boolean restart) {
         init(tZooplaHousepriceScraper, restart);
-        this._ABCDEFGHJKSTUW = Generic_UKPostcode_Handler.get_ABCDEFGHJKSTUW();
+        this._ABCDEFGHJKSTUW = Data_UKPostcodeHandler.get_ABCDEFGHJKSTUW();
     }
 
     @Override
