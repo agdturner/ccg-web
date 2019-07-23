@@ -38,18 +38,21 @@ import org.jsoup.select.Elements;
 import uk.ac.leeds.ccg.andyt.data.format.Data_ReadCSV;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
+import uk.ac.leeds.ccg.andyt.web.core.Web_Environment;
+import uk.ac.leeds.ccg.andyt.web.core.Web_Object;
 
 /**
  *
  * @author Andy Turner
  */
-public class GuardianGetPage {
+public class GuardianGetPage extends Web_Object {
 
-    GuardianGetPage() {
+    GuardianGetPage(Web_Environment e) {
+        super(e);
     }
 
     public static void main(String[] args) {
-        new GuardianGetPage().run();
+        new GuardianGetPage(new Web_Environment()).run();
     }
 
     public void run() {
@@ -74,7 +77,7 @@ public class GuardianGetPage {
         File fout = new File(outputDataDir, filename);
         File fout2 = new File(dataDir, filename + "del");
         PrintWriter pw;
-        pw = Generic_IO.getPrintWriter(fout, false);
+        pw = env.io.getPrintWriter(fout, false);
 
         String GuardianAPIKey;
         GuardianAPIKey = getGuardianAPIKey(dataDir);
@@ -160,14 +163,11 @@ public class GuardianGetPage {
         return "";
     }
 
-    public ArrayList<String> getHTML(
-            String sURL,
-            File fileToStore) {
-        ArrayList<String> result = new ArrayList<>();
+    public ArrayList<String> getHTML( String sURL, File fileToStore) {
+        ArrayList<String> r = new ArrayList<>();
         URL url = null;
-        PrintWriter pw;
-        pw = Generic_IO.getPrintWriter(fileToStore, false);
-        HttpURLConnection httpURLConnection = null;
+        PrintWriter pw  = env.io.getPrintWriter(fileToStore, false);
+        HttpURLConnection con = null;
         BufferedReader br = null;
         String line = null;
         try {
@@ -177,13 +177,13 @@ public class GuardianGetPage {
             //System.exit(1);
         }
         try {
-            httpURLConnection = (HttpURLConnection) url.openConnection();
-            httpURLConnection.setRequestMethod("GET");
+            con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
             br = new BufferedReader(
-                    new InputStreamReader(httpURLConnection.getInputStream()));
+                    new InputStreamReader(con.getInputStream()));
             while ((line = br.readLine()) != null) {
                 pw.println(line);
-                result.add(line);
+                r.add(line);
             }
         } catch (IOException | NullPointerException e) {
             e.printStackTrace(System.err);
@@ -191,23 +191,23 @@ public class GuardianGetPage {
         }
         //System.exit(1);
         pw.close();
-        return result;
+        return r;
     }
 
     String getGuardianAPIKey(File dataDir) {
-        String result = "";
+        String r = "";
         File f;
         File dir;
         dir = new File(dataDir, "private");
         f = new File(dir, "GuardianAPIKey.txt");
         BufferedReader br;
-        br = Generic_IO.getBufferedReader(f);
+        br = env.io.getBufferedReader(f);
         try {
-            result = br.readLine();
+            r = br.readLine();
             br.close();
         } catch (IOException ex) {
             Logger.getLogger(GuardianGetPage.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return result;
+        return r;
     }
 }

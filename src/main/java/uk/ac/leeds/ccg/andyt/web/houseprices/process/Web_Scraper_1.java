@@ -39,6 +39,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import uk.ac.leeds.ccg.andyt.web.core.Web_Environment;
 
 public class Web_Scraper_1 {
     
@@ -49,8 +50,8 @@ public class Web_Scraper_1 {
      * @param args
      * @throws java.lang.Exception */
     public static void main( String[] args ) throws Exception {
-        Web_ZooplaHousepriceScraper aScraper_1 = new Web_ZooplaHousepriceScraper();
-        aScraper_1.run( args );
+        Web_ZooplaHousepriceScraper s = new Web_ZooplaHousepriceScraper(new Web_Environment());
+        s.run( args );
     }
     
     public void run( String[] args ) throws Exception {

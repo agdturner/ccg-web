@@ -35,17 +35,20 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
+import uk.ac.leeds.ccg.andyt.web.Web_Scraper;
+import uk.ac.leeds.ccg.andyt.web.core.Web_Environment;
 
-public class Web_ScraperFacebook {
+public class Web_ScraperFacebook extends Web_Scraper {
 
-    public Web_ScraperFacebook() {
+    public Web_ScraperFacebook(Web_Environment e)  {
+        super(e);
     }
 
     /** Main method
      * @param args
      * @throws java.lang.Exception */
     public static void main(String[] args) {
-        new Web_ScraperFacebook().run(args);
+        new Web_ScraperFacebook(new Web_Environment()).run(args);
     }
 
     public void run(String[] args) {
@@ -64,14 +67,14 @@ public class Web_ScraperFacebook {
         } catch (IOException ex) {
             Logger.getLogger(Web_ScraperFacebook.class.getName()).log(Level.SEVERE, null, ex);
         }
-        PrintWriter outputPW = Generic_IO.getPrintWriter(outputFile, false);
+        PrintWriter outputPW = env.io.getPrintWriter(outputFile, false);
         File logFile = new File(dir, "Test.log");
         try {
             logFile.createNewFile();
         } catch (IOException ex) {
             Logger.getLogger(Web_ScraperFacebook.class.getName()).log(Level.SEVERE, null, ex);
         }
-        PrintWriter logPrintWriter = Generic_IO.getPrintWriter(logFile, false);
+        PrintWriter logPrintWriter = env.io.getPrintWriter(logFile, false);
         getHTML(url, outputPW);
         outputPW.close();
         logPrintWriter.close();

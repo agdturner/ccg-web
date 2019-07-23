@@ -64,6 +64,7 @@ import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
 import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
 import uk.ac.leeds.ccg.andyt.generic.util.Generic_Time;
 import uk.ac.leeds.ccg.andyt.web.Web_Scraper;
+import uk.ac.leeds.ccg.andyt.web.core.Web_Environment;
 
 public class Web_ZooplaHousepriceScraper extends Web_Scraper {
 
@@ -117,7 +118,8 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
     /**
      * Creates a new instance of ZooplaHousepriceScraper
      */
-    public Web_ZooplaHousepriceScraper() {
+    public Web_ZooplaHousepriceScraper(Web_Environment e) {
+        super(e);
     }
 
     /**
@@ -168,7 +170,7 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
 //        args[0] = "/nfs/see-fs-02_users/geoagdt/scratch02/zoopla/";
 //        args[1] = "";
 //        args[2] = "SW9";
-        new Web_ZooplaHousepriceScraper().run(args);
+        new Web_ZooplaHousepriceScraper(new Web_Environment()).run(args);
     }
 
 

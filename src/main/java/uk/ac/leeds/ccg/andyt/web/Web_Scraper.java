@@ -33,13 +33,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.web.airbnb.Web_ScraperAirbnb;
+import uk.ac.leeds.ccg.andyt.web.core.Web_Environment;
+import uk.ac.leeds.ccg.andyt.web.core.Web_Object;
 import uk.ac.leeds.ccg.andyt.web.houseprices.Web_ZooplaHousepriceScraper;
 
 /**
  *
  * @author Andy Turner
  */
-public class Web_Scraper {
+public class Web_Scraper extends Web_Object {
 
     protected static File sharedLogFile;
     protected double connectionCount;
@@ -50,6 +52,10 @@ public class Web_Scraper {
     protected String url;
     public File dir;
 
+    public Web_Scraper(Web_Environment e) {
+        super(e);
+    }
+            
     protected void checkConnectionRate() {
         long timeToWaitInMilliseconds = 1000;
         double connectionRate = getConnectionRate();
@@ -99,7 +105,7 @@ public class Web_Scraper {
     protected HttpURLConnection getOpenHttpURLConnection(String url) {
         checkConnectionRate();
         connectionCount += 1.0;
-        HttpURLConnection result = null;
+        HttpURLConnection r = null;
         URL u = null;
         try {
             u = new URL(url);
@@ -110,15 +116,15 @@ public class Web_Scraper {
         //        int port = 3128;
         //        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("www-cache.leeds.ac.uk", port));
         try {
-            //            result = (HttpURLConnection) aURL.openConnection(proxy);
+            //            r = (HttpURLConnection) u.openConnection(proxy);
             if (u != null) {
-                result = (HttpURLConnection) u.openConnection();
+                r = (HttpURLConnection) u.openConnection();
             }
-            //            result.setRequestMethod("GET"); // GET is the default anyway.
+            //            r.setRequestMethod("GET"); // GET is the default anyway.
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
-        return result;
+        return r;
     }
 
     public long getTimeRunningMillis() {
@@ -219,7 +225,7 @@ public class Web_Scraper {
         } catch (IOException ex) {
             Logger.getLogger(Web_Scraper.class.getName()).log(Level.SEVERE, null, ex);
         }
-        pw = Generic_IO.getPrintWriter(outputFile, false);
+        pw = env.io.getPrintWriter(outputFile, false);
         return pw;
     }
     

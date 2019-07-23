@@ -12,10 +12,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.web.Web_Scraper;
+import uk.ac.leeds.ccg.andyt.web.core.Web_Environment;
 
 public class Web_ScraperAirbnb extends Web_Scraper {
 
-    public Web_ScraperAirbnb() {
+    public Web_ScraperAirbnb(Web_Environment e) {
+        super(e);
     }
 
     /**
@@ -24,7 +26,7 @@ public class Web_ScraperAirbnb extends Web_Scraper {
      * @param args
      */
     public static void main(String[] args) {
-        new Web_ScraperAirbnb().run(args);
+        new Web_ScraperAirbnb(new Web_Environment()).run(args);
     }
 
     String place;
@@ -99,7 +101,7 @@ public class Web_ScraperAirbnb extends Web_Scraper {
             filename = getFilename(url);
             outputFile = new File(dir, filename);
             if (outputFile.exists()) {
-                lines = Generic_IO.readIntoArrayList_String(outputFile);
+                lines = env.io.readIntoArrayList_String(outputFile);
             } else {
                 outputPW = getPrintWriter(homesurl + ".html");
                 lines = getHTML(10, 1, homesurl, outputPW);
@@ -190,7 +192,7 @@ public class Web_ScraperAirbnb extends Web_Scraper {
         }
         outputPW.close();
         File resultDetail = new File(dir, "result.dat");
-        Generic_IO.writeObject(hostListings, resultDetail);
+        env.io.writeObject(hostListings, resultDetail);
     }
 
 

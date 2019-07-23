@@ -20,17 +20,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
+import uk.ac.leeds.ccg.andyt.web.core.Web_Object;
 
 /**
  *
  * @author geoagdt
  */
-public class Web_HousepriceLoader {
+public class Web_HousepriceLoader extends Web_Object {
     
     public TreeMap<Long,Web_HousePriceRecord> housepriceRecords;
     
@@ -42,7 +41,7 @@ public class Web_HousepriceLoader {
         args[1] = ""; //"r";
         args[2] = Generic_String.getUpperCase(firstpartPostcode);
         //args[3] = "7";
-        new Web_ZooplaHousepriceScraper().run(args);
+        new Web_ZooplaHousepriceScraper(env).run(args);
     }
 
     public void scrape(
@@ -54,16 +53,16 @@ public class Web_HousepriceLoader {
         args[2] = Generic_String.getUpperCase(firstpartPostcode);
         args[3] = Generic_String.getUpperCase(secondpartPostcode);
         //args[3] = "7";
-        new Web_ZooplaHousepriceScraper().run(args);
+        new Web_ZooplaHousepriceScraper(env).run(args);
     }
 
     public void load(String postcode) {
         long ID = 0L;
-        housepriceRecords = new TreeMap<Long,Web_HousePriceRecord>();
+        housepriceRecords = new TreeMap<>();
         File file = new File("/scratch01/Work/Projects/NewEnclosures/_Houseprices_sw9.csv");
-        BufferedReader br = Generic_IO.getBufferedReader(file);
+        BufferedReader br = env.io.getBufferedReader(file);
         StreamTokenizer st = new StreamTokenizer(br);
-        Generic_IO.setStreamTokenizerSyntax5(st);
+        env.io.setStreamTokenizerSyntax5(st);
         //String s = "'";
         st.wordChars('\'', '\'');
         int token;

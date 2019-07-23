@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import uk.ac.leeds.ccg.andyt.web.Web_Scraper;
+import uk.ac.leeds.ccg.andyt.web.core.Web_Environment;
 
 /**
  *
@@ -32,13 +33,17 @@ import uk.ac.leeds.ccg.andyt.web.Web_Scraper;
  */
 public class Anna extends Web_Scraper {
 
+    public Anna(Web_Environment e) {
+        super(e);
+    }
+
     /**
      * Main method
      *
      * @param args
      */
     public static void main(String[] args) {
-        new Anna().run(args);
+        new Anna(new Web_Environment()).run(args);
     }
 
     public void run(String[] args) {

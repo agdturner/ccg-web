@@ -25,13 +25,13 @@ import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.data.postcode.Data_UKPostcodeHandler;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
+import uk.ac.leeds.ccg.andyt.web.core.Web_Object;
 
 /**
  * To be extended by Run methods.
  */
-public abstract class Web_AbstractRun implements Runnable {
+public abstract class Web_AbstractRun extends Web_Object implements Runnable {
 
     /**
      * For storing which type of class this is (for convenience). Known types
@@ -96,22 +96,19 @@ public abstract class Web_AbstractRun implements Runnable {
     }
 
     /**
-     * @param tZooplaHousepriceScraper
+     * @param s
      * @param restart This is expected to be true if restarting a partially
      * completed run and false otherwise.
-     * @param sharedLogFile The log file in a directory into which the results
-     * will be stored.
      */
-    protected void init(
-            Web_ZooplaHousepriceScraper tZooplaHousepriceScraper,
+    protected void init( Web_ZooplaHousepriceScraper s,
             boolean restart) {
         initType();
-        this.ZooplaHousepriceScraper = tZooplaHousepriceScraper;
-        this.firstpartPostcode = tZooplaHousepriceScraper.getFirstpartPostcode();
-        this.url = tZooplaHousepriceScraper.getUrl();
+        this.ZooplaHousepriceScraper = s;
+        this.firstpartPostcode = s.getFirstpartPostcode();
+        this.url = s.getUrl();
         this._NAA = Data_UKPostcodeHandler.get_NAA();
         this.restart = restart;
-        this.addressAdditionalPropertyDetails = new TreeMap<String, String>();
+        this.addressAdditionalPropertyDetails = new TreeMap<>();
     }
 
     public void checkRequestRate() {
@@ -149,8 +146,8 @@ public abstract class Web_AbstractRun implements Runnable {
             if (!outFile.exists()) {
                 outFile.createNewFile();
             }
-            outPR = Generic_IO.getPrintWriter(outFile, restart);
-            logPR = Generic_IO.getPrintWriter(logFile, restart);
+            outPR = env.io.getPrintWriter(outFile, restart);
+            logPR = env.io.getPrintWriter(logFile, restart);
         } catch (IOException ex) {
             System.err.println(ex.toString());
             Logger.getLogger(Web_AbstractRun.class.getName()).log(Level.SEVERE, null, ex);
@@ -167,46 +164,45 @@ public abstract class Web_AbstractRun implements Runnable {
      * @param filenamepart
      * @return
      */
-    protected String[] getPostcodeForRestart(
-            String type,
-            String filenamepart) {
-        String[] result = null;
+    protected String[] getPostcodeForRestart(String type, String filenamepart) {
+        String[] r = null;
         try {
-            File outDirectory = new File(ZooplaHousepriceScraper.getDirectory(), type);
-            if (!outDirectory.exists()) {
+            File outDir = new File(ZooplaHousepriceScraper.getDirectory(), type);
+            if (!outDir.exists()) {
                 return null;
             }
-            outDirectory.mkdirs();
-            logFile = new File(outDirectory, filenamepart + ".log");
+            outDir.mkdirs();
+            logFile = new File(outDir, filenamepart + ".log");
             if (logFile.length() == 0L) {
                 return null;
             }
-            BufferedReader br = Generic_IO.getBufferedReader(logFile);
-            StreamTokenizer st = new StreamTokenizer(br);
-            Generic_IO.setStreamTokenizerSyntax1(st);
-            int token = st.nextToken();
-            String line = null;
-            while (token != StreamTokenizer.TT_EOF) {
-                switch (token) {
-                    case StreamTokenizer.TT_WORD:
-                        line = st.sval;
-                    case StreamTokenizer.TT_EOL:
-                        break;
+            String line;
+            try (BufferedReader br = env.io.getBufferedReader(logFile)) {
+                StreamTokenizer st = new StreamTokenizer(br);
+                env.io.setStreamTokenizerSyntax1(st);
+                int token = st.nextToken();
+                line = null;
+                while (token != StreamTokenizer.TT_EOF) {
+                    switch (token) {
+                        case StreamTokenizer.TT_WORD:
+                            line = st.sval;
+                        case StreamTokenizer.TT_EOL:
+                            break;
+                    }
+                    token = st.nextToken();
                 }
-                token = st.nextToken();
             }
-            br.close();
             String[] fields = null;
             if (line != null) {
                 fields = line.split(" ");
             }
-            result = new String[2];
+            r = new String[2];
             if (fields[0].startsWith("number")) {
-                return result;
+                return r;
             } else {
-                result = new String[2];
-                result[0] = Generic_String.getLowerCase(fields[0]);
-                result[1] = Generic_String.getLowerCase(fields[1]);
+                r = new String[2];
+                r[0] = Generic_String.getLowerCase(fields[0]);
+                r[1] = Generic_String.getLowerCase(fields[1]);
                 String firstPartPostcodeType = ZooplaHousepriceScraper.getFirstPartPostcodeType(fields[0]);
                 String secondPartPostcodeType = ZooplaHousepriceScraper.getSecondPartPostcodeType(fields[1]);
                 if (!(firstPartPostcodeType.equalsIgnoreCase(getType())
@@ -221,7 +217,7 @@ public abstract class Web_AbstractRun implements Runnable {
         } catch (IOException ex) {
             Logger.getLogger(Web_AbstractRun.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return result;
+        return r;
     }
 
     protected String getReportString(
