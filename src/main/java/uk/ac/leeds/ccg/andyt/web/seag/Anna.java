@@ -43,7 +43,11 @@ public class Anna extends Web_Scraper {
      * @param args
      */
     public static void main(String[] args) {
-        new Anna(new Web_Environment()).run(args);
+        try {
+            new Anna(new Web_Environment()).run(args);
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 
     public void run(String[] args) {

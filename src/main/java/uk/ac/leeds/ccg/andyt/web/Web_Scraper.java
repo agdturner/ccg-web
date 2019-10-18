@@ -225,7 +225,7 @@ public class Web_Scraper extends Web_Object {
         } catch (IOException ex) {
             Logger.getLogger(Web_Scraper.class.getName()).log(Level.SEVERE, null, ex);
         }
-        pw = env.io.getPrintWriter(outputFile, false);
+        pw = env.env.io.getPrintWriter(outputFile, false);
         return pw;
     }
     

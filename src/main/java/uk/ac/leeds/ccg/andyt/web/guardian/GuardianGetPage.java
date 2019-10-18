@@ -52,7 +52,11 @@ public class GuardianGetPage extends Web_Object {
     }
 
     public static void main(String[] args) {
-        new GuardianGetPage(new Web_Environment()).run();
+        try {
+            new GuardianGetPage(new Web_Environment()).run();
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 
     public void run() {
@@ -77,7 +81,7 @@ public class GuardianGetPage extends Web_Object {
         File fout = new File(outputDataDir, filename);
         File fout2 = new File(dataDir, filename + "del");
         PrintWriter pw;
-        pw = env.io.getPrintWriter(fout, false);
+        pw = env.env.io.getPrintWriter(fout, false);
 
         String GuardianAPIKey;
         GuardianAPIKey = getGuardianAPIKey(dataDir);
@@ -163,10 +167,10 @@ public class GuardianGetPage extends Web_Object {
         return "";
     }
 
-    public ArrayList<String> getHTML( String sURL, File fileToStore) {
+    public ArrayList<String> getHTML(String sURL, File fileToStore) {
         ArrayList<String> r = new ArrayList<>();
         URL url = null;
-        PrintWriter pw  = env.io.getPrintWriter(fileToStore, false);
+        PrintWriter pw = env.env.io.getPrintWriter(fileToStore, false);
         HttpURLConnection con = null;
         BufferedReader br = null;
         String line = null;
@@ -201,7 +205,7 @@ public class GuardianGetPage extends Web_Object {
         dir = new File(dataDir, "private");
         f = new File(dir, "GuardianAPIKey.txt");
         BufferedReader br;
-        br = env.io.getBufferedReader(f);
+        br = env.env.io.getBufferedReader(f);
         try {
             r = br.readLine();
             br.close();

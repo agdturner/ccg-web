@@ -46,9 +46,13 @@ public class Web_ScraperFacebook extends Web_Scraper {
 
     /** Main method
      * @param args
-     * @throws java.lang.Exception */
+     */
     public static void main(String[] args) {
-        new Web_ScraperFacebook(new Web_Environment()).run(args);
+        try {
+            new Web_ScraperFacebook(new Web_Environment()).run(args);
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 
     public void run(String[] args) {
@@ -67,14 +71,14 @@ public class Web_ScraperFacebook extends Web_Scraper {
         } catch (IOException ex) {
             Logger.getLogger(Web_ScraperFacebook.class.getName()).log(Level.SEVERE, null, ex);
         }
-        PrintWriter outputPW = env.io.getPrintWriter(outputFile, false);
+        PrintWriter outputPW = env.env.io.getPrintWriter(outputFile, false);
         File logFile = new File(dir, "Test.log");
         try {
             logFile.createNewFile();
         } catch (IOException ex) {
             Logger.getLogger(Web_ScraperFacebook.class.getName()).log(Level.SEVERE, null, ex);
         }
-        PrintWriter logPrintWriter = env.io.getPrintWriter(logFile, false);
+        PrintWriter logPrintWriter = env.env.io.getPrintWriter(logFile, false);
         getHTML(url, outputPW);
         outputPW.close();
         logPrintWriter.close();

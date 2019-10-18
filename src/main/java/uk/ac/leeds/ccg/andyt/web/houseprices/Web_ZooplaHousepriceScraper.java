@@ -130,20 +130,21 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
      * and need not be complete
      */
     public static void main(String[] args) {
-        if (args.length == 0) {
-            args = new String[2];
-            // This defaults to the directory I want to output to.
+        try {
+            if (args.length == 0) {
+                args = new String[2];
+                // This defaults to the directory I want to output to.
+                args[0] = "/nfs/see-fs-02_users/geoagdt/scratch02/zoopla/";
+                //args[0] = "E:/zoopla/";
+                //args[1] = "r";
+                args[1] = "";
+            }
+            // Test run 1
+            args = new String[4];
             args[0] = "/nfs/see-fs-02_users/geoagdt/scratch02/zoopla/";
-            //args[0] = "E:/zoopla/";
-            //args[1] = "r";
-            args[1] = "";
-        }
-        // Test run 1
-        args = new String[4];
-        args[0] = "/nfs/see-fs-02_users/geoagdt/scratch02/zoopla/";
-        args[1] = ""; //"r";
-        args[2] = "LS7";
-        args[3] = "2EU";
+            args[1] = ""; //"r";
+            args[2] = "LS7";
+            args[3] = "2EU";
 
 //        // Test run 2
 //        args = new String[4];
@@ -170,13 +171,15 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
 //        args[0] = "/nfs/see-fs-02_users/geoagdt/scratch02/zoopla/";
 //        args[1] = "";
 //        args[2] = "SW9";
-        new Web_ZooplaHousepriceScraper(new Web_Environment()).run(args);
+            new Web_ZooplaHousepriceScraper(new Web_Environment()).run(args);
+        } catch (IOException ex) {
+            ex.printStackTrace(System.err);
+        }
     }
 
-
     /**
-     * 
-     * @param args 
+     *
+     * @param args
      */
     public void run(String[] args) {
         try {
@@ -628,9 +631,7 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
 
 //            if (!(a0.equalsIgnoreCase("A") || a0.equalsIgnoreCase("B"))) {
 //                //System.out.println("format_aann " + a0 + "ann");
-
 //                String a0 = "C";
-
             Iterator<String> _AtoZ_not_IJZ_Iterator = Data_UKPostcodeHandler.get_AtoZ_not_IJZ().iterator();
             while (_AtoZ_not_IJZ_Iterator.hasNext()) {
                 String a1 = _AtoZ_not_IJZ_Iterator.next();
@@ -818,7 +819,6 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
         return false;
     }
 
-
     public TreeSet<String> getHTMLandFormat(
             String aURLString,
             String tFirstPartOfPostcode,
@@ -957,7 +957,6 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
 //            debug = true;
 //            System.out.println(s_Address);
 //        }
-
         // get s_PropertyType0 s_PropertyType1
         line = br.readLine();
         while (!line.contains("attributes-update")) {
@@ -965,7 +964,6 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
 //            if (debug) {
 //                System.out.println(line);
 //            }
-
             line = br.readLine();
         }
         line = br.readLine();
@@ -983,7 +981,6 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
 //            if (debug) {
 //                System.out.println(line);
 //            }
-
             line = br.readLine();
         }
         String[] price = line.split("&pound;")[1].split("<")[0].split(",");
@@ -997,8 +994,8 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
                 br,
                 s_Address);
 
-        tFormattedOutput =
-                tFirstPartOfPostcode + " "
+        tFormattedOutput
+                = tFirstPartOfPostcode + " "
                 + tSecondPartOfPostcode + ",\""
                 + s_Address + "\","
                 //+ s_PropertyType0
@@ -1036,10 +1033,10 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
                 lowerCaseAdd1 = lowerCaseAdd0.replaceAll(" ", "-");
             } else {
                 try {
-                    String message = "splitAddress.length == "+ splitAddress.length + ":"
+                    String message = "splitAddress.length == " + splitAddress.length + ":"
                             + " splitAddress.length != 2 || 3 || 4 :"
                             + " splitAddress; ";
-                    for (int i = 0; i < splitAddress.length; i ++) {
+                    for (int i = 0; i < splitAddress.length; i++) {
                         message += splitAddress[i] + ", ";
                     }
                     throw new Exception(message);
@@ -1085,7 +1082,6 @@ public class Web_ZooplaHousepriceScraper extends Web_Scraper {
         }
         return result;
     }
-
 
     /**
      * @return the firstpartPostcode

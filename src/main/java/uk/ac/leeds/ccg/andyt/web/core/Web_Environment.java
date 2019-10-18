@@ -15,13 +15,18 @@
  */
 package uk.ac.leeds.ccg.andyt.web.core;
 
+import java.io.IOException;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 
 /**
  *
  * @author geoagdt
  */
-public class Web_Environment extends Generic_Environment {
+public class Web_Environment {
     
-    public Web_Environment(){}
+    public transient Generic_Environment env;
+    
+    public Web_Environment() throws IOException {
+        env = new Generic_Environment();
+    }
 }

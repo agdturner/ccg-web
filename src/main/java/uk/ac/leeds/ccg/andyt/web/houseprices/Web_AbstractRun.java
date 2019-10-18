@@ -146,8 +146,8 @@ public abstract class Web_AbstractRun extends Web_Object implements Runnable {
             if (!outFile.exists()) {
                 outFile.createNewFile();
             }
-            outPR = env.io.getPrintWriter(outFile, restart);
-            logPR = env.io.getPrintWriter(logFile, restart);
+            outPR = env.env.io.getPrintWriter(outFile, restart);
+            logPR = env.env.io.getPrintWriter(logFile, restart);
         } catch (IOException ex) {
             System.err.println(ex.toString());
             Logger.getLogger(Web_AbstractRun.class.getName()).log(Level.SEVERE, null, ex);
@@ -177,9 +177,9 @@ public abstract class Web_AbstractRun extends Web_Object implements Runnable {
                 return null;
             }
             String line;
-            try (BufferedReader br = env.io.getBufferedReader(logFile)) {
+            try (BufferedReader br = env.env.io.getBufferedReader(logFile)) {
                 StreamTokenizer st = new StreamTokenizer(br);
-                env.io.setStreamTokenizerSyntax1(st);
+                env.env.io.setStreamTokenizerSyntax1(st);
                 int token = st.nextToken();
                 line = null;
                 while (token != StreamTokenizer.TT_EOF) {

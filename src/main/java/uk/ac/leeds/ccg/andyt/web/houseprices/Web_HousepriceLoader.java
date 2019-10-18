@@ -60,9 +60,9 @@ public class Web_HousepriceLoader extends Web_Object {
         long ID = 0L;
         housepriceRecords = new TreeMap<>();
         File file = new File("/scratch01/Work/Projects/NewEnclosures/_Houseprices_sw9.csv");
-        BufferedReader br = env.io.getBufferedReader(file);
+        BufferedReader br = env.env.io.getBufferedReader(file);
         StreamTokenizer st = new StreamTokenizer(br);
-        env.io.setStreamTokenizerSyntax5(st);
+        env.env.io.setStreamTokenizerSyntax5(st);
         //String s = "'";
         st.wordChars('\'', '\'');
         int token;
