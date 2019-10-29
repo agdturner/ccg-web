@@ -17,27 +17,15 @@ package uk.ac.leeds.ccg.andyt.web.guardian;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Attribute;
-import org.jsoup.nodes.Attributes;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.select.Elements;
-import uk.ac.leeds.ccg.andyt.data.format.Data_ReadCSV;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
-import uk.ac.leeds.ccg.andyt.generic.lang.Generic_String;
+import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
+import uk.ac.leeds.ccg.andyt.data.format.Data_ReadTXT;
 import uk.ac.leeds.ccg.andyt.web.core.Web_Environment;
 import uk.ac.leeds.ccg.andyt.web.core.Web_Object;
 
@@ -47,19 +35,24 @@ import uk.ac.leeds.ccg.andyt.web.core.Web_Object;
  */
 public class GuardianGetPage extends Web_Object {
 
+    public final Data_ReadTXT reader;
+
     GuardianGetPage(Web_Environment e) {
         super(e);
+        reader = new Data_ReadTXT(e.de);
     }
 
     public static void main(String[] args) {
         try {
-            new GuardianGetPage(new Web_Environment()).run();
+            GuardianGetPage p = new GuardianGetPage(new Web_Environment(
+                    new Data_Environment()));
+            p.run();
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
         }
     }
 
-    public void run() {
+    public void run() throws IOException {
         File dataDir;
         dataDir = new File(System.getProperty("user.dir"), "data/");
         String filename;
@@ -69,60 +62,55 @@ public class GuardianGetPage extends Web_Object {
         run(dataDir, filename);
     }
 
-    void run(File dataDir, String filename) {
-        File inputDir;
-        inputDir = new File(dataDir, "input");
-        inputDir = new File(inputDir, "LexisNexis");
-        File fin = new File(inputDir, filename);
+    void run(File dataDir, String filename) throws IOException {
+        File inDir = new File(dataDir, "input");
+        inDir = new File(inDir, "LexisNexis");
+        File fin = new File(inDir, filename);
 
-        File outputDataDir;
-        outputDataDir = new File(dataDir, "output");
-        outputDataDir = new File(outputDataDir, "LexisNexis");
-        File fout = new File(outputDataDir, filename);
+        File outDir = new File(dataDir, "output");
+        outDir = new File(outDir, "LexisNexis");
+        File fout = new File(outDir, filename);
         File fout2 = new File(dataDir, filename + "del");
-        PrintWriter pw;
-        pw = env.env.io.getPrintWriter(fout, false);
-
-        String GuardianAPIKey;
-        GuardianAPIKey = getGuardianAPIKey(dataDir);
-
-        ArrayList<String> lines;
-        lines = Data_ReadCSV.read(fin, outputDataDir, 6);
-
-        String s;
-        for (int i = 0; i < lines.size(); i++) {
-            if (i == 0) {
-                pw.println(lines.get(i));
-                System.out.println(lines.get(i));
-            } else {
-                String[] vals;
-                vals = lines.get(i).split(",\"");
-                for (int j = 0; j < vals.length; j++) {
-                    if (j != 1) {
-                        if (j != vals.length - 1) {
-                            s = vals[j] + ",\"";
+        try (PrintWriter pw = env.env.io.getPrintWriter(fout, false)) {
+            String GuardianAPIKey;
+            GuardianAPIKey = getGuardianAPIKey(dataDir);
+            
+            ArrayList<String> lines = reader.read(fin, outDir, 6);
+            
+            String s;
+            for (int i = 0; i < lines.size(); i++) {
+                if (i == 0) {
+                    pw.println(lines.get(i));
+                    System.out.println(lines.get(i));
+                } else {
+                    String[] vals;
+                    vals = lines.get(i).split(",\"");
+                    for (int j = 0; j < vals.length; j++) {
+                        if (j != 1) {
+                            if (j != vals.length - 1) {
+                                s = vals[j] + ",\"";
+                                pw.print(s);
+                                System.out.print(s);
+                            } else {
+                                pw.println(vals[j]);
+                                System.out.println(vals[j]);
+                            }
+                        } else {
+                            String sf = vals[vals.length - 1];
+                            String title = sf.substring(0, sf.length() - 2);
+                            String page;
+                            page = getPage(vals[0], title, GuardianAPIKey, fout2);
+                            s = vals[j].replace("\"", "") + " " + page + "\",\"";
                             pw.print(s);
                             System.out.print(s);
-                        } else {
-                            pw.println(vals[j]);
-                            System.out.println(vals[j]);
                         }
-                    } else {
-                        String sf = vals[vals.length - 1];
-                        String title = sf.substring(0, sf.length() - 2);
-                        String page;
-                        page = getPage(vals[0], title, GuardianAPIKey, fout2);
-                        s = vals[j].replace("\"", "") + " " + page + "\",\"";
-                        pw.print(s);
-                        System.out.print(s);
                     }
                 }
             }
         }
-        pw.close();
     }
 
-    String getPage(String date, String Title, String GuardianAPIKey, File f) {
+    String getPage(String date, String Title, String GuardianAPIKey, File f) throws IOException {
 //        String Title;
 //        Title = "Terror threats will be the new normal for Europe, experts say; \n"
 //                + "Analysts believe there will be more security alerts and cancellations of major events after Paris attacks";
@@ -154,8 +142,7 @@ public class GuardianGetPage extends Web_Object {
                 + title + "&api-key=" + GuardianAPIKey;
 //        File f;
 //        f = new File(outputDataDir, "GuardianGetPage.html");
-        ArrayList<String> html;
-        html = getHTML(url, f);
+        ArrayList<String> html = getHTML(url, f);
         if (html.size() > 0) {
             String[] split = html.get(0).split("\"newspaperPageNumber\":");
             if (split.length > 1) {
@@ -167,50 +154,30 @@ public class GuardianGetPage extends Web_Object {
         return "";
     }
 
-    public ArrayList<String> getHTML(String sURL, File fileToStore) {
+    public ArrayList<String> getHTML(String sURL, File fileToStore)
+            throws IOException {
         ArrayList<String> r = new ArrayList<>();
-        URL url = null;
-        PrintWriter pw = env.env.io.getPrintWriter(fileToStore, false);
-        HttpURLConnection con = null;
-        BufferedReader br = null;
-        String line = null;
-        try {
-            url = new URL(sURL);
-        } catch (MalformedURLException e) {
-            e.printStackTrace(System.err);
-            //System.exit(1);
-        }
-        try {
-            con = (HttpURLConnection) url.openConnection();
+        try (PrintWriter pw = env.env.io.getPrintWriter(fileToStore, false)) {
+            URL url = new URL(sURL);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
-            br = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    con.getInputStream()));
+            String line;
             while ((line = br.readLine()) != null) {
                 pw.println(line);
                 r.add(line);
             }
-        } catch (IOException | NullPointerException e) {
-            e.printStackTrace(System.err);
-            //System.exit(1);
         }
-        //System.exit(1);
-        pw.close();
         return r;
     }
 
-    String getGuardianAPIKey(File dataDir) {
+    String getGuardianAPIKey(File dataDir) throws FileNotFoundException, IOException {
         String r = "";
-        File f;
-        File dir;
-        dir = new File(dataDir, "private");
-        f = new File(dir, "GuardianAPIKey.txt");
-        BufferedReader br;
-        br = env.env.io.getBufferedReader(f);
-        try {
+        File dir  = new File(dataDir, "private");
+        File f = new File(dir, "GuardianAPIKey.txt");
+        try (BufferedReader br = env.env.io.getBufferedReader(f)) {
             r = br.readLine();
-            br.close();
-        } catch (IOException ex) {
-            Logger.getLogger(GuardianGetPage.class.getName()).log(Level.SEVERE, null, ex);
         }
         return r;
     }

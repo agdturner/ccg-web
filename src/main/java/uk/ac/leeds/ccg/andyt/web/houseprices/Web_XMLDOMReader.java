@@ -56,7 +56,7 @@ public class Web_XMLDOMReader extends Data_ReadXML {
     @Override
     protected final void parseNodeList() {
         //readNodeListElements();
-        outcodePostcodes = new TreeSet<String>();
+        outcodePostcodes = new TreeSet<>();
         /*
          * <url>
          *  <lastmod>2013-03-05</lastmod>

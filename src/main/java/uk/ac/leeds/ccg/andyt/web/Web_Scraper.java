@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.web.airbnb.Web_ScraperAirbnb;
 import uk.ac.leeds.ccg.andyt.web.core.Web_Environment;
@@ -43,7 +44,7 @@ import uk.ac.leeds.ccg.andyt.web.houseprices.Web_ZooplaHousepriceScraper;
  */
 public class Web_Scraper extends Web_Object {
 
-    protected static File sharedLogFile;
+    protected final Generic_Execution exec;
     protected double connectionCount;
     protected File directory;
     protected ExecutorService executorService;
@@ -54,6 +55,7 @@ public class Web_Scraper extends Web_Object {
 
     public Web_Scraper(Web_Environment e) {
         super(e);
+        exec = new Generic_Execution(e.env);
     }
             
     protected void checkConnectionRate() {
@@ -88,13 +90,6 @@ public class Web_Scraper extends Web_Object {
         return directory;
     }
 
-    /**
-     * @return the sharedLogFile
-     */
-    public static File getSharedLogFile() {
-        return Web_ZooplaHousepriceScraper.sharedLogFile;
-    }
-    
     /**
      * @return the executorService
      */
@@ -213,20 +208,12 @@ public class Web_Scraper extends Web_Object {
         return result;
     }
 
-    protected PrintWriter getPrintWriter(String url) {
-        PrintWriter pw;
-        String filename;
-        File outputFile;
-        filename = getFilename(url);
-        outputFile = new File(dir, filename);
-        outputFile.getParentFile().mkdirs();
-        try {
-            outputFile.createNewFile();
-        } catch (IOException ex) {
-            Logger.getLogger(Web_Scraper.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        pw = env.env.io.getPrintWriter(outputFile, false);
-        return pw;
+    protected PrintWriter getPrintWriter(String url) throws IOException {
+        String filename = getFilename(url);
+        File outf = new File(dir, filename);
+        outf.getParentFile().mkdirs();
+        outf.createNewFile();
+        return env.env.io.getPrintWriter(outf, false);
     }
     
 }

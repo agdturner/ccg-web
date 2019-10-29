@@ -16,6 +16,7 @@
 package uk.ac.leeds.ccg.andyt.web.core;
 
 import java.io.IOException;
+import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
 import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 
 /**
@@ -24,9 +25,12 @@ import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
  */
 public class Web_Environment {
     
-    public transient Generic_Environment env;
+    public final transient Generic_Environment env;
+    public final transient Data_Environment de;
     
-    public Web_Environment() throws IOException {
-        env = new Generic_Environment();
+    public Web_Environment(Data_Environment de) throws IOException {
+        env = de.env;
+        this.de = de;
+        
     }
 }

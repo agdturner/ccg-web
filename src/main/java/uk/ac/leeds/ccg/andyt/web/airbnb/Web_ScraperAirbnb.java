@@ -8,8 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
 import uk.ac.leeds.ccg.andyt.web.Web_Scraper;
 import uk.ac.leeds.ccg.andyt.web.core.Web_Environment;
 
@@ -26,7 +25,9 @@ public class Web_ScraperAirbnb extends Web_Scraper {
      */
     public static void main(String[] args) {
         try {
-            new Web_ScraperAirbnb(new Web_Environment()).run(args);
+            Web_ScraperAirbnb p = new Web_ScraperAirbnb(new Web_Environment(
+                    new Data_Environment()));
+            p.run(args);
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
         }
@@ -36,12 +37,12 @@ public class Web_ScraperAirbnb extends Web_Scraper {
     String date;
     boolean overwrite;
 
-    public void run(String[] args) {
+    public void run(String[] args) throws IOException {
         //doUKPostcodeAreas();
         doGlobalCity();
     }
 
-    public void doGlobalCity() {
+    public void doGlobalCity() throws IOException {
         overwrite = true;
         //overwrite = false; // This will only re-get the data if it has not already been got (today).
         place = "Barcelona--Spain";
@@ -53,16 +54,11 @@ public class Web_ScraperAirbnb extends Web_Scraper {
         dir = new File(dir, date);
         dir.mkdirs();
         File logFile = new File(dir, "Test.log");
-        try {
             logFile.createNewFile();
-        } catch (IOException ex) {
-            Logger.getLogger(Web_ScraperAirbnb.class.getName()).log(
-                    Level.SEVERE, null, ex);
-        }
         parsePlace(url);
     }
 
-    public void doUKPostcodeAreas() {
+    public void doUKPostcodeAreas() throws IOException {
         //overwrite = true;
         overwrite = false; // This will only re-get the data if it has not already been got (today).
         for (int i = 1; i < 30; i++) {
@@ -78,18 +74,13 @@ public class Web_ScraperAirbnb extends Web_Scraper {
             dir = new File(dir, date);
             dir.mkdirs();
             File logFile = new File(dir, "Test.log");
-            try {
-                logFile.createNewFile();
-            } catch (IOException ex) {
-                Logger.getLogger(Web_ScraperAirbnb.class.getName()).log(
-                        Level.SEVERE, null, ex);
-            }
+            logFile.createNewFile();
             parsePlace(url);
         }
     }
 
 
-    public void parsePlace(String url) {
+    public void parsePlace(String url) throws IOException {
         String homesurl = url + "/homes";
         //String homesurl = url + "/homes?refinement_paths%5B%5D=%2Fhomes&place_id=&query=Barcelona%2C%20Spain&allow_override%5B%5D=&s_tag=s2aGabIK";
         ArrayList<String> lines;

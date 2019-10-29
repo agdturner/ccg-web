@@ -34,50 +34,47 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
 import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
 import uk.ac.leeds.ccg.andyt.web.Web_Scraper;
 import uk.ac.leeds.ccg.andyt.web.core.Web_Environment;
 
 public class Web_ScraperFacebook extends Web_Scraper {
 
-    public Web_ScraperFacebook(Web_Environment e)  {
+    public Web_ScraperFacebook(Web_Environment e) {
         super(e);
     }
 
-    /** Main method
+    /**
+     * Main method
+     *
      * @param args
      */
     public static void main(String[] args) {
         try {
-            new Web_ScraperFacebook(new Web_Environment()).run(args);
+            Web_ScraperFacebook p = new Web_ScraperFacebook(new Web_Environment(
+                    new Data_Environment()));
+            p.run(args);
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
         }
     }
 
-    public void run(String[] args) {
+    public void run(String[] args) throws IOException {
         String url = "http://www.facebook.com/search.php?init=dir&q=BNP&type=groups#!/group.php?gid=280968101201";
         getFacebookContacts(url);
     }
 
-    public void getFacebookContacts(String url) {
+    public void getFacebookContacts(String url) throws IOException {
         File dir;
         dir = new File(System.getProperty("user.dir"), "data");
         dir.mkdirs();
         File outputFile = new File(dir, "Test.html");
         outputFile.getParentFile().mkdirs();
-        try {
-            outputFile.createNewFile();
-        } catch (IOException ex) {
-            Logger.getLogger(Web_ScraperFacebook.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        outputFile.createNewFile();
         PrintWriter outputPW = env.env.io.getPrintWriter(outputFile, false);
         File logFile = new File(dir, "Test.log");
-        try {
-            logFile.createNewFile();
-        } catch (IOException ex) {
-            Logger.getLogger(Web_ScraperFacebook.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        logFile.createNewFile();
         PrintWriter logPrintWriter = env.env.io.getPrintWriter(logFile, false);
         getHTML(url, outputPW);
         outputPW.close();

@@ -17,6 +17,7 @@ package uk.ac.leeds.ccg.andyt.web.houseprices;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.util.TreeMap;
@@ -30,33 +31,32 @@ import uk.ac.leeds.ccg.andyt.web.core.Web_Object;
  * @author geoagdt
  */
 public class Web_HousepriceLoader extends Web_Object {
-    
-    public TreeMap<Long,Web_HousePriceRecord> housepriceRecords;
-    
-    public Web_HousepriceLoader(){ }
-    
+
+    public TreeMap<Long, Web_HousePriceRecord> housepriceRecords;
+
+    public Web_HousepriceLoader() {
+    }
+
     public void scrape(String firstpartPostcode) {
         String[] args = new String[3];
         args[0] = "/nfs/see-fs-02_users/geoagdt/scratch02/zoopla/";
         args[1] = ""; //"r";
-        args[2] = Generic_String.getUpperCase(firstpartPostcode);
+        args[2] = firstpartPostcode.toUpperCase();
         //args[3] = "7";
         new Web_ZooplaHousepriceScraper(env).run(args);
     }
 
-    public void scrape(
-            String firstpartPostcode, 
-            String secondpartPostcode) {
+    public void scrape(String firstpartPostcode, String secondpartPostcode) {
         String[] args = new String[4];
         args[0] = "/nfs/see-fs-02_users/geoagdt/scratch02/zoopla/";
         args[1] = ""; //"r";
-        args[2] = Generic_String.getUpperCase(firstpartPostcode);
-        args[3] = Generic_String.getUpperCase(secondpartPostcode);
+        args[2] = firstpartPostcode.toUpperCase();
+        args[3] = secondpartPostcode.toUpperCase();
         //args[3] = "7";
         new Web_ZooplaHousepriceScraper(env).run(args);
     }
 
-    public void load(String postcode) {
+    public void load(String postcode) throws IOException {
         long ID = 0L;
         housepriceRecords = new TreeMap<>();
         File file = new File("/scratch01/Work/Projects/NewEnclosures/_Houseprices_sw9.csv");
@@ -67,31 +67,27 @@ public class Web_HousepriceLoader extends Web_Object {
         st.wordChars('\'', '\'');
         int token;
         String line = "";
-        try {
-            token = st.nextToken();
-            line = st.sval;
-            token = st.nextToken();
-            while (token != StreamTokenizer.TT_EOF) {
-                switch (token) {
-                    case StreamTokenizer.TT_EOL:
-                        if (line != null) {
-                            Web_HousePriceRecord rec = new Web_HousePriceRecord(ID);
-                            System.out.println(line);
-                            rec.processLine(line);
-                            housepriceRecords.put(ID, rec);
-                            ID ++;
-                        }
-                        break;
-                    default:
-                        line = st.sval;
-                        break;
-                }
-                //token = st.nextToken();
-                token = st.nextToken();
+        token = st.nextToken();
+        line = st.sval;
+        token = st.nextToken();
+        while (token != StreamTokenizer.TT_EOF) {
+            switch (token) {
+                case StreamTokenizer.TT_EOL:
+                    if (line != null) {
+                        Web_HousePriceRecord rec = new Web_HousePriceRecord(ID);
+                        System.out.println(line);
+                        rec.processLine(line);
+                        housepriceRecords.put(ID, rec);
+                        ID++;
+                    }
+                    break;
+                default:
+                    line = st.sval;
+                    break;
             }
-        } catch (IOException ex) {
-            Logger.getLogger(Web_HousepriceLoader.class.getName()).log(Level.SEVERE, null, ex);
+            //token = st.nextToken();
+            token = st.nextToken();
         }
     }
-        
+
 }

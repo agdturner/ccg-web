@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashSet;
+import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
 import uk.ac.leeds.ccg.andyt.web.Web_Scraper;
 import uk.ac.leeds.ccg.andyt.web.core.Web_Environment;
 
@@ -44,17 +45,17 @@ public class Anna extends Web_Scraper {
      */
     public static void main(String[] args) {
         try {
-            new Anna(new Web_Environment()).run(args);
+            new Anna(new Web_Environment(new Data_Environment())).run(args);
         } catch (IOException ex) {
             ex.printStackTrace(System.err);
         }
     }
 
-    public void run(String[] args) {
+    public void run(String[] args) throws IOException {
         run();
     }
 
-    public void run() {
+    public void run() throws IOException {
         url = "http://www.gov.scot/seag/publicsearch.aspx";
         dir = new File(System.getProperty("user.dir"), "data");
         dir = new File(dir, "seag");
@@ -66,7 +67,7 @@ public class Anna extends Web_Scraper {
 
     HashSet<String> recs;
 
-    public void parse(String url) {
+    public void parse(String url) throws IOException {
 //        ArrayList<String> lines;
         File f;
         PrintWriter outputPW;
