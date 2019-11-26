@@ -17,6 +17,7 @@ Java 11
 
 ## Dependencies
 Please see the pom.xml for details.
+1. Generic: https://github.com/agdturner/agdt-java-generic - A Java library with generally useful classes and methods.
 
 ## Contributions
 Please raise issues and submit pull requests in the usual way. Contributions will be acknowledged.
