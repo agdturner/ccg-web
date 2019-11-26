@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.andyt.web.SoGWebPages;
+package uk.ac.leeds.ccg.andyt.web.io;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
-import uk.ac.leeds.ccg.andyt.web.Web_ContentHandler;
 
 public abstract class Web_ContentWriter extends Web_ContentHandler {
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.andyt.web;
+package uk.ac.leeds.ccg.andyt.web.io;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,14 +29,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import uk.ac.leeds.ccg.andyt.generic.execution.Generic_Execution;
-import uk.ac.leeds.ccg.andyt.generic.io.Generic_IO;
-import uk.ac.leeds.ccg.andyt.web.airbnb.Web_ScraperAirbnb;
 import uk.ac.leeds.ccg.andyt.web.core.Web_Environment;
 import uk.ac.leeds.ccg.andyt.web.core.Web_Object;
-import uk.ac.leeds.ccg.andyt.web.houseprices.Web_ZooplaHousepriceScraper;
 
 /**
  *
@@ -69,7 +64,7 @@ public class Web_Scraper extends Web_Object {
                     wait(timeToWaitInMilliseconds);
                     connectionRate = getConnectionRate();
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(Web_ZooplaHousepriceScraper.class.getName()).log(Level.SEVERE, null, ex);
+                    env.env.log(ex.getMessage());
                 }
             }
         }
@@ -149,7 +144,7 @@ public class Web_Scraper extends Web_Object {
             try {
                 this.wait(5000 * attemptNumber);
             } catch (InterruptedException ex) {
-                Logger.getLogger(Web_Scraper.class.getName()).log(Level.SEVERE, null, ex);
+                env.env.log(ex.getMessage());
             }
         }
         ArrayList<String> result = new ArrayList<>();

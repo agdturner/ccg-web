@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.andyt.web;
+package uk.ac.leeds.ccg.andyt.web.io;
 
 import java.net.URL;
 
