@@ -6,14 +6,14 @@ A Java library for processing data from and organising data for the World Wide W
 
 ## Usages
 1. Scraping and formatting data from the Web.
-2. Preparing data and HTML to publish on the web.
+2. Preparing data and HTML to publish on the Web.
 
 ## Code status and development roadmap
 Actively being developed.
 This is currently being rationalised with non generic components being abstracted into separate code bases...
 
 ## Platform requirements
-Java 11
+Java 11.
 
 ## Dependencies
 Please see the pom.xml for details.
