@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeMap;
 import uk.ac.leeds.ccg.andyt.data.core.Data_Environment;
+import uk.ac.leeds.ccg.andyt.generic.core.Generic_Environment;
 import uk.ac.leeds.ccg.andyt.web.Web_Scraper;
 import uk.ac.leeds.ccg.andyt.web.core.Web_Environment;
 
@@ -26,7 +27,7 @@ public class Web_ScraperAirbnb extends Web_Scraper {
     public static void main(String[] args) {
         try {
             Web_ScraperAirbnb p = new Web_ScraperAirbnb(new Web_Environment(
-                    new Data_Environment()));
+                    new Data_Environment(new Generic_Environment())));
             p.run(args);
         } catch (IOException ex) {
             ex.printStackTrace(System.err);

@@ -15,10 +15,7 @@
  */
 package uk.ac.leeds.ccg.andyt.web.houseprices;
 
-import java.util.Iterator;
-import java.util.TreeSet;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import uk.ac.leeds.ccg.andyt.data.postcode.Data_UKPostcodeHandler;
+import uk.ac.leeds.ccg.andyt.postcode.UKPC_Checker;
 
 /**
  * Class for formatting postcodes of the ana_naa format.
@@ -26,176 +23,91 @@ import uk.ac.leeds.ccg.andyt.data.postcode.Data_UKPostcodeHandler;
 public class Web_Run_ana_naa extends Web_AbstractRun {
 
     /**
-     * A reference to ZooplaHousepriceScraper.getABCDEFGHJKSTUW() for
- convenience.
-     */
-    private TreeSet<String> _ABCDEFGHJKSTUW;
-
-    /**
-     * @param tZooplaHousepriceScraper The Web_ZooplaHousepriceScraper
+     * @param z The Web_ZooplaHousepriceScraper
      * @param restart This is expected to be true if restarting a partially
      * completed run and false otherwise.
      */
-    public Web_Run_ana_naa(
-            Web_ZooplaHousepriceScraper tZooplaHousepriceScraper,
-            boolean restart) {
-        init(tZooplaHousepriceScraper, restart);
-        this._ABCDEFGHJKSTUW = Data_UKPostcodeHandler.get_ABCDEFGHJKSTUW();
+    public Web_Run_ana_naa(Web_ZooplaHousepriceScraper z, boolean restart) {
+        init(z, restart);
     }
 
     @Override
     public void run() {
-        if (restart == false) {
-            formatNew();
-        } else {
-            if (firstpartPostcode.length() > 1) {
-                throw new NotImplementedException();
-            }
-            // Initialise output files
-            String filenamepart = "_Houseprices_" + firstpartPostcode + "na";
-            String[] postcodeForRestart = getPostcodeForRestart(
-                    getType(), filenamepart);
-            if (postcodeForRestart == null) {
+        try {
+            if (restart == false) {
                 formatNew();
             } else {
-                if (postcodeForRestart[0] != null) {
-                    int n0Restart = Integer.valueOf(postcodeForRestart[0].substring(1, 2));
-                    String a1Restart = postcodeForRestart[0].substring(2, 3);
-                    // Initialise output files
-                    initialiseOutputs(getType(), filenamepart);
-                    // Process
-                    Iterator<String> _ABCDEFGHJKSTUW_Iterator;
-                    Iterator<String> _NAA_Iterator;
-                    int n0;
-                    int _int0;
-                    String _NAAString;
-                    int counter = 0;
-                    int numberOfHousepriceRecords = 0;
-                    int numberOfPostcodesWithHousepriceRecords = 0;
-                    String a1;
-                    boolean n0Restarter = false;
-                    boolean a1Restarter = false;
-                    boolean secondPartPostcodeRestarter = false;
-                    for (n0 = 0; n0 < 10; n0++) {
-                        if (!n0Restarter) {
-                            if (n0 == n0Restart) {
-                                n0Restarter = true;
-                            }
-                        } else {
-                            _ABCDEFGHJKSTUW_Iterator = _ABCDEFGHJKSTUW.iterator();
-                            while (_ABCDEFGHJKSTUW_Iterator.hasNext()) {
-                                a1 = (String) _ABCDEFGHJKSTUW_Iterator.next();
-                                if (!a1Restarter) {
-                                    if (a1.equalsIgnoreCase(a1Restart)) {
-                                        a1Restarter = true;
-                                    }
-                                } else {
-                                    String completeFirstPartPostcode = firstpartPostcode
-                                            + Integer.toString(n0) + a1;
-                                    String aURLString0 = url + completeFirstPartPostcode;
-                                    checkRequestRate();
-                                    if (ZooplaHousepriceScraper.isReturningOutcode(completeFirstPartPostcode, aURLString0)) {
-                                        _NAA_Iterator = _NAA.iterator();
-                                        while (_NAA_Iterator.hasNext()) {
-                                            _NAAString = (String) _NAA_Iterator.next();
-                                            if (!secondPartPostcodeRestarter) {
-                                                if (_NAAString.equalsIgnoreCase(postcodeForRestart[1])) {
-                                                    secondPartPostcodeRestarter = true;
-                                                }
-                                            } else {
-                                                String aURLString = aURLString0 + "-" + _NAAString;
-                                                _int0 = ZooplaHousepriceScraper.writeHouseprices(
-                                                        outPR,
-                                                        logPR,
-                                                        sharedLogPR,
-                                                        aURLString,
-                                                        firstpartPostcode + Integer.toString(n0) + a1,
-                                                        _NAAString,
-                                addressAdditionalPropertyDetails);
-                                                counter++;
-                                                numberOfHousepriceRecords += _int0;
-                                                if (_int0 > 0) {
-                                                    numberOfPostcodesWithHousepriceRecords++;
-                                                }
-                                            }
+                if (firstpartPostcode.length() > 1) {
+                    throw new Exception();
+                }
+                // Initialise output files
+                String filenamepart = "_Houseprices_" + firstpartPostcode + "na";
+                String[] pfr = getPostcodeForRestart(getType(), filenamepart);
+                if (pfr == null) {
+                    formatNew();
+                } else {
+                    if (pfr[0] != null) {
+                        int n0Restart = Integer.valueOf(pfr[0].substring(1, 2));
+                        String a1Restart = pfr[0].substring(2, 3);
+                        // Initialise output files
+                        initialiseOutputs(getType(), filenamepart);
+                        // Process
+                        int n0;
+                        int[] counts = getCounts();
+                        boolean n0Restarter = false;
+                        boolean a1Restarter = false;
+                        boolean sppr = false;
+                        for (n0 = 0; n0 < 10; n0++) {
+                            if (!n0Restarter) {
+                                if (n0 == n0Restart) {
+                                    n0Restarter = true;
+                                }
+                            } else {
+                                for (int i = 0; i < UKPC_Checker.ABCDEFGHJKSTUW.length; i++) {
+                                    String a1 = String.valueOf(UKPC_Checker.ABCDEFGHJKSTUW[i]).toLowerCase();
+                                    if (!a1Restarter) {
+                                        if (a1.equalsIgnoreCase(a1Restart)) {
+                                            a1Restarter = true;
                                         }
                                     } else {
-                                        Web_ZooplaHousepriceScraper.updateLog(
-                                                logPR,
-                                                sharedLogPR,
-                                                completeFirstPartPostcode);
+                                        String fpp = firstpartPostcode + Integer.toString(n0) + a1;
+                                        String aURLString0 = url + fpp;
+                                        sppr = doX(sppr, pfr, fpp, aURLString0, counts);
                                     }
                                 }
                             }
+//                        System.out.println(getReportString(counts));
                         }
-//                        System.out.println(getReportString(
-//                                counter,
-//                                numberOfHousepriceRecords,
-//                                numberOfPostcodesWithHousepriceRecords));
+                        finalise(counts);
                     }
-                    finalise(counter, numberOfHousepriceRecords, numberOfPostcodesWithHousepriceRecords);
                 }
             }
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+            env.env.log(ex.getMessage());
         }
     }
 
-    private void formatNew() {
-        int counter = 0;
-        int numberOfHousepriceRecords = 0;
-        int numberOfPostcodesWithHousepriceRecords = 0;
-        String _NAAString;
-        int _int0;
+    private void formatNew() throws Exception {
+        int[] counts = getCounts();
         if (firstpartPostcode.length() != 1) {
-            throw new NotImplementedException();
+            throw new Exception();
         } else {
             // Initialise output files
             String filenamepart = "_Houseprices_" + firstpartPostcode + "na";
-            initialiseOutputs("ana", filenamepart);
+            initialiseOutputs(UKPC_Checker.TYPE_ANA, filenamepart);
             // Process
-            Iterator<String> _ABCDEFGHJKSTUW_Iterator;
-            Iterator<String> _NAA_Iterator;
             int n0;
-            String a1;
             for (n0 = 0; n0 < 10; n0++) {
-                _ABCDEFGHJKSTUW_Iterator = _ABCDEFGHJKSTUW.iterator();
-                while (_ABCDEFGHJKSTUW_Iterator.hasNext()) {
-                    a1 = (String) _ABCDEFGHJKSTUW_Iterator.next();
-                    String completeFirstPartPostcode = firstpartPostcode
-                            + Integer.toString(n0) + a1;
-                    String aURLString0 = url + completeFirstPartPostcode;
-                    checkRequestRate();
-                    if (ZooplaHousepriceScraper.isReturningOutcode(completeFirstPartPostcode, aURLString0)) {
-                        _NAA_Iterator = _NAA.iterator();
-                        while (_NAA_Iterator.hasNext()) {
-                            _NAAString = (String) _NAA_Iterator.next();
-                            String aURLString = aURLString0 + "-" + _NAAString;
-                            _int0 = ZooplaHousepriceScraper.writeHouseprices(
-                                    outPR,
-                                    logPR,
-                                    sharedLogPR,
-                                    aURLString,
-                                    firstpartPostcode + Integer.toString(n0) + a1,
-                                    _NAAString,
-                                addressAdditionalPropertyDetails);
-                            counter++;
-                            numberOfHousepriceRecords += _int0;
-                            if (_int0 > 0) {
-                                numberOfPostcodesWithHousepriceRecords++;
-                            }
-                        }
-                    } else {
-                        Web_ZooplaHousepriceScraper.updateLog(
-                                logPR,
-                                sharedLogPR,
-                                completeFirstPartPostcode);
-                    }
+                for (int i = 0; i < UKPC_Checker.ABCDEFGHJKSTUW.length; i++) {
+                    String a1 = String.valueOf(UKPC_Checker.ABCDEFGHJKSTUW[i]).toLowerCase();
+                    String fpp = firstpartPostcode + Integer.toString(n0) + a1;
+                    String aURLString0 = url + fpp;
+                    doX(fpp, aURLString0, counts);
                 }
-//            System.out.println(getReportString(
-//                    counter,
-//                    numberOfHousepriceRecords,
-//                    numberOfPostcodesWithHousepriceRecords));
+//            System.out.println(getReportString(counts));
             }
         }
-        finalise(counter, numberOfHousepriceRecords, numberOfPostcodesWithHousepriceRecords);
+        finalise(counts);
     }
 }
