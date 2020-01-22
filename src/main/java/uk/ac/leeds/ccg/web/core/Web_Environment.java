@@ -13,20 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.ac.leeds.ccg.andyt.web.core;
+package uk.ac.leeds.ccg.web.core;
+
+import java.io.IOException;
+import uk.ac.leeds.ccg.data.core.Data_Environment;
+import uk.ac.leeds.ccg.generic.core.Generic_Environment;
 
 /**
  *
  * @author geoagdt
  */
-public class Web_Object {
+public class Web_Environment {
     
-    public Web_Environment env;
+    public final transient Generic_Environment env;
+    public final transient Data_Environment de;
     
-    protected Web_Object(){}
-
-    public Web_Object(Web_Environment e){
-        env = e;
+    public Web_Environment(Data_Environment de) throws IOException {
+        env = de.env;
+        this.de = de;
+        
     }
-    
 }
