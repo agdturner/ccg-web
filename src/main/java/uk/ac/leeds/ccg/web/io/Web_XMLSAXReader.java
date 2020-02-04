@@ -27,21 +27,6 @@ import org.xml.sax.helpers.DefaultHandler;
  * http://www.mkyong.com/java/how-to-read-xml-file-in-java-sax-parser/
  */
 public class Web_XMLSAXReader {
-
-    public static void main(String args[]) {
-
-        try {
-
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            SAXParser saxParser = factory.newSAXParser();
-            DefaultHandler handler = new DefaultHandler();
-            saxParser.parse("/scratch02/zoopla/outcodes.xml", handler);
-
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-        }
-
-    }
     
     DefaultHandler handler = new DefaultHandler() {
         boolean bfname = false;

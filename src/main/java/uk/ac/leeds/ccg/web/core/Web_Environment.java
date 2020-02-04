@@ -20,8 +20,10 @@ import uk.ac.leeds.ccg.data.core.Data_Environment;
 import uk.ac.leeds.ccg.generic.core.Generic_Environment;
 
 /**
- *
- * @author geoagdt
+ * Web_Environment
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Web_Environment {
     

@@ -16,8 +16,10 @@
 package uk.ac.leeds.ccg.web.core;
 
 /**
- *
- * @author geoagdt
+ * Web_Object
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Web_Object {
     
@@ -25,7 +27,7 @@ public class Web_Object {
     
     protected Web_Object(){}
 
-    public Web_Object(Web_Environment e){
+    public Web_Object(Web_Environment e) {
         env = e;
     }
     

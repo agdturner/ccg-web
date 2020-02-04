@@ -16,12 +16,13 @@
 package uk.ac.leeds.ccg.web.io;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.SocketPermission;
 import java.net.URL;
 import java.nio.file.Files;
@@ -38,35 +39,39 @@ import uk.ac.leeds.ccg.web.core.Web_Environment;
 import uk.ac.leeds.ccg.web.core.Web_Object;
 
 /**
+ * Web_Scraper
  *
  * @author Andy Turner
+ * @version 1.0.0
  */
 public class Web_Scraper extends Web_Object {
 
     protected final Generic_Execution exec;
     protected double connectionCount;
-    protected File directory;
+    protected Path directory;
     protected ExecutorService executorService;
     protected double permittedConnectionRate;
     protected long startTime;
     protected String url;
-    public File dir;
+    public Path dir;
 
     public Web_Scraper(Web_Environment e) {
         super(e);
         exec = new Generic_Execution(e.env);
     }
-            
+
     protected void checkConnectionRate() {
         long timeToWaitInMilliseconds = 1000;
-        double connectionRate = getConnectionRate();
+        double cr = getConnectionRate();
         synchronized (this) {
-            while (connectionRate > permittedConnectionRate) {
+            while (cr > permittedConnectionRate) {
                 try {
-                    System.out.println("connectionRate > permittedConnectionRate");
-                    System.out.println("" + connectionRate + " > " + permittedConnectionRate);
+                    env.env.log("connectionRate=" + cr);
+                    env.env.log("permittedConnectionRate=" + permittedConnectionRate);
+                    env.env.log("connectionRate > permittedConnectionRate");
+                    env.env.log("waiting " + timeToWaitInMilliseconds + " milliseconds");
                     wait(timeToWaitInMilliseconds);
-                    connectionRate = getConnectionRate();
+                    cr = getConnectionRate();
                 } catch (InterruptedException ex) {
                     env.env.log(ex.getMessage());
                 }
@@ -85,7 +90,7 @@ public class Web_Scraper extends Web_Object {
     /**
      * @return the directory
      */
-    public File getDirectory() {
+    public Path getDirectory() {
         return directory;
     }
 
@@ -96,28 +101,46 @@ public class Web_Scraper extends Web_Object {
         return executorService;
     }
 
-    protected HttpURLConnection getOpenHttpURLConnection(String url) {
+    /**
+     * By default do not use a proxy.
+     * @param url
+     * @return HttpURLConnection
+     * @throws IOException If encountered.
+     */
+    protected HttpURLConnection getOpenHttpURLConnection(String url)
+            throws IOException {
+        return getOpenHttpURLConnection(url, false, 0, "");
+    }
+
+    /**
+     * For http://www.leeds.ac.uk/proxy.pac:
+     * <ul>
+     * <li>proxyAddress = "www-cache.leeds.ac.uk"</li>
+     * <li>port = 3128</li>
+     * </ul>
+     *
+     * @param url
+     * @param useProxy If true then use the proxy.
+     * @param port The proxy port.
+     * @param proxyAddress The proxy address
+     * @return HttpURLConnection
+     * @throws IOException If encountered.
+     */
+    protected HttpURLConnection getOpenHttpURLConnection(String url,
+            boolean useProxy, int port, String proxyAddress)
+            throws IOException {
         checkConnectionRate();
         connectionCount += 1.0;
-        HttpURLConnection r = null;
-        URL u = null;
-        try {
-            u = new URL(url);
-        } catch (MalformedURLException e) {
-            System.err.println(e.getMessage());
+        HttpURLConnection r;
+        URL u = new URL(url);
+        if (useProxy) {
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(
+                    proxyAddress, port));
+            r = (HttpURLConnection) u.openConnection(proxy);
+        } else {
+            r = (HttpURLConnection) u.openConnection();
         }
-        //        // Set up proxy to use address and port from http://www.leeds.ac.uk/proxy.pac
-        //        int port = 3128;
-        //        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("www-cache.leeds.ac.uk", port));
-        try {
-            //            r = (HttpURLConnection) u.openConnection(proxy);
-            if (u != null) {
-                r = (HttpURLConnection) u.openConnection();
-            }
-            //            r.setRequestMethod("GET"); // GET is the default anyway.
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-        }
+        //r.setRequestMethod("GET"); // GET is the default anyway.
         return r;
     }
 
@@ -133,13 +156,13 @@ public class Web_Scraper extends Web_Object {
     }
 
     protected String getFilename(String url) {
-        String result = url.replaceAll(":", "_");
-        result = result.replaceAll("\\?", "_Q_");
-        result = result.replaceAll("/", "_");
-        return result;
+        String r = url.replaceAll(":", "_");
+        r = r.replaceAll("\\?", "_Q_");
+        r = r.replaceAll("/", "_");
+        return r;
     }
 
-    public ArrayList<String> getHTML(int numberOfRecursiveAttempts, 
+    public ArrayList<String> getHTML(int numberOfRecursiveAttempts,
             int attemptNumber, String sURL, PrintWriter outputPW) {
         /**
          * Wait 5 seconds.
@@ -151,9 +174,9 @@ public class Web_Scraper extends Web_Object {
                 env.env.log(ex.getMessage());
             }
         }
-        ArrayList<String> result = new ArrayList<>();
+        ArrayList<String> r = new ArrayList<>();
         URL u = null;
-        HttpURLConnection httpURLConnection ;
+        HttpURLConnection httpURLConnection;
         BufferedReader br;
         String line;
         try {
@@ -196,7 +219,7 @@ public class Web_Scraper extends Web_Object {
             br = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
             while ((line = br.readLine()) != null) {
                 outputPW.write(line);
-                result.add(line);
+                r.add(line);
             }
         } catch (IOException | NullPointerException e) {
             e.printStackTrace(System.err);
@@ -204,15 +227,14 @@ public class Web_Scraper extends Web_Object {
             //System.exit(1);
         }
         //System.exit(1);
-        return result;
+        return r;
     }
 
     protected PrintWriter getPrintWriter(String url) throws IOException {
-        String filename = getFilename(url);
-        Path outf = Paths.get(dir.toString(), filename);
+        Path outf = Paths.get(dir.toString(), getFilename(url));
         Files.createDirectories(outf.getParent());
         Files.createFile(outf);
         return Generic_IO.getPrintWriter(outf, false);
     }
-    
+
 }

@@ -18,8 +18,10 @@ package uk.ac.leeds.ccg.web.io;
 import java.net.URL;
 
 /**
- *
- * @author geoagdt
+ * Web_ContentHandlerInterface
+ * 
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public interface Web_ContentHandlerInterface {
     
