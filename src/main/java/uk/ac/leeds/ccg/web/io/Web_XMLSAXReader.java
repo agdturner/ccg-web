@@ -22,9 +22,11 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- *
- * @author geoagdt Adapted from:
+ * Adapted from:
  * http://www.mkyong.com/java/how-to-read-xml-file-in-java-sax-parser/
+ *
+ * @author Andy Turner
+ * @version 1.0.0
  */
 public class Web_XMLSAXReader {
     

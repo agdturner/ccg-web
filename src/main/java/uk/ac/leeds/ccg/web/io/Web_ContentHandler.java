@@ -72,8 +72,7 @@ public abstract class Web_ContentHandler {
      * @param b
      * @throws java.lang.Exception
      */
-    public void aTestForEquality(byte[] a, byte[] b)
-            throws Exception {
+    public void aTestForEquality(byte[] a, byte[] b) throws Exception {
         if (a.length == b.length) {
             for (int i = 0; i < a.length; i++) {
                 if (a[i] != b[i]) {

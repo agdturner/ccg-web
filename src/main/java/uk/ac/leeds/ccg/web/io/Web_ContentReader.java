@@ -43,7 +43,8 @@ public abstract class Web_ContentReader extends Web_ContentHandler {
      */
     public void readHTML(String url, String dir, String prefix, String suffix)
             throws Exception {
-        InputStream is = Files.newInputStream(Paths.get(dir, prefix + suffix + ".xhtml2.0.html"));
+        InputStream is = Files.newInputStream(Paths.get(dir, prefix + suffix 
+                + ".xhtml2.0.html"));
         byte[] lineSeparator = System.getProperty("line.separator").getBytes();
         readHTMLDTD(lineSeparator, is);
 //        readHTMLHead( lineSeparator, filenamePrefix, is );
@@ -57,25 +58,23 @@ public abstract class Web_ContentReader extends Web_ContentHandler {
         byte[] lineSeparatorRead = new byte[lineSeparator.length];
         // Read XMLDeclaration
         String xmlDeclaration = this.getXMLDeclaration();
-        byte[] tXMLDeclarationByteArray = new byte[xmlDeclaration.length()];
-        is.read(tXMLDeclarationByteArray);
-        String tXMLDeclarationRead = new String(tXMLDeclarationByteArray);
-        System.out.println(tXMLDeclarationRead);
+        byte[] xmlb = new byte[xmlDeclaration.length()];
+        is.read(xmlb);
+        String xmls = new String(xmlb);
+        System.out.println(xmls);
         // Test for equality
-        aTestForEquality(tXMLDeclarationRead, xmlDeclaration);
-
+        aTestForEquality(xmls, xmlDeclaration);
         // Read line separator
         is.read(lineSeparatorRead);
         // Test for equality
         aTestForEquality(lineSeparatorRead, lineSeparator);
-
         // Read 
-        String xmlStyleSheetDeclaration = getXMLStyleSheetDeclaration();
-        byte[] xmlStyleSheetDeclarationByteArray = new byte[xmlStyleSheetDeclaration.length()];
-        is.read(xmlStyleSheetDeclarationByteArray);
-        String xmlStyleSheetDeclarationRead = new String(xmlStyleSheetDeclarationByteArray);
-        System.out.println(xmlStyleSheetDeclarationRead);
+        String xmlSSD = getXMLStyleSheetDeclaration();
+        byte[] xmlSSDb = new byte[xmlSSD.length()];
+        is.read(xmlSSDb);
+        String xmlSSDs = new String(xmlSSDb);
+        System.out.println(xmlSSDs);
         // Test for equality
-        aTestForEquality(xmlStyleSheetDeclarationRead, xmlStyleSheetDeclaration);
+        aTestForEquality(xmlSSDs, xmlSSD);
     }
 }

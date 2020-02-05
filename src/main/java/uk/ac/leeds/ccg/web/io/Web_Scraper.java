@@ -60,6 +60,9 @@ public class Web_Scraper extends Web_Object {
         exec = new Generic_Execution(e.env);
     }
 
+    /**
+     * Check ad delay if connection rate is over {@link #permittedConnectionRate}.
+     */
     protected void checkConnectionRate() {
         long timeToWaitInMilliseconds = 1000;
         double cr = getConnectionRate();
@@ -79,23 +82,29 @@ public class Web_Scraper extends Web_Object {
         }
     }
 
+    /**
+     * @return A calculated connection rate. 
+     */
     public double getConnectionRate() {
         return getConnections() / (double) getTimeRunningMillis();
     }
 
+    /**
+     * @return {@link #connectionCount} 
+     */
     public double getConnections() {
         return connectionCount;
     }
 
     /**
-     * @return the directory
+     * @return {@link #directory}
      */
     public Path getDirectory() {
         return directory;
     }
 
     /**
-     * @return the executorService
+     * @return {@link #executorService}
      */
     public ExecutorService getExecutorService() {
         return executorService;
@@ -103,7 +112,7 @@ public class Web_Scraper extends Web_Object {
 
     /**
      * By default do not use a proxy.
-     * @param url
+     * @param url url
      * @return HttpURLConnection
      * @throws IOException If encountered.
      */
@@ -119,7 +128,7 @@ public class Web_Scraper extends Web_Object {
      * <li>port = 3128</li>
      * </ul>
      *
-     * @param url
+     * @param url url
      * @param useProxy If true then use the proxy.
      * @param port The proxy port.
      * @param proxyAddress The proxy address
@@ -149,7 +158,7 @@ public class Web_Scraper extends Web_Object {
     }
 
     /**
-     * @return the url
+     * @return {@link #url}
      */
     public String getUrl() {
         return url;
