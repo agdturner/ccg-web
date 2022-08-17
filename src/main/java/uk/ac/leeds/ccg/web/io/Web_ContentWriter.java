@@ -20,338 +20,235 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Calendar;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import uk.ac.leeds.ccg.generic.util.Generic_Collections;
+import uk.ac.leeds.ccg.web.core.Web_Strings;
 
 /**
  * Web_ContentWriter
- * 
+ *
  * @author Andy Turner
- * @version 1.0.0
+ * @version 1.0
  */
-public abstract class Web_ContentWriter extends Web_ContentHandler {
+public class Web_ContentWriter extends Web_ContentHandler {
+
+    /**
+     * For storing the line separator.
+     */
+    public byte[] ls;
+
+    /**
+     * For storing the head.
+     */
+    public ArrayList<byte[]> h;
+
+    /**
+     * For storing the body.
+     */
+    public ArrayList<byte[]> b;
 
     /**
      * Creates a new instance of RegressionPlots
      */
     public Web_ContentWriter() {
+        ls = System.getProperty("line.separator").getBytes();
+        b = new ArrayList<>();
     }
 
     /**
-     * @param url baseURL
-     * @param dir directory
-     * @param fnp filenamePrefix
-     * @param fns filenameSuffix
-     * @throws IOException If encountered.
+     * Add content.
+     *
+     * @param s The string to add to {@link #b}
      */
-    public void writeHTML(String url, String dir, String fnp, String fns)
+    public void add(String s) {
+        b.add(s.getBytes());
+    }
+
+    /**
+     * Add content.
+     *
+     * @param b The byte array to add to {@link #b}
+     */
+    public void add(byte[] b) {
+        this.b.add(b);
+    }
+
+    /**
+     * Add content.
+     *
+     * @param b The set of byte arrays to add as a single line to {@link #b}
+     */
+    public void add(byte[] first, byte[]... others) {
+        this.b.add(Generic_Collections.concatenate(first, others));
+    }
+
+    /**
+     * Writes a HTML file.
+     *
+     * @param dir directory to write to
+     * @param filename filename
+     * @param title HTML page title.
+     * @param version Page version.
+     * @throws IOException if thrown.
+     */
+    public void writeHTML(Path dir, String filename, String title) 
             throws IOException {
-        String pageTitle = "";
-        String version = "";
-        writeHTML(url, dir, fnp, fns, pageTitle, version);
-    }
-
-    /**
-     * @param url baseURL
-     * @param dir directory
-     * @param fnp filenamePrefix
-     * @param fns filenameSuffix
-     * @param title pageTitle
-     * @param version version
-     * @throws IOException If encountered.
-     */
-    public void writeHTML(String url, String dir, String fnp, String fns,
-            String title, String version) throws IOException {
-        Calendar calendar = Calendar.getInstance();
-        Path f = Paths.get(dir, fnp + fns + ".xhtml2.0.html");
-        try (OutputStream os = Files.newOutputStream(f)) {
-            byte[] ls = System.getProperty("line.separator").getBytes();
-            writeHTMLDTD(ls, os);
-            writeHTMLHead(ls, title, os, title, calendar);
-            writeHTMLBody(ls, url, fnp, fns,
-                    os, title, version, calendar);
+        Path f = Paths.get(dir.toString(), filename + Web_Strings.symbol_dot
+                + Web_Strings.s_html);
+        try ( OutputStream os = Files.newOutputStream(f)) {
+            writeHTMLDTD(os);
+            writeHTMLHead(os, title);
+            writeHTMLBody(os);
+            writeHTMLBodyFooter(os);
             os.flush();
         }
     }
 
     /**
+     * Write the Document Type Descriptor (DTD).
      *
-     * @param ls lineSeparator
-     * @param url baseURL
-     * @param fnp filenamePrefix
-     * @param os OutputStream
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
+     */
+    public void writeHTMLDTD(OutputStream os) throws IOException {
+        os.write(DTD);
+        os.write(ls);
+    }
+
+    /**
+     * Write the HTML Head.
+     *
+     * @param os The Output Stream to write to.
+     * @param title The title.
+     * @throws IOException if thrown.
+     */
+    public void writeHTMLHead(OutputStream os, String title) throws IOException {
+        writel(os, HTMLST);
+        writel(os, HEADST);
+        writel(os, "<title>" + title + "</title>");
+        writel(os, HEADET);
+    }
+
+    /**
+     * Write the HTML Body {@link #b}.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
+     */
+    public void writeHTMLBody(OutputStream os) throws IOException {
+        writel(os, BODYET);
+        Iterator<byte[]> i = b.iterator();
+        while (i.hasNext()) {
+            writel(os, i.next());
+        }
+    }
+
+    /**
+     * Write the HTML Body Footer.
+     *
+     * @param os The Output Stream to write to.
      * @param version version
-     * @param calendar calendar
-     * @throws IOException If encountered.
+     * @throws IOException if thrown.
      */
-    public void writeHTMLBodyFooter(byte[] ls, String url, String fnp,
-            OutputStream os, String version, Calendar calendar)
-            throws IOException {
-        os.write("<div>".getBytes());
-        os.write(ls);
-        os.write("<!-- Begin Footer -->".getBytes());
-        os.write(ls);
-        os.write("<ul>".getBytes());
-        os.write(ls);
-        os.write("<li><a name=\"Validation_and_Metadata\"></a><h2>Validation and Metadata</h2>".getBytes());
-        os.write(ls);
-        os.write("<ul>".getBytes());
-        os.write(ls);
-        os.write("<li>".getBytes());
-        os.write(ls);
-        os.write("<!-- Begin Validation -->".getBytes());
-        os.write(ls);
-        os.write("<!-- For validating the RDF linked from the header-->".getBytes());
-        os.write(ls);
-        os.write(("<a href=\"http://www.w3.org/RDF/Validator/ARPServlet?URI=" + url + fnp + ".rdf.xml\">").getBytes());
-        os.write(ls);
-        os.write("<img src=\"http://www.geog.leeds.ac.uk/people/a.turner/images/rdf_w3c_button.gif\" alt=\"[Validate RDF]\" title=\"W3C RDF Validation\" />".getBytes());
-        os.write(ls);
-        os.write("</a>".getBytes());
-        os.write(ls);
-        os.write("<!-- For validating this page. -->".getBytes());
-        os.write(ls);
-        os.write("<!--<a href=\"http://validator.w3.org/check/referer\">".getBytes());
-        os.write(ls);
-        os.write("<img src=\"http://www.geog.leeds.ac.uk/people/a.turner/images/valid-xhtml2.png\" alt=\"[Validate XHTML 2.0]\" title=\"W3C XHTML 2.0 Validation\" />".getBytes());
-        os.write(ls);
-        os.write("</a>-->".getBytes());
-        os.write(ls);
-        os.write("<!-- For validating the CSS linked from the header. -->".getBytes());
-        os.write(ls);
-        os.write("<a href=\"http://jigsaw.w3.org/css-validator/check/referer\">".getBytes());
-        os.write(ls);
-        os.write("<img src=\"http://www.geog.leeds.ac.uk/people/a.turner/images/vcss.gif\" alt=\"[Validate CSS]\" title=\"W3C CSS Validation\" />".getBytes());
-        os.write(ls);
-        os.write("</a>".getBytes());
-        os.write(ls);
-        os.write("</li>".getBytes());
-        os.write(ls);
-        os.write("<!-- End Validation -->".getBytes());
-        os.write(ls);
-        String _Date = calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH);
-        os.write(("<li>Version " + version + " of this page published on " + _Date + ".</li>").getBytes());
-        os.write(ls);
-        os.write("<li>Page hosted on the <a href=\"http://www.geog.leeds.ac.uk/\" title=\"School of Geography Home Page @ University of Leeds\">School of Geography</a> webserver at the <a href=\"http://www.leeds.ac.uk/\" title=\"University of Leeds Home Page\">University of Leeds</a>.</li>".getBytes());
-        os.write(ls);
-        os.write("<li>Copyright: Andy Turner, University of Leeds</li>".getBytes());
-        os.write(ls);
-        os.write("</ul></li>".getBytes());
-        os.write(ls);
-        os.write("<!-- End Footer -->".getBytes());
-        os.write(ls);
-        os.write("</ul></div>".getBytes());
-        os.write(ls);
-        os.write("</body>".getBytes());
+    public void writeHTMLBodyFooter(OutputStream os) throws IOException {
+        writeDIVST(os);
+        writePST(os);
+        write(os, "Last modified on " + LocalDate.now().toString() + ".");
+        writePET(os);
+        writeDIVET(os);
+        writel(os, BODYET);
+        writel(os, HTMLET);
     }
 
     /**
-     * @param ls lineSeparator
-     * @param url baseURL
-     * @param fnp filenamePrefix
-     * @param fns filenameSuffix
-     * @param os Output Stream
-     * @throws IOException If encountered.
+     * Write the BODY Start Tag.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
      */
-    public abstract void writeHTMLBodyMain(byte[] ls, String url, String fnp,
-            String fns, OutputStream os) throws IOException;
-
-    /**
-     * @param ls lineSeparator
-     * @param url baseURL
-     * @param fnp filenamePrefix
-     * @param fns filenameSuffix
-     * @param os Output Stream
-     * @param title title
-     * @throws IOException If encountered.
-     */
-    public void writeHTMLBodyStart(byte[] ls, String url, String fnp,
-            String fns, OutputStream os, String title) throws IOException {
-        os.write("<body>".getBytes());
-        os.write(ls);
-        os.write("<div>".getBytes());
-        os.write(ls);
-        os.write("<ul>".getBytes());
-        os.write(ls);
-        os.write(("<li><h1><a href=\"" + url + fnp + fns + ".xhtml2.0.html\" title=\"" + title + " @ School of Geography, University of Leeds\">" + title + "</a></h1></li>").getBytes());
-        os.write(ls);
-        os.write("<li><h3><a href=\"http://www.geog.leeds.ac.uk/people/a.turner/\" title=\"Andy Turner's Home Page @ School of Geography, University of Leeds\"><img src=\"http://www.geog.leeds.ac.uk/people/a.turner/a.turner.png\" alt=\"[An image of Andy Turner]\" /></a></h3></li>".getBytes());
-        os.write(ls);
-        os.write("</ul></div>".getBytes());
+    public void writeHTMLBODYST(OutputStream os) throws IOException {
+        os.write(BODYST);
         os.write(ls);
     }
 
     /**
-     * @param ls lineSeparator
-     * @param url baseURL
-     * @param fnp filenamePrefix
-     * @param fns filenameSuffix
-     * @param os Output Stream
-     * @throws IOException If encountered.
+     * Write a DIV Start Tag. This is always on a line on its own.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
      */
-    public void writeHTMLBodyStart(byte[] ls, String url, String fnp,
-            String fns, OutputStream os) throws IOException {
-        os.write("<body>".getBytes());
-        os.write(ls);
-        os.write("<div>".getBytes());
-        os.write(ls);
-        os.write("<ul>".getBytes());
-        os.write(ls);
-        os.write(("<li><h1><a href=\"" + url + fnp + fns + ".xhtml2.0.html\" title=\"Andy Turner's " + fnp + fns + " Web Page @ School of Geography, University of Leeds\">" + fnp + fns + " Page</a></h1></li>").getBytes());
-        os.write(ls);
-        os.write("<li><h3><a href=\"http://www.geog.leeds.ac.uk/people/a.turner/\" title=\"Andy Turner's Home Page @ School of Geography, University of Leeds\"><img src=\"http://www.geog.leeds.ac.uk/people/a.turner/a.turner.png\" alt=\"[An image of Andy Turner]\" /></a></h3></li>".getBytes());
-        os.write(ls);
-        os.write("</ul></div>".getBytes());
+    public void writeDIVST(OutputStream os) throws IOException {
+        os.write(DIVST);
         os.write(ls);
     }
 
     /**
-     * @param ls lineSeparator
-     * @param url baseURL
-     * @param fnp filenamePrefix
-     * @param fns filenameSuffix
-     * @param os Output Stream
-     * @param title pageTitle
-     * @param version version
-     * @param calendar calendar
-     * @throws IOException If encountered.
+     * Write a DIV End Tag. This is always on a line on its own.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
      */
-    public void writeHTMLBody(byte[] ls, String url, String fnp, String fns,
-            OutputStream os, String title, String version, Calendar calendar)
-            throws IOException {
-        writeHTMLBodyStart(ls, url, fnp, fns, os, title);
-        writeHTMLBodyMain(ls, url, fnp, fns, os);
-        writeHTMLBodyFooter(ls, url, fnp, os, version, calendar);
-    }
-
-    /**
-     * @param ls lineSeparator
-     * @param url baseURL
-     * @param fnp filenamePrefix
-     * @param fns filenameSuffix
-     * @param os Output Stream
-     * @param calendar calendar
-     * @throws IOException If encountered.
-     */
-    public void writeHTMLBody(byte[] ls, String url, String fnp, String fns,
-            OutputStream os, Calendar calendar) throws IOException {
-        writeHTMLBodyStart(ls, url, fnp, fns, os);
-        writeHTMLBodyMain(ls, url, fnp, fns, os);
-        writeHTMLBodyFooter(ls, url, fnp, os, "1.0.0", calendar);
-    }
-
-    /**
-     * @param ls lineSeparator
-     * @param fnp filenamePrefix
-     * @param os Output Stream
-     * @param calendar calendar
-     * @throws IOException If encountered.
-     */
-    public void writeHTMLHead(byte[] ls, String fnp, OutputStream os,
-            Calendar calendar) throws IOException {
-        os.write("<head>".getBytes());
-        os.write(ls);
-        os.write("<link rel=\"schema.DC\" href=\"http://purl.org/dc/elements/1.1/\" />".getBytes());
-        os.write(ls);
-        os.write("<meta name=\"DC.language\" content=\"en\" />".getBytes());
-        os.write(ls);
-        os.write("<meta name=\"DC.format\" content=\"text/html\" />".getBytes());
-        os.write(ls);
-        os.write("<meta name=\"DC.publisher\" content=\"School of Geography, University of Leeds\" />".getBytes());
-        os.write(ls);
-        os.write("<meta name=\"DC.rights\" content=\"http://www.leeds.ac.uk/copyright.html\" />".getBytes());
-        os.write(ls);
-        os.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />".getBytes());
-        os.write(ls);
-        os.write(("<meta name=\"DC.title\" content=\"Andy Turner's " + fnp + " Web Page @ School of Geography, University of Leeds\" />").getBytes());
-        os.write(ls);
-        os.write(("<meta name=\"DC.description\" content=\"Andy Turner's " + fnp + " Web Page @ School of Geography, University of Leeds\" />").getBytes());
-        os.write(ls);
-        os.write(("<meta name=\"DC.date\" content=\"" + calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "\" />").getBytes());
-        os.write(ls);
-        os.write("<meta name=\"DC.contributor\" content=\"Andy Turner\" />".getBytes());
-        os.write(ls);
-        os.write(("<meta name=\"DC.subject\" content=" + fnp + " />").getBytes());
-        os.write(ls);
-        os.write("<meta name=\"DC.creator\" content=\"Andy Turner\" />".getBytes());
-        os.write(ls);
-        os.write(("<title>Andy Turner's " + fnp + " Web Page @ School of Geography, University of Leeds</title>").getBytes());
-        os.write(ls);
-        os.write("<meta name=\"Keywords\" content=\"Andy,Turner,Geography\" />".getBytes());
-        os.write(ls);
-        os.write("<meta name=\"description\" content=\"Web Page\" />".getBytes());
-        os.write(ls);
-        os.write("<meta name=\"author\" content=\"Andy Turner\" />".getBytes());
-        os.write(ls);
-        os.write("<link rel=\"stylesheet\" href=\"http://www.geog.leeds.ac.uk/people/a.turner/style/SOGStyle1CSS2.1.css\" type=\"text/css\" />".getBytes());
-        os.write(ls);
-        os.write("</head>".getBytes());
+    public void writeDIVET(OutputStream os) throws IOException {
+        os.write(DIVET);
         os.write(ls);
     }
 
     /**
-     * @param ls lineSeparator
-     * @param fnp filenamePrefix
-     * @param os Output Stream
-     * @param title title
-     * @param calendar calendar
-     * @throws IOException If encountered.
+     * Write a P Start Tag.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
      */
-    public void writeHTMLHead(byte[] ls, String fnp, OutputStream os,
-            String title, Calendar calendar) throws IOException {
-        os.write("<head>".getBytes());
-        os.write(ls);
-        os.write("<link rel=\"schema.DC\" href=\"http://purl.org/dc/elements/1.1/\" />".getBytes());
-        os.write(ls);
-        os.write("<meta name=\"DC.language\" content=\"en\" />".getBytes());
-        os.write(ls);
-        os.write("<meta name=\"DC.format\" content=\"text/html\" />".getBytes());
-        os.write(ls);
-        os.write("<meta name=\"DC.publisher\" content=\"School of Geography, University of Leeds\" />".getBytes());
-        os.write(ls);
-        os.write("<meta name=\"DC.rights\" content=\"http://www.leeds.ac.uk/copyright.html\" />".getBytes());
-        os.write(ls);
-        os.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\" />".getBytes());
-        os.write(ls);
-        os.write(("<meta name=\"DC.title\" content=\"" + title + " @ School of Geography, University of Leeds\" />").getBytes());
-        os.write(ls);
-        os.write(("<meta name=\"DC.description\" content=\"" + title + " @ School of Geography, University of Leeds\" />").getBytes());
-        os.write(ls);
-        os.write(("<meta name=\"DC.date\" content=\"" + calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "\" />").getBytes());
-        os.write(ls);
-        os.write("<meta name=\"DC.contributor\" content=\"Andy Turner\" />".getBytes());
-        os.write(ls);
-        os.write(("<meta name=\"DC.subject\" content=" + fnp + " />").getBytes());
-        os.write(ls);
-        os.write("<meta name=\"DC.creator\" content=\"Andy Turner\" />".getBytes());
-        os.write(ls);
-        os.write(("<title>" + title + " @ School of Geography, University of Leeds</title>").getBytes());
-        os.write(ls);
-        os.write("<meta name=\"Keywords\" content=\"Andy,Turner,Geography\" />".getBytes());
-        os.write(ls);
-        os.write("<meta name=\"description\" content=\"Web Page\" />".getBytes());
-        os.write(ls);
-        os.write("<meta name=\"author\" content=\"Andy Turner\" />".getBytes());
-        os.write(ls);
-        os.write("<link rel=\"stylesheet\" href=\"http://www.geog.leeds.ac.uk/people/a.turner/style/SOGStyle1CSS2.1.css\" type=\"text/css\" />".getBytes());
-        os.write(ls);
-        os.write("</head>".getBytes());
+    public void writePST(OutputStream os) throws IOException {
+        os.write(PST);
+    }
+
+    /**
+     * Write a P End Tag followed by a new line.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
+     */
+    public void writePET(OutputStream os) throws IOException {
+        os.write(PET);
         os.write(ls);
     }
 
     /**
-     * @param ls lineSeparator
-     * @param os Output Stream
-     * @throws IOException If encountered.
+     * Write string followed by a new line.
+     *
+     * @param os The Output Stream to write to.
+     * @param s The String to write
+     * @throws IOException if thrown.
      */
-    public void writeHTMLDTD(byte[] ls, OutputStream os) throws IOException {
-        os.write(getXMLDeclaration().getBytes());
-        os.write(ls);
-        os.write(getXMLStyleSheetDeclaration().getBytes());
-        os.write(ls);
-        os.write(getDTD().getBytes());
-        os.write(ls);
-        os.write(getHTMLStartTag().getBytes());
+    public void write(OutputStream os, String s) throws IOException {
+        os.write(s.getBytes());
+    }
+
+    /**
+     * Write string.
+     *
+     * @param os The Output Stream to write to.
+     * @param s The String to write.
+     * @throws IOException if thrown.
+     */
+    public void writel(OutputStream os, String s) throws IOException {
+        os.write(s.getBytes());
         os.write(ls);
     }
 
+    /**
+     * Write string.
+     *
+     * @param os The Output Stream to write to.
+     * @param b The byte array to write.
+     * @throws IOException if thrown.
+     */
+    public void writel(OutputStream os, byte[] b) throws IOException {
+        os.write(b);
+        os.write(ls);
+    }
 }
