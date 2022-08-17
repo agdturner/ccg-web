@@ -1,6 +1,4 @@
-# Web
-
-https://github.com/agdturner/agdt-java-generic-web/
+# [ccg-web](https://github.com/agdturner/ccg-web/)
 
 A Java library for processing data from and organising data for the World Wide Web.
 
@@ -8,19 +6,12 @@ A Java library for processing data from and organising data for the World Wide W
 1. Scraping and formatting data from the Web.
 2. Preparing data and HTML to publish on the Web.
 
-## Code status and development roadmap
-Actively being developed.
-This is currently being rationalised with non generic components being abstracted into separate code bases...
-
 ## Platform requirements
 Java 11.
 
 ## Dependencies
 Please see the pom.xml for details.
-1. Generic: https://github.com/agdturner/agdt-java-generic - A Java library with generally useful classes and methods.
-
-## Contributions
-Please raise issues and submit pull requests in the usual way. Contributions will be acknowledged.
+1. Generic: https://github.com/agdturner/ccg-generic - A Java library with generally useful classes and methods.
 
 ## LICENCE
 Please see the standard Apache 2.0 open source LICENCE.
