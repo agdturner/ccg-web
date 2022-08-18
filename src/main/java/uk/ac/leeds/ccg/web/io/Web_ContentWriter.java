@@ -94,10 +94,13 @@ public class Web_ContentWriter extends Web_ContentHandler {
      * @param version Page version.
      * @throws IOException if thrown.
      */
-    public void writeHTML(Path dir, String filename, String title) 
+    public void writeHTML(Path dir, String filename, String title)
             throws IOException {
         Path f = Paths.get(dir.toString(), filename + Web_Strings.symbol_dot
                 + Web_Strings.s_html);
+        if (!Files.exists(dir)) {
+            Files.createDirectories(dir);
+        }
         try ( OutputStream os = Files.newOutputStream(f)) {
             writeHTMLDTD(os);
             writeHTMLHead(os, title);
@@ -218,6 +221,111 @@ public class Web_ContentWriter extends Web_ContentHandler {
     }
 
     /**
+     * Write a H1 Start Tag.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
+     */
+    public void writeH1ST(OutputStream os) throws IOException {
+        os.write(H1ST);
+    }
+
+    /**
+     * Write a H1 End Tag followed by a new line.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
+     */
+    public void writeH1ET(OutputStream os) throws IOException {
+        os.write(H1ET);
+        os.write(ls);
+    }
+
+    /**
+     * Write a H2 Start Tag.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
+     */
+    public void writeH2ST(OutputStream os) throws IOException {
+        os.write(H2ST);
+    }
+
+    /**
+     * Write a H2 End Tag followed by a new line.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
+     */
+    public void writeH2ET(OutputStream os) throws IOException {
+        os.write(H2ET);
+        os.write(ls);
+    }
+
+    /**
+     * Write a H3 Start Tag.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
+     */
+    public void writeH3ST(OutputStream os) throws IOException {
+        os.write(H3ST);
+    }
+
+    /**
+     * Write a H3 End Tag followed by a new line.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
+     */
+    public void writeH3ET(OutputStream os) throws IOException {
+        os.write(H3ET);
+        os.write(ls);
+    }
+
+    /**
+     * Write a H4 Start Tag.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
+     */
+    public void writeH4ST(OutputStream os) throws IOException {
+        os.write(H4ST);
+    }
+
+    /**
+     * Write a H4 End Tag followed by a new line.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
+     */
+    public void writeH4ET(OutputStream os) throws IOException {
+        os.write(H4ET);
+        os.write(ls);
+    }
+
+    /**
+     * Write a H5 Start Tag.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
+     */
+    public void writeH5ST(OutputStream os) throws IOException {
+        os.write(H5ST);
+    }
+
+    /**
+     * Write a H5 End Tag followed by a new line.
+     *
+     * @param os The Output Stream to write to.
+     * @throws IOException if thrown.
+     */
+    public void writeH5ET(OutputStream os) throws IOException {
+        os.write(H5ET);
+        os.write(ls);
+    }
+
+    /**
      * Write string followed by a new line.
      *
      * @param os The Output Stream to write to.
@@ -250,5 +358,16 @@ public class Web_ContentWriter extends Web_ContentHandler {
     public void writel(OutputStream os, byte[] b) throws IOException {
         os.write(b);
         os.write(ls);
+    }
+    
+    /**
+     * Generate and return an HTML link.
+     * 
+     * @param url The URL.
+     * @param name The name for the link.
+     * @return A link e.g. {@code "<a href="https://example.com">example</a>"}
+     */
+    public String getLink(String url, String name) {
+        return "<a href=\"" + url + "\">" + name + "</a>";
     }
 }

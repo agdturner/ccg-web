@@ -2,17 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.agdturner</groupId>
-    <artifactId>agdt-java-web</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>ccg-web</artifactId>
+    <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     
-    <name>agdt-java-web</name>
-    <url>https://github.com/agdturner/agdt-java-web</url>
+    <name>ccg-web</name>
+    <url>https://github.com/agdturner/ccg-web</url>
     <description>A Java library for processing data from and organising data for the World Wide Web.</description>
     <scm>
-        <url>git@github.com:agdturner/agdt-java-web.git</url>
-        <connection>scm:git:git@github.com:agdturner/agdt-java-web.git</connection>
-        <developerConnection>scm:git:git@github.com:agdturner/agdt-java-web</developerConnection>
+        <url>git@github.com:agdturner/ccg-web.git</url>
+        <connection>scm:git:git@github.com:agdturner/ccg-web.git</connection>
+        <developerConnection>scm:git:git@github.com:agdturner/ccg-web</developerConnection>
     </scm>
     <licenses>
         <license>
@@ -39,60 +39,41 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <maven.version>3.1.0</maven.version>
-        <agdt-java-generic.version>1.1.1</agdt-java-generic.version>
-        <agdt-java-data.version>1.0-SNAPSHOT</agdt-java-data.version>
-        <junit.version>5.5.2</junit.version>
+        <ccg-io.version>1.1.0</ccg-io.version>
+        <ccg-data.version>0.3</ccg-data.version>
     </properties>
     
     <dependencies>
         <dependency>
+            <groupId>io.github.agdturner</groupId>
+            <artifactId>ccg-io</artifactId>
+            <version>${ccg-io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.agdturner</groupId>
+            <artifactId>ccg-data</artifactId>
+            <version>${ccg-data.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
+            <version>5.6.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
+            <version>5.6.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.github.agdturner</groupId>
-            <artifactId>agdt-java-generic</artifactId>
-            <version>${agdt-java-generic.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.agdturner</groupId>
-            <artifactId>agdt-java-data</artifactId>
-            <version>${agdt-java-data.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.6.0</version>
             <scope>test</scope>
-            <version>2.44.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.opera</groupId>
-            <artifactId>operadriver</artifactId>
-            <scope>test</scope>
-            <version>1.5</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.seleniumhq.selenium</groupId>
-                    <artifactId>selenium-remote-driver</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-            <version>4.11</version>
         </dependency>
     </dependencies>
     
@@ -101,7 +82,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.10.1</version>
                 <configuration>
                     <compilerArgs>
                         <arg>-verbose</arg>
@@ -112,18 +93,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M4</version>
-                <!--
-                <version>2.22.2</version>
-                -->
+                <version>3.0.0-M6</version>
+                <configuration>
+                    <argLine>-Xms256m</argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.0.0-M4</version>
-                <!--
-                <version>2.22.2</version>
-                -->
+                <version>3.0.0-M6</version>
             </plugin>
         </plugins>
     </build>
@@ -136,7 +114,7 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.8</version>
+                        <version>1.6.13</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>ossrh</serverId>
@@ -147,7 +125,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
-                        <version>3.8.1</version>
+                        <version>3.10.1</version>
                         <configuration>
                             <compilerArgs>
                                 <arg>-verbose</arg>
@@ -158,23 +136,20 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.0.0-M4</version>
-                        <!--
-                        <version>2.22.2</version>
-                        -->
+                        <version>3.0.0-M6</version>
+                        <configuration>
+                            <argLine>-Xms256m -Xmx512m</argLine>
+                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>3.0.0-M4</version>
-                        <!--
-                        <version>2.22.2</version>
-                        -->
+                        <version>3.0.0-M6</version>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.2.0</version>
+                        <version>3.2.1</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -187,7 +162,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.1.1</version>
+                        <version>3.4.0</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -200,7 +175,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>1.6</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -225,6 +200,17 @@
         <repository>
             <id>internal</id>
             <url>file://${project.build.directory}/mvn-repo</url>
+        </repository>
+        -->
+        <repository>
+            <id>github</id>
+            <name>GitHub agdturner Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/agdturner/ccg-web</url>
+        </repository>
+        <!--
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
         -->
     </distributionManagement>

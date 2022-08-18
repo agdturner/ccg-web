@@ -46,4 +46,14 @@ public abstract class Web_ContentHandler {
     public static final byte[] LIET = "</li>".getBytes();
     public static final byte[] PST = "<p>".getBytes();
     public static final byte[] PET = "</p>".getBytes();
+    public static final byte[] H1ST = "<h1>".getBytes();
+    public static final byte[] H1ET = "</h1>".getBytes();
+    public static final byte[] H2ST = "<h2>".getBytes();
+    public static final byte[] H2ET = "</h2>".getBytes();
+    public static final byte[] H3ST = "<h3>".getBytes();
+    public static final byte[] H3ET = "</h3>".getBytes();
+    public static final byte[] H4ST = "<h4>".getBytes();
+    public static final byte[] H4ET = "</h4>".getBytes();
+    public static final byte[] H5ST = "<h5>".getBytes();
+    public static final byte[] H5ET = "</h5>".getBytes();
 }
