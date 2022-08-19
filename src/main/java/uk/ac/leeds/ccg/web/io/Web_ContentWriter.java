@@ -67,6 +67,21 @@ public class Web_ContentWriter extends Web_ContentHandler {
         b.add(s.getBytes());
     }
 
+   /**
+     * Add content.
+     *
+     * @param first The first String to add on a single line to {@link #b}.
+     * @param others An ordered sequence of Strings to add on a single line to
+     * {@link #b}.
+     */
+    public void add(String first, String... others) {
+        String s = first;
+        for (String other : others) {
+            s = s + other;
+        }
+        add(s);
+    }
+
     /**
      * Add content.
      *
@@ -79,7 +94,9 @@ public class Web_ContentWriter extends Web_ContentHandler {
     /**
      * Add content.
      *
-     * @param b The set of byte arrays to add as a single line to {@link #b}
+     * @param first The first byte array to add on a single line to {@link #b}.
+     * @param others An ordered sequence of byte arrays to add on a single line 
+     * to {@link #b}.
      */
     public void add(byte[] first, byte[]... others) {
         this.b.add(Generic_Collections.concatenate(first, others));
@@ -358,6 +375,17 @@ public class Web_ContentWriter extends Web_ContentHandler {
     public void writel(OutputStream os, byte[] b) throws IOException {
         os.write(b);
         os.write(ls);
+    }
+    
+    /**
+     * Generate and return an HTML link.
+     * 
+     * @param url The URL.
+     * @param name The name for the link.
+     * @return A link e.g. {@code "<a href="https://example.com">example</a>"}
+     */
+    public String getLink(Path url, String name) {
+        return "<a href=\"" + url.toString() + "\">" + name + "</a>";
     }
     
     /**
