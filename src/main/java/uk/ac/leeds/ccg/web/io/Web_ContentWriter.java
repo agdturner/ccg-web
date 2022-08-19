@@ -174,10 +174,12 @@ public class Web_ContentWriter extends Web_ContentHandler {
      * @throws IOException if thrown.
      */
     public void writeHTMLBodyFooter(OutputStream os) throws IOException {
+        //write(os, "<div>");
         writeDIVST(os);
-        writePST(os);
-        write(os, "Last modified on " + LocalDate.now().toString() + ".");
-        writePET(os);
+        write(os, "<p>Last modified on " + LocalDate.now().toString() + ".</p>");
+        String cc0 = "https://creativecommons.org/share-your-work/public-domain/cc0/";
+        write(os, "<p>" + getLink(cc0, "CCO Licence") + "</p>");
+        write(os, "</div>");
         writeDIVET(os);
         writel(os, BODYET);
         writel(os, HTMLET);
