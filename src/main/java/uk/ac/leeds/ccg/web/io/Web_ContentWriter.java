@@ -178,7 +178,7 @@ public class Web_ContentWriter extends Web_ContentHandler {
         writeDIVST(os);
         write(os, "<p>Last modified on " + LocalDate.now().toString() + ".</p>");
         String cc0 = "https://creativecommons.org/share-your-work/public-domain/cc0/";
-        write(os, "<p>" + getLink(cc0, "CCO Licence") + "</p>");
+        write(os, "<p>" + getLink(cc0, "CC0 Licence") + "</p>");
         write(os, "</div>");
         writeDIVET(os);
         writel(os, BODYET);
