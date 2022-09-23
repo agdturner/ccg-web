@@ -20,7 +20,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -108,12 +107,12 @@ public class Web_ContentWriter extends Web_ContentHandler {
      * @param dir directory to write to
      * @param filename filename
      * @param title HTML page title.
-     * @param headerElements Elements to add to the HTML HEAD. If {@code null}
+     * @param head Elements to add to the HTML HEAD. If {@code null}
      * it is ignored.
      * @throws IOException if thrown.
      */
     public void writeHTML(Path dir, String filename, String title,
-            List<String> headerElements)
+            List<String> head)
             throws IOException {
         Path f = Paths.get(dir.toString(), filename + Web_Strings.symbol_dot
                 + Web_Strings.s_html);
@@ -122,7 +121,7 @@ public class Web_ContentWriter extends Web_ContentHandler {
         }
         try ( OutputStream os = Files.newOutputStream(f)) {
             writeHTMLDTD(os);
-            writeHTMLHead(os, title, headerElements);
+            writeHTMLHead(os, title, head);
             writeHTMLBody(os);
             os.flush();
         }
