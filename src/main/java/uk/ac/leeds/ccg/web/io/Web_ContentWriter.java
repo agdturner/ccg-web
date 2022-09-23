@@ -22,8 +22,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import uk.ac.leeds.ccg.generic.util.Generic_Collections;
 import uk.ac.leeds.ccg.web.core.Web_Strings;
 
@@ -67,7 +67,7 @@ public class Web_ContentWriter extends Web_ContentHandler {
         b.add(s.getBytes());
     }
 
-   /**
+    /**
      * Add content.
      *
      * @param first The first String to add on a single line to {@link #b}.
@@ -95,7 +95,7 @@ public class Web_ContentWriter extends Web_ContentHandler {
      * Add content.
      *
      * @param first The first byte array to add on a single line to {@link #b}.
-     * @param others An ordered sequence of byte arrays to add on a single line 
+     * @param others An ordered sequence of byte arrays to add on a single line
      * to {@link #b}.
      */
     public void add(byte[] first, byte[]... others) {
@@ -108,10 +108,12 @@ public class Web_ContentWriter extends Web_ContentHandler {
      * @param dir directory to write to
      * @param filename filename
      * @param title HTML page title.
-     * @param version Page version.
+     * @param headerElements Elements to add to the HTML HEAD. If {@code null}
+     * it is ignored.
      * @throws IOException if thrown.
      */
-    public void writeHTML(Path dir, String filename, String title)
+    public void writeHTML(Path dir, String filename, String title,
+            List<String> headerElements)
             throws IOException {
         Path f = Paths.get(dir.toString(), filename + Web_Strings.symbol_dot
                 + Web_Strings.s_html);
@@ -120,9 +122,8 @@ public class Web_ContentWriter extends Web_ContentHandler {
         }
         try ( OutputStream os = Files.newOutputStream(f)) {
             writeHTMLDTD(os);
-            writeHTMLHead(os, title);
+            writeHTMLHead(os, title, headerElements);
             writeHTMLBody(os);
-            writeHTMLBodyFooter(os);
             os.flush();
         }
     }
@@ -145,10 +146,17 @@ public class Web_ContentWriter extends Web_ContentHandler {
      * @param title The title.
      * @throws IOException if thrown.
      */
-    public void writeHTMLHead(OutputStream os, String title) throws IOException {
+    public void writeHTMLHead(OutputStream os, String title,
+            List<String> headerElements) throws IOException {
         writel(os, HTMLST);
         writel(os, HEADST);
         writel(os, "<title>" + title + "</title>");
+        // Add scripts.
+        if (headerElements != null) {
+            for (int i = 0; i < headerElements.size(); i++) {
+                writel(os, headerElements.get(i));
+            }
+        }
         writel(os, HEADET);
     }
 
@@ -159,28 +167,11 @@ public class Web_ContentWriter extends Web_ContentHandler {
      * @throws IOException if thrown.
      */
     public void writeHTMLBody(OutputStream os) throws IOException {
-        writel(os, BODYET);
+        writel(os, BODYST);
         Iterator<byte[]> i = b.iterator();
         while (i.hasNext()) {
             writel(os, i.next());
         }
-    }
-
-    /**
-     * Write the HTML Body Footer.
-     *
-     * @param os The Output Stream to write to.
-     * @param version version
-     * @throws IOException if thrown.
-     */
-    public void writeHTMLBodyFooter(OutputStream os) throws IOException {
-        //write(os, "<div>");
-        writeDIVST(os);
-        write(os, "<p>Last modified on " + LocalDate.now().toString() + ".</p>");
-        String cc0 = "https://creativecommons.org/share-your-work/public-domain/cc0/";
-        write(os, "<p>" + getLink(cc0, "CC0 Licence") + "</p>");
-        write(os, "</div>");
-        writeDIVET(os);
         writel(os, BODYET);
         writel(os, HTMLET);
     }
@@ -378,26 +369,64 @@ public class Web_ContentWriter extends Web_ContentHandler {
         os.write(b);
         os.write(ls);
     }
-    
+
     /**
      * Generate and return an HTML link.
-     * 
-     * @param url The URL.
-     * @param name The name for the link.
+     *
+     * @param url The URL as a path.
+     * @param linkText The text for the link.
      * @return A link e.g. {@code "<a href="https://example.com">example</a>"}
      */
-    public String getLink(Path url, String name) {
-        return "<a href=\"" + url.toString() + "\">" + name + "</a>";
+    public static String getLink(Path url, String linkText) {
+        return getLink(url.toString(), linkText);
     }
-    
+
     /**
      * Generate and return an HTML link.
-     * 
-     * @param url The URL.
-     * @param name The name for the link.
+     *
+     * @param url The URL as a String e.g. "https://example.com".
+     * @param linkText The text for the link e.g. "example".
      * @return A link e.g. {@code "<a href="https://example.com">example</a>"}
      */
-    public String getLink(String url, String name) {
-        return "<a href=\"" + url + "\">" + name + "</a>";
+    public static String getLink(String url, String linkText) {
+        return "<a href=\"" + url + "\">" + linkText + "</a>";
+    }
+
+    /**
+     * Generate and return an HTML link.
+     *
+     * @param url The URL as a Path.
+     * @param id The id for the link.
+     * @param c The class for the link.
+     * @param linkText The text for the link e.g. "example".
+     * @return A link e.g.
+     * {@code "<a id="id" href="https://example.com">example</a>"}
+     */
+    public static String getLink(String url, String linkID, String linkClass,
+            String linkText) {
+        return "<a id=\"" + linkID + "\" class=\"" + linkClass + "\" href=\""
+                + url + "\">" + linkText + "</a>";
+    }
+
+    /**
+     * Generate and return an HTML link disguised as a button. This is
+     * deprecated as it is not good practice to do this for accessibility
+     * reasons. Links should be links using <a href=""></a> which are activated
+     * differently by users. The expectation of what a button does is different.
+     *
+     * @param p The Path.
+     * @param id The id for the button.
+     * @param label The link text in the button.
+     * @return A link e.g. {@code "<a href="https://example.com">example</a>"}
+     */
+    @Deprecated
+    public static String getLinkButton(String path, String id, String label) {
+        StringBuilder sb = new StringBuilder("<button ");
+        if (id != null) {
+            sb.append("id=\"").append(id).append("\" ");
+        }
+        sb.append("onclick=\"document.location='").append(path).append("'\">")
+                .append(label).append("</button>");
+        return sb.toString();
     }
 }
