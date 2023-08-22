@@ -30,6 +30,12 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class Web_XMLSAXReader {
     
+    
+    /**
+     * Create a new instance.
+     */
+    public Web_XMLSAXReader(){}
+
     DefaultHandler handler = new DefaultHandler() {
         boolean bfname = false;
         boolean blname = false;

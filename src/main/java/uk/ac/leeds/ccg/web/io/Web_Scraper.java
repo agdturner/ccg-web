@@ -24,6 +24,7 @@ import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.SocketPermission;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -141,7 +142,7 @@ public class Web_Scraper extends Web_Object {
         checkConnectionRate();
         connectionCount += 1.0;
         HttpURLConnection r;
-        URL u = new URL(url);
+        URL u = URI.create(url).toURL();
         if (useProxy) {
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(
                     proxyAddress, port));
@@ -189,7 +190,7 @@ public class Web_Scraper extends Web_Object {
         BufferedReader br;
         String line;
         try {
-            u = new URL(sURL);
+            u = URI.create(url).toURL();
         } catch (MalformedURLException e) {
             e.printStackTrace(System.err);
             //System.exit(1);

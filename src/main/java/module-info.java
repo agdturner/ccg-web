@@ -19,9 +19,9 @@
  */
 module uk.ac.leeds.ccg.web {
     
-    requires uk.ac.leeds.ccg.data;
+    requires transitive uk.ac.leeds.ccg.data;
     requires uk.ac.leeds.ccg.io;
-    requires uk.ac.leeds.ccg.generic;
+    requires transitive uk.ac.leeds.ccg.generic;
     
     exports uk.ac.leeds.ccg.web.core;
     exports uk.ac.leeds.ccg.web.io;
