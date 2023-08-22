@@ -400,13 +400,63 @@ public class Web_ContentWriter {
     }
     
     /**
+     * Wraps a string with start and end HTML Heading 1 tags.
+     *
+     * @param sb The StringBuilder to append to.
+     * @param s The string to wrap.
+     */
+    public void addH1(StringBuilder sb, String s) {
+        sb.append(Web_Strings.H1_ST).append(s).append(Web_Strings.H1_ET);
+    }
+    
+    /**
+     * Wraps a string with start and end HTML Heading 1 tags.
+     *
+     * @param sb The StringBuilder to append to.
+     * @param s The string to wrap.
+     */
+    public void addH2(StringBuilder sb, String s) {
+        sb.append(Web_Strings.H2_ST).append(s).append(Web_Strings.H2_ET);
+    }
+    
+    /**
+     * Wraps a string with start and end HTML Heading 3 tags.
+     *
+     * @param sb The StringBuilder to append to.
+     * @param s The string to wrap.
+     */
+    public void addH3(StringBuilder sb, String s) {
+        sb.append(Web_Strings.H3_ST).append(s).append(Web_Strings.H3_ET);
+    }
+    
+    /**
+     * Wraps a string with start and end HTML Heading 4 tags.
+     *
+     * @param sb The StringBuilder to append to.
+     * @param s The string to wrap.
+     */
+    public void addH4(StringBuilder sb, String s) {
+        sb.append(Web_Strings.H4_ST).append(s).append(Web_Strings.H4_ET);
+    }
+    
+    /**
+     * Wraps a string with start and end HTML Heading 5 tags.
+     *
+     * @param sb The StringBuilder to append to.
+     * @param s The string to wrap.
+     */
+    public void addH5(StringBuilder sb, String s) {
+        sb.append(Web_Strings.H5_ST).append(s).append(Web_Strings.H5_ET);
+    }
+            
+    /**
      * Add a start HTML DIV tag
      *
      * @param sb The StringBuilder to append to.
      */
     public void addDIVST(StringBuilder sb) {
         sb.append(Web_Strings.DIV_ST);
-    }    
+    }
 
     /**
      * Add an end HTML DIV tag
@@ -437,13 +487,44 @@ public class Web_ContentWriter {
     }
     
     /**
+     * Append an HTML start list item tag.
+     *
+     * @param sb The StringBuilder to append to.
+     * @param indent A positive integer 0 is no indent, indents are spaces.
+     */
+    public void addLIST(StringBuilder sb, int indent) {
+        addIndent(sb, indent);
+        addLIST(sb);
+    }
+    
+    public void addIndent(StringBuilder sb, int indent) {
+        for (int i = 0; i < indent; i ++) {
+            sb.append(" ");
+        }
+    }
+       
+    /**
      * Wrap the start of a string with an HTML start list item tag.
      *
      * @param sb The StringBuilder to append to.
      * @param s The string to append after the start tag.
      */
     public void addLIST(StringBuilder sb, String s) {
-        sb.append(Web_Strings.LI_ST).append(s);
+        addLIST(sb);
+        sb.append(s);
+    }
+    
+    /**
+     * Wrap the start of a string with an HTML start list item tag.
+     *
+     * @param sb The StringBuilder to append to.
+     * @param s The string to append after the start tag.
+     * @param indent A positive integer 0 is no indent, indents are spaces.
+     */
+    public void addLIST(StringBuilder sb, String s, int indent) {
+        addIndent(sb, indent);
+        addLIST(sb);
+        sb.append(s);
     }
 
     /**
@@ -490,7 +571,8 @@ public class Web_ContentWriter {
      * @param s The string to wrap.
      */
     public void addP(StringBuilder sb, String s) {
-        sb.append(Web_Strings.P_ST).append(s).append(Web_Strings.P_ET);
+        addPST(sb, s);
+        sb.append(Web_Strings.P_ET);
     }
     
     /**
