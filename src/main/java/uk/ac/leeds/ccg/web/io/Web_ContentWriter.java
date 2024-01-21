@@ -487,6 +487,17 @@ public class Web_ContentWriter {
     }
     
     /**
+     * Append an HTML start list item tag with an ID.
+     *
+     * @param sb The StringBuilder to append to.
+     * @param id The ID to add to the tag.
+     */
+    public void addLIIDST(StringBuilder sb, String id) {
+        sb.append("<").append(Web_Strings.LI).append(" id=\"").append(id)
+                .append("\">");
+    }
+    
+    /**
      * Append an HTML start list item tag.
      *
      * @param sb The StringBuilder to append to.
@@ -503,6 +514,18 @@ public class Web_ContentWriter {
         }
     }
        
+    /**
+     * Wrap the start of a string with an HTML start list item tag.
+     *
+     * @param sb The StringBuilder to append to.
+     * @param id The string to append as the id.
+     * @param s The string to append after the start tag.
+     */
+    public void addLIIDST(StringBuilder sb, String id, String s) {
+        addLIIDST(sb, id);
+        sb.append(s);
+    }
+    
     /**
      * Wrap the start of a string with an HTML start list item tag.
      *
