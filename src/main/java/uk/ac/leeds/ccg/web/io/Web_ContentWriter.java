@@ -649,6 +649,42 @@ public class Web_ContentWriter {
     }
     
     /**
+     * Wrap a string with an HTML PRE tag.
+     *
+     * @param sb The StringBuilder to append to.
+     * @param tag The details for the CODE tag can be null.
+     * @param s The string to wrap.
+     */
+    public void addCODE(StringBuilder sb, String tag, String s) {
+        sb.append(Web_Strings.CODE_ST).append(s).append(Web_Strings.CODE_ET);
+    }
+    
+    /**
+     * Wrap start of a string with an HTML PRE start tag.
+     *
+     * @param sb The StringBuilder to append to.
+     * @param tag The details for the CODE tag can be null.
+     * @param s The string to wrap.
+     */
+    public void addCODEST(StringBuilder sb, String tag, String s) {
+        if (tag == null) {
+            sb.append(Web_Strings.CODE_ST).append(s);
+        } else {
+            sb.append("<" + Web_Strings.CODE + " " + tag + ">").append(s);
+        }
+    }
+
+    /**
+     * Wrap a string with an HTML end PRE tag.
+     *
+     * @param sb The StringBuilder to append to.
+     * @param s The string to wrap.
+     */
+    public void addCODEET(StringBuilder sb, String s) {
+        sb.append(s).append(Web_Strings.CODE_ET);
+    }
+    
+    /**
      * Add a start HTML unordered list tag
      *
      * @param sb The StringBuilder to append to.

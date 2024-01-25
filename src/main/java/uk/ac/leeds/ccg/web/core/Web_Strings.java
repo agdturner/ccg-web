@@ -29,6 +29,11 @@ public class Web_Strings extends Generic_Strings {
     public static final String BODY = "BODY";
     
     /**
+     * BODY
+     */
+    public static final String CODE = "CODE";
+    
+    /**
      * DIV
      */
     public static final String DIV = "DIV";
@@ -242,6 +247,16 @@ public class Web_Strings extends Generic_Strings {
      * PRE End Tag
      */
     public static final String PRE_ET = getEndTag(Web_Strings.PRE) + "\n";
+    
+    /**
+     * CODE Start Tag
+     */
+    public static final String CODE_ST = getStartTag(Web_Strings.CODE);
+    
+    /**
+     * PRE End Tag
+     */
+    public static final String CODE_ET = getEndTag(Web_Strings.CODE) + "\n";
     
     /**
      * TITLE Start Tag
