@@ -74,6 +74,11 @@ public class Web_Strings extends Generic_Strings {
     public static final String HTML = "HTML";
     
     /**
+     * HTML
+     */
+    public static final String html = "html";
+    
+    /**
      * LI
      */
     public static final String LI = "LI";
@@ -246,7 +251,7 @@ public class Web_Strings extends Generic_Strings {
     /**
      * PRE End Tag
      */
-    public static final String PRE_ET = getEndTag(Web_Strings.PRE) + "\n";
+    public static final String PRE_ET = getEndTag(Web_Strings.PRE);
     
     /**
      * CODE Start Tag
@@ -256,7 +261,7 @@ public class Web_Strings extends Generic_Strings {
     /**
      * PRE End Tag
      */
-    public static final String CODE_ET = getEndTag(Web_Strings.CODE) + "\n";
+    public static final String CODE_ET = getEndTag(Web_Strings.CODE);
     
     /**
      * TITLE Start Tag

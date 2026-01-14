@@ -72,7 +72,7 @@ public class Web_ContentWriter {
     public void writeHTML(Path dir, String filename, String title,
             List<String> head) throws IOException {
         Path f = Paths.get(dir.toString(), filename + Web_Strings.symbol_dot
-                + Web_Strings.HTML);
+                + Web_Strings.html);
         if (!Files.exists(dir)) {
             Files.createDirectories(dir);
         }
@@ -670,7 +670,8 @@ public class Web_ContentWriter {
         if (tag == null) {
             sb.append(Web_Strings.CODE_ST).append(s);
         } else {
-            sb.append("<" + Web_Strings.CODE + " " + tag + ">").append(s);
+            sb.append("<").append(Web_Strings.CODE).append(" ").append(tag)
+                    .append(">").append(s);
         }
     }
 
