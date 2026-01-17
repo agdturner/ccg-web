@@ -305,10 +305,13 @@ public class Web_ContentWriter {
     }
 
     /**
-     * Generate and return an HTML link.
+     * Generate and return an HTML link. ID and NAME tokens must begin with a
+     * letter ([A-Za-z]) and may be followed by any number of letters, digits
+     * ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), and periods
+     * ("."). (See also: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/id)
      *
      * @param url The URL as a Path.
-     * @param linkID The ID for the link.
+     * @param linkID The ID for the link. This should not contain spaces or
      * @param linkClass The class for the link.
      * @param linkText The text for the link e.g. "example".
      * @return A link e.g.
@@ -457,6 +460,27 @@ public class Web_ContentWriter {
     public void addDIVST(StringBuilder sb) {
         sb.append(Web_Strings.DIV_ST);
     }
+            
+    /**
+     * Add a start HTML DIV tag
+     *
+     * @param sb The StringBuilder to append to.
+     * @param id The id for the tag.
+     */
+    public void addDIVST(StringBuilder sb, String id) {
+        sb.append(Web_Strings.getStartTag(Web_Strings.DIV, id));
+    }
+            
+    /**
+     * Add a start HTML DIV tag
+     *
+     * @param sb The StringBuilder to append to.
+     * @param id The id for the tag.
+     * @param className The class name for the tag.
+     */
+    public void addDIVST(StringBuilder sb, String id, String className) {
+        sb.append(Web_Strings.getStartTag(Web_Strings.DIV, id, className));
+    }
 
     /**
      * Add an end HTML DIV tag
@@ -493,8 +517,7 @@ public class Web_ContentWriter {
      * @param id The ID to add to the tag.
      */
     public void addLIIDST(StringBuilder sb, String id) {
-        sb.append("<").append(Web_Strings.LI).append(" id=\"").append(id)
-                .append("\">");
+        sb.append(Web_Strings.getStartTag(Web_Strings.LI, id));
     }
     
     /**

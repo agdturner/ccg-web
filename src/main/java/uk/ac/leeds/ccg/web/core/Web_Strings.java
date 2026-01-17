@@ -299,4 +299,42 @@ public class Web_Strings extends Generic_Strings {
         return getStartTag("/" + tag);
     }
 
+    /**
+     * @param id The string for the id.
+     * @return {@code " " + "id=\"" + id + "\""}
+     */
+    public static String getID(String id) {
+        return " " + "id=\"" + id + "\"";
+    }
+
+    /**
+     * @param tag The name of the tag.
+     * @return {@code "<" + tag + ">"}
+     */
+    public static String getStartTag(String tag, String id) {
+        return "<" + tag
+                + getID(id)
+                + ">";
+    }
+    
+    /**
+     * @param className The string for the class.
+     * @return {@code " " + "class=\"" + className + "\""}
+     */
+    public static String getClass(String className) {
+        return " " + "class=\"" + className + "\"";
+    }
+        
+    /**
+     * @param tag The name of the tag.
+     * @return {@code "<" + tag + ">"}
+     */
+    public static String getStartTag(String tag, String id, String className) {
+        return "<" + tag
+                + getID(id)
+                + getClass(className)
+                + ">";
+    }
+    
+    
 }
